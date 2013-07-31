@@ -14,4 +14,5 @@ Motion::Project::App.setup do |app|
   app.sdk_version = '6.1'
   app.provisioning_profile = ENV['MOTION_PROVISIONING_PROFILE']
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
+  app.frameworks << "QuartzCore"
 end
