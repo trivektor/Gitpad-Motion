@@ -16,3 +16,5 @@ Motion::Project::App.setup do |app|
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
   app.frameworks << "QuartzCore"
 end
+
+MotionBundler.setup

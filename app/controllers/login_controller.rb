@@ -1,3 +1,5 @@
+require 'github_api'
+
 class LoginController < UIViewController
 
   def initWithNibName(nibName, bundle:nibBundle)

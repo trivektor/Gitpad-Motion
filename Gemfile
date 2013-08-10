@@ -1,3 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'httparty'
+gem 'motion-bundler'
+
+group :motion do
+  gem 'github_api'
+end
