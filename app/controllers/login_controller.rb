@@ -87,6 +87,7 @@ class LoginController < UIViewController
     @usernameField = UITextField.alloc.initWithFrame(CGRectMake(8, 7, 916, 30))
     @usernameField.attributedPlaceholder = NSAttributedString.alloc.initWithString('Username or email')
     @usernameField.setAutocorrectionType(UITextAutocorrectionTypeNo)
+    @usernameField.setAutocapitalizationType(UITextAutocapitalizationTypeNone)
     @usernameCell.backgroundColor = UIColor.whiteColor
     @usernameCell.contentView.addSubview(@usernameField)
 
