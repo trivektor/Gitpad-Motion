@@ -2,6 +2,8 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
+require 'rubygems'
+require 'motion-cocoapods'
 
 Bundler.require
 
@@ -15,6 +17,8 @@ Motion::Project::App.setup do |app|
   app.provisioning_profile = ENV['MOTION_PROVISIONING_PROFILE']
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
   app.frameworks << "QuartzCore"
-end
 
-MotionBundler.setup
+  app.pods do
+    pod 'AFNetworking', '1.3.2'
+  end
+end

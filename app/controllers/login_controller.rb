@@ -1,5 +1,3 @@
-require 'github_api'
-
 class LoginController < UIViewController
 
   def initWithNibName(nibName, bundle:nibBundle)
@@ -53,13 +51,30 @@ class LoginController < UIViewController
     username = @usernameField.text || ''
     password = @passwordField.text || ''
 
+    @alert ||= UIAlertView.alloc.initWithTitle('Error',
+      message:'Please enter both username and password',
+      delegate:nil,
+      cancelButtonTitle:'Back',
+      otherButtonTitles:'OK')
+
     if username.length == 0 || password.length == 0
-      @alert ||= UIAlertView.alloc.initWithTitle('Error',
-        message:'Please enter both username and password',
-        delegate:nil,
-        cancelButtonTitle:'Back',
-        otherButtonTitles:'OK')
       @alert.show
+    else
+      AFMotion::Client.build_shared(GITHUB_API_HOST) do
+        header "Accept", "application/json"
+        authorization(username: username, password: password)
+        parameter_encoding :json
+        operation :json
+      end
+
+      AFMotion::Client.shared.get("/authorizations") do |result|
+        if result.success?
+          p result.object
+        elsif result.failure?
+          @alert.setMessage(result.error.localizedDescription)
+          @alert.show
+        end
+      end
     end
   end
 
@@ -71,6 +86,7 @@ class LoginController < UIViewController
     @usernameCell.selectionStyle = UITableViewCellSelectionStyleNone
     @usernameField = UITextField.alloc.initWithFrame(CGRectMake(8, 7, 916, 30))
     @usernameField.attributedPlaceholder = NSAttributedString.alloc.initWithString('Username or email')
+    @usernameField.setAutocorrectionType(UITextAutocorrectionTypeNo)
     @usernameCell.backgroundColor = UIColor.whiteColor
     @usernameCell.contentView.addSubview(@usernameField)
 
