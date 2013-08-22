@@ -23,5 +23,6 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'AFNetworking', '1.3.2'
+    pod 'SSKeychain'
   end
 end

@@ -33,6 +33,41 @@ class LoginController < UIViewController
     submitButton.layer.cornerRadius = 6.0
     submitButton.addTarget(self, action:'login', forControlEvents:UIControlEventTouchUpInside);
     containerView.addSubview(submitButton, aboveSubview: @loginTable)
+
+    registerEvents
+  end
+
+  def registerEvents
+    @center = NSNotificationCenter.defaultCenter
+    @center.addObserver(self, selector:'authenticate', name:'ExistingAuthorizationsDeleted', object:nil)
+    @center.addObserver(self, selector:'fetchUser', name:'UserAutheticated', object:nil)
+  end
+
+  def authenticate
+    # TO BE IMPLEMENTED
+    username = @usernameField.text || ''
+    password = @passwordField.text || ''
+
+    puts "authenticating"
+
+    AFMotion::Client.shared.post("/authorizations") do |result|
+      if result.success?
+        puts "authorization created successfully"
+
+        authorization = Authorization.new(result.object)
+        puts authorization.token
+        SSKeychain.deletePasswordForService('access_token', account:APP_KEYCHAIN_IDENTIFIER)
+        SSKeychain.setPassword(authorization.token, forService:'access_token', account:APP_KEYCHAIN_IDENTIFIER)
+        @center.postNotificationName('UserAutheticated', object:nil)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchUser
+    # TO BE IMPLEMENTED
+    puts "fetching user"
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
@@ -69,7 +104,22 @@ class LoginController < UIViewController
 
       AFMotion::Client.shared.get("/authorizations") do |result|
         if result.success?
-          p result.object
+          authorizations = result.object.map { |hash| Authorization.new(hash) }
+          puts authorizations.inspect
+          authorizations.each do |authorization|
+            if authorization.name == APP_NAME
+              puts "deleting existing authorization id: #{authorization.id}"
+              AFMotion::Client.shared.delete("/authorizations/#{authorization.id}") do |result|
+                if result.success?
+
+                else
+                  puts result.error.localizedDescription
+                end
+              end
+              break
+            end
+          end
+          NSNotificationCenter.defaultCenter.postNotificationName('ExistingAuthorizationsDeleted', object:nil)
         elsif result.failure?
           @alert.setMessage(result.error.localizedDescription)
           @alert.show
