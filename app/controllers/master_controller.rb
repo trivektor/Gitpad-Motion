@@ -7,4 +7,10 @@ class MasterController < UIViewController
     self
   end
 
+  def viewDidLoad
+    super
+    containerView = UIView.alloc.initWithFrame(self.view.bounds)
+    containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+  end
+
 end

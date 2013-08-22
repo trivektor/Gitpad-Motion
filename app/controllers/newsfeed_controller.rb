@@ -12,7 +12,8 @@ class NewsfeedController < UIViewController
   end
 
   def performHousekeepingTasks
-
+    containerView = UIView.alloc.initWithFrame(self.view.bounds)
+    containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
   end
 
 end

@@ -6,3 +6,4 @@ OAUTH_PARAMS = {
   client_secret: ENV['GITPAD_MOTION_SECRET']
 }
 APP_KEYCHAIN_IDENTIFIER = 'GitpadMotionKeychain1'
+APP_KEYCHAIN_ACCOUNT = 'gitpad_motion'

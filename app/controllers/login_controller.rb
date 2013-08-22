@@ -56,8 +56,8 @@ class LoginController < UIViewController
 
         authorization = Authorization.new(result.object)
         puts authorization.token
-        SSKeychain.deletePasswordForService('access_token', account:APP_KEYCHAIN_IDENTIFIER)
-        SSKeychain.setPassword(authorization.token, forService:'access_token', account:APP_KEYCHAIN_IDENTIFIER)
+        SSKeychain.deletePasswordForService('access_token', account:APP_KEYCHAIN_ACCOUNT)
+        SSKeychain.setPassword(authorization.token, forService:'access_token', account:APP_KEYCHAIN_ACCOUNT)
         @center.postNotificationName('UserAutheticated', object:nil)
       else
         puts result.error.localizedDescription

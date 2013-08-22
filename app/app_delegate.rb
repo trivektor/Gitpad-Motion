@@ -15,8 +15,17 @@ class AppDelegate
   end
 
   def validateAuthenticationToken
-    loginController = LoginController.alloc.init
-    navController = UINavigationController.alloc.initWithRootViewController(loginController)
-    @window.rootViewController = navController
+    authToken = SSKeychain.passwordForService('access_token', account:APP_KEYCHAIN_ACCOUNT)
+
+    puts "authToken when app starts is #{authToken}"
+
+    if !authToken
+      loginController = LoginController.alloc.init
+      navController = UINavigationController.alloc.initWithRootViewController(loginController)
+      @window.rootViewController = navController
+    else
+      loadingController = LoadingController.alloc.init
+      @window.rootViewController = loadingController
+    end
   end
 end

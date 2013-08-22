@@ -33,6 +33,15 @@ class User
       end
     end
 
+    def fetchInfoForUserWithToken(token)
+      AFMotion::Client.shared.get("/user") do |result|
+        if result.success?
+          NotificationCenter.defaultCenter.postNotificationName('AuthenticatedUserFetched', object:self.new(result.object))
+        else
+        end
+      end
+    end
+
     def buildHttpClient
       @httpClient ||= AFMotion::Client.build_shared(GITHUB_API_HOST) do
         header "Accept", "application/json"
