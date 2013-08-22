@@ -27,5 +27,6 @@ Motion::Project::App.setup do |app|
     pod 'SSKeychain'
     pod 'ViewDeck'
     pod 'MBProgressHUD'
+    pod 'FontAwesomeIconFactory'
   end
 end
