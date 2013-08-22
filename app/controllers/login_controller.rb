@@ -68,6 +68,10 @@ class LoginController < UIViewController
   def fetchUser
     # TO BE IMPLEMENTED
     puts "fetching user"
+    AFMotion::Client.shared.get("/user") do |result|
+      currentUser = User.new(result.object)
+      AppInitialization.run(self.view.window, withUser:currentUser)
+    end
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
