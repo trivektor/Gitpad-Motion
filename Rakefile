@@ -6,6 +6,7 @@ require 'rubygems'
 require 'motion-cocoapods'
 require 'afmotion'
 require 'bubble-wrap'
+require 'motion-i18n'
 
 Bundler.require
 
@@ -25,5 +26,6 @@ Motion::Project::App.setup do |app|
     pod 'AFNetworking', '1.3.2'
     pod 'SSKeychain'
     pod 'ViewDeck'
+    pod 'MBProgressHUD'
   end
 end
