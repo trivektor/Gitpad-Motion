@@ -4,6 +4,7 @@ require 'motion/project/template/ios'
 require 'bundler'
 require 'rubygems'
 require 'motion-cocoapods'
+require 'afmotion'
 require 'bubble-wrap'
 
 Bundler.require
@@ -17,6 +18,7 @@ Motion::Project::App.setup do |app|
   app.sdk_version = '6.1'
   app.provisioning_profile = ENV['MOTION_PROVISIONING_PROFILE']
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
+  app.detect_dependencies = false
   app.frameworks << "QuartzCore"
 
   app.pods do
