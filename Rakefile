@@ -34,7 +34,7 @@ Motion::Project::App.setup do |app|
   app.pods do
     pod 'AFNetworking', '1.3.2'
     pod 'SSKeychain'
-    pod 'ViewDeck'
+    pod 'ViewDeck', '2.2.11'
     pod 'MBProgressHUD'
     pod 'FontAwesomeIconFactory'
   end
