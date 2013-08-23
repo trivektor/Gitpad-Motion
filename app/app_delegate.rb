@@ -15,7 +15,7 @@ class AppDelegate
   end
 
   def validateAuthenticationToken
-    authToken = SSKeychain.passwordForService('access_token', account:APP_KEYCHAIN_ACCOUNT)
+    authToken = AppHelper.getAccessToken
 
     puts "authToken when app starts is #{authToken}"
 
