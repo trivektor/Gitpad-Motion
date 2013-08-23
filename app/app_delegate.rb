@@ -1,8 +1,11 @@
 class AppDelegate
+
+  attr_accessor :window
+
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.backgroundColor = UIColor.whiteColor
-    @window.makeKeyAndVisible
+    self.window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+    self.window.backgroundColor = UIColor.whiteColor
+    self.window.makeKeyAndVisible
 
     UINavigationBar.appearance.setTintColor(UIColor.whiteColor)
 
@@ -22,10 +25,10 @@ class AppDelegate
     if !authToken
       loginController = LoginController.alloc.init
       navController = UINavigationController.alloc.initWithRootViewController(loginController)
-      @window.rootViewController = navController
+      self.window.rootViewController = navController
     else
       loadingController = LoadingController.alloc.init
-      @window.rootViewController = loadingController
+      self.window.rootViewController = loadingController
     end
   end
 end
