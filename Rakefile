@@ -20,7 +20,16 @@ Motion::Project::App.setup do |app|
   app.provisioning_profile = ENV['MOTION_PROVISIONING_PROFILE']
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
   app.detect_dependencies = false
-  app.frameworks << "QuartzCore"
+
+  frameworks = %w(
+    QuartzCore
+    Security
+  )
+  frameworks.each { |framework| app.frameworks << framework }
+
+  app.entitlements['keychain-access-groups'] = [
+    app.seed_id + '.' + app.identifier
+  ]
 
   app.pods do
     pod 'AFNetworking', '1.3.2'
