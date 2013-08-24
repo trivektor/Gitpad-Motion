@@ -25,33 +25,44 @@ class MasterControllerCell < UITableViewCell
 
   def renderForIndexPath(indexPath)
     @iconLabel.font = FontAwesome.fontWithSize(15)
+    @textLabel.font = UIFont.fontWithName('Roboto-Bold', size:13)
 
     case indexPath.section
     when 1
       @iconLabel.text = FontAwesome.icon('rss')
+      @textLabel.text = 'News Feed'
     when 2
       case indexPath.row
       when 0
         @iconLabel.text = FontAwesome.icon('github')
+        @textLabel.text = 'Personal'
       when 1
         @iconLabel.text = FontAwesome.icon('star-empty')
+        @textLabel.text = 'Starred'
       when 2
         @iconLabel.text = FontAwesome.icon('plus-sign')
+        @textLabel.text = 'New Repository'
       end
     when 3
       case indexPath.row
       when 0
         @iconLabel.text = FontAwesome.icon('code')
+        @textLabel.text = 'Gists'
       when 1
         @iconLabel.text = FontAwesome.icon('search')
+        @textLabel.text = 'Search'
       when 2
         @iconLabel.text = FontAwesome.icon('bullhorn')
+        @textLabel.text = 'Notifications'
       when 3
         @iconLabel.text = FontAwesome.icon('envelope')
+        @textLabel.text = 'Feedback'
       when 4
         @iconLabel.text = FontAwesome.icon('off')
+        @textLabel.text = 'Sign out'
       when 5
         @iconLabel.text = FontAwesome.icon('legal')
+        @textLabel.text = 'Attributions'
       end
     end
   end
@@ -153,6 +164,10 @@ class MasterController < UIViewController
     #
     # else
     # end
+  end
+
+  def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
+    cell.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('magma_border.png'))
   end
 
   private
