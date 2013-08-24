@@ -17,7 +17,7 @@ class TimelineEvent
   }
 
   def initialize(data={})
-    data = data
+    @data = data
   end
 
   def id
@@ -54,6 +54,20 @@ class TimelineEvent
 
   def repo
     # TO BE IMPLEMENTED
+  end
+
+  def toActorRepoString(actionName)
+    actor = self.actor.login
+    repo = self.repo.name
+    "#{actor} #{actionName} #{repo}"
+  end
+
+  def icon(type)
+    ICONS[type.downcase.to_sym]
+  end
+
+  def toString
+    ''
   end
 
 end
