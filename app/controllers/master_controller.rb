@@ -1,9 +1,30 @@
-# class MasterControllerCell < UITableViewCell
-#
-#   def initialize
-#   end
-#
-# end
+class MasterControllerCell < UITableViewCell
+
+  attr_accessor :iconLabel, :textLabel
+
+  def initWithStyle(style, reuseIdentifier:identifier)
+    super
+    self.createLabels
+    self
+  end
+
+  def createLabels
+    @iconLabel = UILabel.alloc.initWithFrame([[15, 9], [25, 25]])
+    @iconLabel.textColor = UIColor.whiteColor
+    @iconLabel.backgroundColor = UIColor.clearColor
+    @textLabel = UILabel.alloc.initWithFrame([[51, 11], [243, 21]])
+    @textLabel.textColor = UIColor.whiteColor
+    @textLabel.backgroundColor = UIColor.clearColor
+    @textLabel.text = 'text'
+    self.contentView.addSubview(@iconLabel)
+    self.contentView.addSubview(@textLabel)
+  end
+
+  def self.reuseIdentifier
+    to_s
+  end
+
+end
 
 class MasterController < UIViewController
 
@@ -27,6 +48,7 @@ class MasterController < UIViewController
     @table.dataSource = self
     @table.setBackgroundColor(UIColor.colorWithRed(55/255.0, green:55/255.0, blue:55/255.0, alpha:1.0))
     @table.setSeparatorColor(UIColor.clearColor)
+    @table.registerClass(MasterControllerCell, forCellReuseIdentifier:MasterControllerCell.reuseIdentifier)
     self.view.addSubview(@table)
   end
 
@@ -83,11 +105,10 @@ class MasterController < UIViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    @cellIdentifier ||= 'Cell'
-    cell = tableView.dequeueReusableCellWithIdentifier(@cellIdentifier)
+    cell = tableView.dequeueReusableCellWithIdentifier(MasterControllerCell.reuseIdentifier)
 
     if !cell
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:@cellIdentifier)
+      cell = MasterControllerCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:MasterControllerCell.reuseIdentifier)
     end
 
     cell
