@@ -21,16 +21,22 @@ Motion::Project::App.setup do |app|
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
   app.detect_dependencies = false
 
+  # Frameworks
   frameworks = %w(
     QuartzCore
     Security
   )
   frameworks.each { |framework| app.frameworks << framework }
 
+  # Keychain
   app.entitlements['keychain-access-groups'] = [
     app.seed_id + '.' + app.identifier
   ]
 
+  # Custom fonts
+  app.fonts = ['FontAwesome.otf', 'roboto/Roboto-Medium.ttf']
+
+  # CocoaPods
   app.pods do
     pod 'AFNetworking', '1.3.2'
     pod 'SSKeychain'

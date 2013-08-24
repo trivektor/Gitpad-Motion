@@ -7,9 +7,16 @@ GIT
 
 GIT
   remote: git@github.com:rubymotion/BubbleWrap.git
-  revision: 1a801a37478d784efb2d71ddde268ff3506ee78c
+  revision: 32a15eebfbd22bc7c80e18e43e015d187d7876d7
   specs:
     bubble-wrap (1.3.0)
+
+GIT
+  remote: git@github.com:trivektor/fontawesome.git
+  revision: ca5c4db7a48db97955427e16972b5891c52bce5b
+  specs:
+    motion-fontawesome (0.0.2)
+      rake
 
 GEM
   remote: https://rubygems.org/
@@ -58,5 +65,6 @@ DEPENDENCIES
   afmotion!
   bubble-wrap!
   motion-cocoapods
+  motion-fontawesome!
   motion-i18n
   rake

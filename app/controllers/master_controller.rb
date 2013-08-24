@@ -12,12 +12,48 @@ class MasterControllerCell < UITableViewCell
     @iconLabel = UILabel.alloc.initWithFrame([[15, 9], [25, 25]])
     @iconLabel.textColor = UIColor.whiteColor
     @iconLabel.backgroundColor = UIColor.clearColor
+
     @textLabel = UILabel.alloc.initWithFrame([[51, 11], [243, 21]])
     @textLabel.textColor = UIColor.whiteColor
     @textLabel.backgroundColor = UIColor.clearColor
+    @textLabel.font = UIFont.fontWithName('Roboto-Medium', size:13)
     @textLabel.text = 'text'
+
     self.contentView.addSubview(@iconLabel)
     self.contentView.addSubview(@textLabel)
+  end
+
+  def renderForIndexPath(indexPath)
+    @iconLabel.font = FontAwesome.fontWithSize(15)
+
+    case indexPath.section
+    when 1
+      @iconLabel.text = FontAwesome.icon('rss')
+    when 2
+      case indexPath.row
+      when 0
+        @iconLabel.text = FontAwesome.icon('github')
+      when 1
+        @iconLabel.text = FontAwesome.icon('star-empty')
+      when 2
+        @iconLabel.text = FontAwesome.icon('plus-sign')
+      end
+    when 3
+      case indexPath.row
+      when 0
+        @iconLabel.text = FontAwesome.icon('code')
+      when 1
+        @iconLabel.text = FontAwesome.icon('search')
+      when 2
+        @iconLabel.text = FontAwesome.icon('bullhorn')
+      when 3
+        @iconLabel.text = FontAwesome.icon('envelope')
+      when 4
+        @iconLabel.text = FontAwesome.icon('off')
+      when 5
+        @iconLabel.text = FontAwesome.icon('legal')
+      end
+    end
   end
 
   def self.reuseIdentifier
@@ -111,6 +147,7 @@ class MasterController < UIViewController
       cell = MasterControllerCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:MasterControllerCell.reuseIdentifier)
     end
 
+    cell.renderForIndexPath(indexPath)
     cell
     # if indexPath.row == 0 || indexPath.row == 1
     #
