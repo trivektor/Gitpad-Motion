@@ -1,3 +1,44 @@
+class ProfileCell < UITableViewCell
+
+  attr_accessor :image, :textLabel
+
+  def initWithStyle(style, reuseIdentifier:identifier)
+    super
+    self.createLabels
+    self
+  end
+
+  def createLabels
+    @image = UIImageView.alloc.initWithFrame([[15, 9], [26, 26]])
+
+    @textLabel = UILabel.alloc.initWithFrame([[51, 11], [243, 21]])
+    @textLabel.textColor = UIColor.whiteColor
+    @textLabel.backgroundColor = UIColor.clearColor
+    @textLabel.font = UIFont.fontWithName('Roboto-Medium', size:13)
+
+    self.contentView.addSubview(@image)
+    self.contentView.addSubview(@textLabel)
+  end
+
+  def displayAvatarAndUsername
+    currentUser = CurrentUserManager.sharedInstance
+    userImageData = NSData.dataWithContentsOfURL(NSURL.URLWithString(currentUser.avatarUrl))
+    @image.image = UIImage.imageWithData(userImageData)
+    @image.layer.masksToBounds = true
+    @image.layer.cornerRadius = 3
+
+    @textLabel.text = currentUser.login
+
+    backgroundView = UIView.alloc.initWithFrame(self.frame)
+    self.selectedBackgroundView = backgroundView
+  end
+
+  def self.reuseIdentifier
+    to_s
+  end
+
+end
+
 class MasterControllerCell < UITableViewCell
 
   attr_accessor :iconLabel, :textLabel
@@ -16,7 +57,6 @@ class MasterControllerCell < UITableViewCell
     @textLabel = UILabel.alloc.initWithFrame([[51, 11], [243, 21]])
     @textLabel.textColor = UIColor.whiteColor
     @textLabel.backgroundColor = UIColor.clearColor
-    @textLabel.font = UIFont.fontWithName('Roboto-Medium', size:13)
     @textLabel.text = 'text'
 
     self.contentView.addSubview(@iconLabel)
@@ -25,9 +65,11 @@ class MasterControllerCell < UITableViewCell
 
   def renderForIndexPath(indexPath)
     @iconLabel.font = FontAwesome.fontWithSize(15)
-    @textLabel.font = UIFont.fontWithName('Roboto-Bold', size:13)
+    @textLabel.font = UIFont.fontWithName('Roboto-Medium', size:13)
 
     case indexPath.section
+    when 0
+      self.displayAvatarAndUsername
     when 1
       @iconLabel.text = FontAwesome.icon('rss')
       @textLabel.text = 'News Feed'
@@ -96,6 +138,7 @@ class MasterController < UIViewController
     @table.setBackgroundColor(UIColor.colorWithRed(55/255.0, green:55/255.0, blue:55/255.0, alpha:1.0))
     @table.setSeparatorColor(UIColor.clearColor)
     @table.registerClass(MasterControllerCell, forCellReuseIdentifier:MasterControllerCell.reuseIdentifier)
+    @table.registerClass(ProfileCell, forCellReuseIdentifier:ProfileCell.reuseIdentifier)
     self.view.addSubview(@table)
   end
 
@@ -152,18 +195,15 @@ class MasterController < UIViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    cell = tableView.dequeueReusableCellWithIdentifier(MasterControllerCell.reuseIdentifier)
-
-    if !cell
+    if indexPath.section == 0 && indexPath.row == 0
+      cell = ProfileCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:ProfileCell.reuseIdentifier)
+      cell.displayAvatarAndUsername
+    else
       cell = MasterControllerCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:MasterControllerCell.reuseIdentifier)
+      cell.renderForIndexPath(indexPath)
     end
 
-    cell.renderForIndexPath(indexPath)
     cell
-    # if indexPath.row == 0 || indexPath.row == 1
-    #
-    # else
-    # end
   end
 
   def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)

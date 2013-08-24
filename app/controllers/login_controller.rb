@@ -70,6 +70,7 @@ class LoginController < UIViewController
     puts "fetching user"
     AFMotion::Client.shared.get("/user") do |result|
       currentUser = User.new(result.object)
+      CurrentUserManager.initWithUser(currentUser)
       AppInitialization.run(self.view.window, withUser:currentUser)
     end
   end
