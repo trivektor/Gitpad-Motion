@@ -1,8 +1,14 @@
 class NewsfeedCell < UITableViewCell
 
-  attr_accessor :event
+  attr_accessor :event, :titleLabel, :descriptionLabel
 
-  def initialize
+  def initWithStyle(style, reuseIdentifier:identifier)initialize
+    super
+    self.createLabels
+    self
+  end
+
+  def createLabels
     @iconLabel = UILabel.alloc.initWithFrame(CGRectMake(20, 9, 20, 21))
     @titleLabel = UILabel.alloc.initWithFrame(CGRectMake(53, 8, 916, 21))
     @descriptionLabel = UILabel.alloc.initWithFrame(CGRectMake(53, 28, 916, 21))
@@ -13,6 +19,10 @@ class NewsfeedCell < UITableViewCell
 
     @titleLabel.text = 'Title'
     @descriptionLabel.text = 'Description'
+  end
+
+  def self.reuseIdentifier
+    to_s
   end
 
 end
@@ -35,6 +45,7 @@ class NewsfeedController < UIViewController
     @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @table.delegate = self
     @table.dataSource = self
+    @table.registerClass(NewsfeedCell, forCellReuseIdentifier:NewsfeedCell.reuseIdentifier)
 
     self.view.addSubview(@table)
   end
@@ -47,12 +58,15 @@ class NewsfeedController < UIViewController
     10
   end
 
+  def tableView(tableView, heightForRowAtIndexPath:indexPath)
+    57
+  end
+
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    @cellIdentifier ||= 'NewsFeedCell'
-    cell = @table.dequeueReusableCellWithIdentifier(@cellIdentifier)
+    cell = @table.dequeueReusableCellWithIdentifier(NewsfeedCell.reuseIdentifier)
 
     if !cell
-      cell = NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:@cellIdentifier)
+      cell = NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
     end
 
     cell
