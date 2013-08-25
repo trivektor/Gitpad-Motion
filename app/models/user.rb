@@ -24,6 +24,18 @@ class User
     @data[:login]
   end
 
+  def fetchNewsfeedForPage(page=1)
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        events = result.object.collect { |e| Object::const_get(e[:type]).new(e) }
+        NSNotificationCenter.defaultCenter.postNotificationName('NewsFeedFetched', object: events)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
   class << self
 
     def fetchProfileInfo
@@ -45,7 +57,7 @@ class User
     end
 
     def buildHttpClient
-      @httpClient ||= AFMotion::Client.build_shared(GITHUB_API_HOST) do
+      @@httpClient ||= AFMotion::Client.build_shared(GITHUB_API_HOST) do
         header "Accept", "application/json"
         parameter_encoding :json
         operation :json

@@ -4,7 +4,7 @@ class NewsfeedCell < UITableViewCell
 
   def initWithStyle(style, reuseIdentifier:identifier)initialize
     super
-    self.createLabels
+    createLabels
     self
   end
 
@@ -16,21 +16,27 @@ class NewsfeedCell < UITableViewCell
     self.contentView.addSubview(@iconLabel)
     self.contentView.addSubview(@titleLabel)
     self.contentView.addSubview(@descriptionLabel)
-
-    @titleLabel.text = 'Title'
-    @descriptionLabel.text = 'Description'
   end
 
   def self.reuseIdentifier
     to_s
   end
 
+  def render
+    @titleLabel.text = @event.toString
+    @descriptionLabel.text = ''
+  end
+
 end
 
 class NewsfeedController < UIViewController
 
+  attr_accessor :page, :events
+
   def initWithNibName(nibName, bundle:nibBundle)
     super
+    @page = 1
+    @events = []
     self
   end
 
@@ -38,6 +44,8 @@ class NewsfeedController < UIViewController
     super
     navigationItem.title = 'Newsfeed'
     performHousekeepingTasks
+    registerEvents
+    fetchUserNewsfeed
   end
 
   def performHousekeepingTasks
@@ -48,6 +56,10 @@ class NewsfeedController < UIViewController
     @table.registerClass(NewsfeedCell, forCellReuseIdentifier:NewsfeedCell.reuseIdentifier)
 
     self.view.addSubview(@table)
+  end
+
+  def registerEvents
+    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayUserNewsfeed:', name: 'NewsFeedFetched', object: nil)
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -69,7 +81,19 @@ class NewsfeedController < UIViewController
       cell = NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
     end
 
+    cell.event = @events[indexPath.row]
     cell
+  end
+
+  def displayUserNewsfeed(notification)
+    events = notification.object
+    @table.reloadData
+  end
+
+  def fetchUserNewsfeed
+    currentUser = CurrentUserManager.sharedInstance
+    currentUser.fetchNewsfeedForPage(@page)
+    @page += 1
   end
 
 end
