@@ -1,4 +1,2 @@
-module Events
-  class Public < TimelineEvent
-  end
+class PublicEvent < TimelineEvent
 end

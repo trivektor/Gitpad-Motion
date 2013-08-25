@@ -1,9 +1,7 @@
-module Events
-  class Fork < TimelineEvent
+class ForkEvent < TimelineEvent
 
-    def toString
-      toActorRepoString('forked')
-    end
-
+  def toString
+    toActorRepoString('forked')
   end
+
 end

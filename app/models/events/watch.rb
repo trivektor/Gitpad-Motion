@@ -1,9 +1,7 @@
-module Events
-  class Watch < TimelineEvent
+class WatchEvent < TimelineEvent
 
-    def toString
-      toActorRepoString('watched')
-    end
-
+  def toString
+    toActorRepoString('watched')
   end
+
 end

@@ -1,4 +1,2 @@
-module Events
-  class Follow < TimelineEvent
-  end
+class FollowEvent < TimelineEvent
 end

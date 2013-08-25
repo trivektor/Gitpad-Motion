@@ -1,4 +1,2 @@
-module Events
-  class Push < TimelineEvent
-  end
+class PushEvent < TimelineEvent
 end

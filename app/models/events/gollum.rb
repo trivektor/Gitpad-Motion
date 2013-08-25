@@ -1,4 +1,2 @@
-module Events
-  class Gollum < TimelineEvent
-  end
+class GollumEvent < TimelineEvent
 end

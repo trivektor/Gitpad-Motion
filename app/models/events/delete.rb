@@ -1,4 +1,2 @@
-module Events
-  class Delete < TimelineEvent
-  end
+class DeleteEvent < TimelineEvent
 end

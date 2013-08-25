@@ -1,4 +1,2 @@
-module Events
-  class Gist < TimelineEvent
-  end
+class GistEvent < TimelineEvent
 end

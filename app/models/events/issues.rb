@@ -1,4 +1,2 @@
-module Events
-  class Issues < TimelineEvent
-  end
+class IssuesEvent < TimelineEvent
 end

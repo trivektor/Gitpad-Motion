@@ -1,4 +1,2 @@
-module Events
-  class CommitComment < TimelineEvent
-  end
+class CommitCommentEvent < TimelineEvent
 end

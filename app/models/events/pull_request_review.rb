@@ -1,4 +1,2 @@
-module Events
-  class PullRequestReview < TimelineEvent
-  end
+class PullRequestReviewEvent < TimelineEvent
 end

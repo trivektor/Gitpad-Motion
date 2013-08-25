@@ -1,4 +1,2 @@
-module Events
-  class Member < TimelineEvent
-  end
+class MemberEvent < TimelineEvent
 end
