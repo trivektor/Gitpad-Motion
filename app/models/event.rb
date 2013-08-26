@@ -1,5 +1,7 @@
 class TimelineEvent
 
+  attr_accessor :data
+
   ICONS = {
     forkevent: 'icon-code-fork',
     watchevent: 'icon-star',
@@ -53,7 +55,7 @@ class TimelineEvent
   end
 
   def repo
-    # TO BE IMPLEMENTED
+    Repo.new(data[:repo])
   end
 
   def toActorRepoString(actionName)

@@ -4,6 +4,7 @@ class NewsfeedCell < UITableViewCell
 
   def initWithStyle(style, reuseIdentifier:identifier)initialize
     super
+    @event = nil
     createLabels
     self
   end
@@ -23,7 +24,8 @@ class NewsfeedCell < UITableViewCell
   end
 
   def render
-    @titleLabel.text = @event.toString
+    @titleLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
+    @titleLabel.text = @event ? @event.toString : ''
     @descriptionLabel.text = ''
   end
 
@@ -82,11 +84,12 @@ class NewsfeedController < UIViewController
     end
 
     cell.event = @events[indexPath.row]
+    cell.render
     cell
   end
 
   def displayUserNewsfeed(notification)
-    events = notification.object
+    @events = notification.object
     @table.reloadData
   end
 

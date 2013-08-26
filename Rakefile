@@ -34,7 +34,7 @@ Motion::Project::App.setup do |app|
   ]
 
   # Custom fonts
-  app.fonts = ['FontAwesome.otf', 'roboto/Roboto-Medium.ttf']
+  app.fonts = ['FontAwesome.otf', 'roboto/Roboto-Medium.ttf', 'roboto/Roboto-Light.ttf']
 
   # CocoaPods
   app.pods do

@@ -28,7 +28,7 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        events = result.object.collect { |e| Object::const_get(e[:type]).new(e) }
+        events = result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
         NSNotificationCenter.defaultCenter.postNotificationName('NewsFeedFetched', object: events)
       else
         puts result.error.localizedDescription
