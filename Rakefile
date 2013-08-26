@@ -43,5 +43,6 @@ Motion::Project::App.setup do |app|
     pod 'ViewDeck', '2.2.11'
     pod 'MBProgressHUD'
     pod 'FontAwesomeIconFactory'
+    pod 'FlatUIKit'
   end
 end
