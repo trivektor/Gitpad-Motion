@@ -55,6 +55,7 @@ class NewsfeedController < UIViewController
     @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @table.delegate = self
     @table.dataSource = self
+    @table.scrollEnabled = true
     @table.registerClass(NewsfeedCell, forCellReuseIdentifier:NewsfeedCell.reuseIdentifier)
 
     self.view.addSubview(@table)
@@ -69,7 +70,7 @@ class NewsfeedController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    10
+    @events.count
   end
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
@@ -88,8 +89,14 @@ class NewsfeedController < UIViewController
     cell
   end
 
+  def scrollViewDidScroll(scrollView)
+    if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      fetchUserNewsfeed
+    end
+  end
+
   def displayUserNewsfeed(notification)
-    @events = notification.object
+    @events += notification.object
     @table.reloadData
   end
 
