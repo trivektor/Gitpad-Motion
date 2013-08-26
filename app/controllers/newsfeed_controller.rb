@@ -26,6 +26,8 @@ class NewsfeedCell < UITableViewCell
   def render
     @titleLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
     @titleLabel.text = @event ? @event.toString : ''
+    @iconLabel.font = FontAwesome.fontWithSize(15)
+    @iconLabel.text = @event ? FontAwesome.icon(@event.icon) : ''
     @descriptionLabel.text = ''
   end
 

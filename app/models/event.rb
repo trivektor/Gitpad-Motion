@@ -3,19 +3,19 @@ class TimelineEvent
   attr_accessor :data
 
   ICONS = {
-    forkevent: 'icon-code-fork',
-    watchevent: 'icon-star',
-    createevent: 'icon-keyboard',
-    followevent: 'icon-user',
-    gistevent: 'icon-code',
-    issuesevent: 'icon-warning-sign',
-    memberevent: 'icon-plus',
-    issuecommentevent: 'icon-comment',
-    pushevent: 'icon-upload',
-    pulleequestevent: 'icon-retweet',
-    publicevent: 'icon-folder-open',
-    commitcommentevent: 'icon-comments',
-    gollumnevent: 'icon-book'
+    forkevent: 'code-fork',
+    watchevent: 'star',
+    createevent: 'keyboard',
+    followevent: 'user',
+    gistevent: 'code',
+    issuesevent: 'warning-sign',
+    memberevent: 'plus',
+    issuecommentevent: 'comment',
+    pushevent: 'upload',
+    pulleequestevent: 'retweet',
+    publicevent: 'folder-open',
+    commitcommentevent: 'comments',
+    gollumnevent: 'book'
   }
 
   def initialize(data={})
@@ -64,7 +64,7 @@ class TimelineEvent
     "#{actor} #{actionName} #{repo}"
   end
 
-  def icon(type)
+  def icon
     ICONS[type.downcase.to_sym]
   end
 
