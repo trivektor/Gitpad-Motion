@@ -10,7 +10,8 @@ class AppDelegate
     UINavigationBar.appearance.setTintColor(UIColor.whiteColor)
 
     UINavigationBar.appearance.setTitleTextAttributes({
-      UITextAttributeTextColor => UIColor.colorWithRed(131/255.0, green: 131/255.0, blue: 131/255.0, alpha: 1.0)
+      UITextAttributeTextColor => UIColor.blackColor,
+      UITextAttributeFont => UIFont.fontWithName('Roboto-Medium', size: 19)
     })
 
     validateAuthenticationToken

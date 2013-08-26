@@ -22,7 +22,7 @@ class ProfileCell < UITableViewCell
 
   def displayAvatarAndUsername
     currentUser = CurrentUserManager.sharedInstance
-    userImageData = NSData.dataWithContentsOfURL(NSURL.URLWithString(currentUser.avatarUrl))
+    userImageData = NSData.dataWithContentsOfURL(currentUser.avatarUrl.nsurl)
     @image.image = UIImage.imageWithData(userImageData)
     @image.layer.masksToBounds = true
     @image.layer.cornerRadius = 3

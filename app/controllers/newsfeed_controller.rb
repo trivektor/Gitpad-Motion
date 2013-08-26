@@ -29,6 +29,7 @@ class NewsfeedCell < UITableViewCell
     @iconLabel.font = FontAwesome.fontWithSize(15)
     @iconLabel.text = @event ? FontAwesome.icon(@event.icon) : ''
     @descriptionLabel.text = ''
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator
   end
 
 end
