@@ -23,11 +23,11 @@ class TimelineEvent
   end
 
   def id
-    data[:id]
+    @data[:id]
   end
 
   def payload
-    data[:payload]
+    @data[:payload]
   end
 
   def target
@@ -35,11 +35,11 @@ class TimelineEvent
   end
 
   def type
-    data[:type]
+    @data[:type]
   end
 
   def actor
-    User.new(data[:actor])
+    User.new(@data[:actor])
   end
 
   def targetActor
@@ -55,7 +55,7 @@ class TimelineEvent
   end
 
   def repo
-    Repo.new(data[:repo])
+    Repo.new(@data[:repo])
   end
 
   def toActorRepoString(actionName)
@@ -70,6 +70,14 @@ class TimelineEvent
 
   def toString
     ''
+  end
+
+  def createdAt
+    @data[:created_at]
+  end
+
+  def updatedAt
+    @data[:updated_at]
   end
 
 end
