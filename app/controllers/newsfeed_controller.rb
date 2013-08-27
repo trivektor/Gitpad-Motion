@@ -94,6 +94,12 @@ class NewsfeedController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    detailsController = NewsfeedDetailsController.alloc.init
+    detailsController.event = @events[indexPath.row]
+    self.navigationController.pushViewController(detailsController, animated: true)
+  end
+
   def scrollViewDidScroll(scrollView)
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
       fetchUserNewsfeed
