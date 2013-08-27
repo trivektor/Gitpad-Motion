@@ -51,6 +51,7 @@ class NewsfeedController < UIViewController
     navigationItem.title = 'Newsfeed'
     performHousekeepingTasks
     registerEvents
+    loadHud
     fetchUserNewsfeed
   end
 
@@ -102,9 +103,11 @@ class NewsfeedController < UIViewController
   def displayUserNewsfeed(notification)
     @events += notification.object
     @table.reloadData
+    hideHud
   end
 
   def fetchUserNewsfeed
+    showHud
     currentUser = CurrentUserManager.sharedInstance
     currentUser.fetchNewsfeedForPage(@page)
     @page += 1
