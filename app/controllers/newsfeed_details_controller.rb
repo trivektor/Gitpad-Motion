@@ -14,6 +14,7 @@ class NewsfeedDetailsController < UIViewController
   end
 
   def performHousekeepingTasks
+    createBackButton
     @wview = UIWebView.alloc.initWithFrame(self.view.bounds)
     @wview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     self.view.addSubview(@wview)
