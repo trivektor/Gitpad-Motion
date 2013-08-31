@@ -210,6 +210,25 @@ class MasterController < UIViewController
     cell.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('magma_border.png'))
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    case indexPath.section
+    when 0
+    when 1
+      if indexPath.row == 0
+        newsfeedController = NewsfeedController.alloc.init
+        selectedController = UINavigationController.alloc.initWithRootViewController(newsfeedController)
+      end
+    when 2
+      if indexPath.row == 0
+        personalReposController = PersonalReposController.alloc.init
+        reposController.user = CurrentUserManager.sharedInstance
+        selectedController = UINavigationController.alloc.initWithRootViewController(personalReposController)
+      end
+    end
+
+    navigateToSelectedController(selectedController)
+  end
+
   private
 
   def displayAvatarAndUsername
@@ -218,6 +237,14 @@ class MasterController < UIViewController
 
   def toggleViewDeck
     # TO BE IMPLEMENTED
+  end
+
+  def navigateToSelectedController(selectedController)
+    completion = lambda do |controller, success|
+      controller.centerController = selectedController
+    end
+
+    self.viewDeckController.closeLeftViewAnimated(true, completion: completion)
   end
 
 end
