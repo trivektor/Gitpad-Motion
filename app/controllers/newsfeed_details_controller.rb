@@ -30,7 +30,7 @@ class NewsfeedDetailsController < UIViewController
       encoding: NSASCIIStringEncoding,
       error: nil)
 
-    contentHtml = html.stringByReplacingOccurrencesOfString('%@', withString: 'abc')
+    contentHtml = html.stringByReplacingOccurrencesOfString('%@', withString: self.event.toHtmlString)
 
     data = contentHtml.dataUsingEncoding(NSUTF8StringEncoding)
     @wview.loadData(data, MIMEType: 'text/html', textEncodingName: 'utf-8', baseURL: NSURL.fileURLWithPath(mainBundle.bundlePath))

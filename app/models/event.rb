@@ -80,5 +80,42 @@ class TimelineEvent
     @data[:updated_at]
   end
 
+  def toActorRepoHtmlString(actionName)
+    mainBundle = NSBundle.mainBundle
+
+    actorHtml = NSString.stringWithContentsOfFile(
+      mainBundle.pathForResource('html/event_actor', ofType: 'html'),
+      encoding: NSASCIIStringEncoding,
+      error: nil)
+
+    repoHtml = NSString.stringWithContentsOfFile(
+      mainBundle.pathForResource('html/event_actor', ofType: 'html'),
+      encoding: NSASCIIStringEncoding,
+      error: nil)
+
+    actionHtml = NSString.stringWithContentsOfFile(
+      mainBundle.pathForResource('html/event_action', ofType: 'html'),
+      encoding: NSASCIIStringEncoding,
+      error: nil)
+
+    actor = self.actor
+    actorHtml = actorHtml.stringByReplacingOccurrencesOfString('{{actor}}', withString: 'actor:')
+                         .stringByReplacingOccurrencesOfString('{{avatar}}', withString: actor.avatarUrl)
+                         .stringByReplacingOccurrencesOfString('{{login}}', withString: actor.login)
+
+    repoHtml = repoHtml.stringByReplacingOccurrencesOfString('{{actor}}', withString: 'actor:')
+                       .stringByReplacingOccurrencesOfString('{{avatar}}', withString: GITHUB_OCTOCAT)
+                       .stringByReplacingOccurrencesOfString('{{login}}', withString: repo.name)
+
+    actionHtml = actionHtml.stringByReplacingOccurrencesOfString('{{action}}', withString: actionName)
+
+    array = NSArray.alloc.initWithArray([actorHtml, actionHtml, repoHtml])
+    array.componentsJoinedByString('')
+  end
+
+  def toHtmlString
+    ''
+  end
+
 end
 

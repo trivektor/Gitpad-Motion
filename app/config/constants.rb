@@ -7,3 +7,4 @@ OAUTH_PARAMS = {
 }
 APP_KEYCHAIN_IDENTIFIER = 'GitpadMotionKeychain1'
 APP_KEYCHAIN_ACCOUNT = 'gitpad_motion'
+GITHUB_OCTOCAT = 'http://octodex.github.com/images/original.jpg'
