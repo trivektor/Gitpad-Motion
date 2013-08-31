@@ -60,6 +60,18 @@ class User
     end
   end
 
+  def fetchPersonalGistsForPage(page=1)
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get("/users/#{self.login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        gists = result.object.collect { |r| Gist.new(r) }
+        'GistsFetched'.post_notification(gists)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
   class << self
 
     def fetchProfileInfo

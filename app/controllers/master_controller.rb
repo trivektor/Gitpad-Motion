@@ -229,6 +229,13 @@ class MasterController < UIViewController
         starredReposController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(starredReposController)
       end
+    when 3
+      case indexPath.row
+      when 0
+        personalGistsController = GistsController.alloc.init
+        personalGistsController.user = CurrentUserManager.sharedInstance
+        selectedController = UINavigationController.alloc.initWithRootViewController(personalGistsController)
+      end
     end
 
     navigateToSelectedController(selectedController)
