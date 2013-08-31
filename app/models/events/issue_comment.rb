@@ -30,9 +30,14 @@ class IssueCommentEvent < TimelineEvent
       encoding: NSASCIIStringEncoding,
       error: nil)
 
+    actionHtml = NSString.stringWithContentsOfFile(
+      mainBundle.pathForResource('html/event_action', ofType: 'html'),
+      encoding: NSASCIIStringEncoding,
+      error: nil)
+
     issueHtml = issueHtml.stringByReplacingOccurrencesOfString('{{actor}}', withString: 'issue:')
-                         .stringByReplacingOccurrencesOfString('{{avatar}}', withString: "#{repo.name}##{issue.number}")
-                         .stringByReplacingOccurrencesOfString('{{login}}', withString: actor.login)
+                         .stringByReplacingOccurrencesOfString('{{avatar}}', withString: GITHUB_OCTOCAT)
+                         .stringByReplacingOccurrencesOfString('{{login}}', withString: "#{repo.name}##{issue.number}")
 
     actionHtml = actionHtml.stringByReplacingOccurrencesOfString('{{action}}', withString: 'commented on issue')
 
