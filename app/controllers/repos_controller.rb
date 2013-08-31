@@ -17,7 +17,7 @@ class RepoCell < UITableViewCell
 
   def createLabels
     @nameLabel = UILabel.alloc.initWithFrame([[58, 9], [409, 21]])
-    @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 12)
+    @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
     @descriptionLabel = UILabel.alloc.initWithFrame([[58, 34], [651, 21]])
     @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
 
@@ -49,6 +49,10 @@ class ReposController < UIViewController
     self.view.addSubview(@table)
   end
 
+  def registerEvents
+    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayRepos:', name: 'ReposFetched', object: nil)
+  end
+
   def viewDidLoad
     performHousekeepingTasks
   end
@@ -77,6 +81,11 @@ class ReposController < UIViewController
     cell
   end
 
+  def displayRepos(notification)
+    @repos = notification.object
+    @table.reloadData
+  end
+
 end
 
 class PersonalReposController < ReposController
@@ -88,18 +97,9 @@ class PersonalReposController < ReposController
     registerEvents
   end
 
-  def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayRepos:', name: 'ReposFetched', object: nil)
-  end
-
   def fetchReposForPage(page)
-    self.user.fetchPersonalReposForPage(@page)
+    @user.fetchPersonalReposForPage(@page)
     @page += 1
-  end
-
-  def displayRepos(notification)
-    self.repos = notification.object
-    @table.reloadData
   end
 
 end
@@ -107,7 +107,15 @@ end
 class StarredReposController < ReposController
 
   def performHousekeepingTasks
+    super
     self.navigationItem.title = 'Starred Repositories'
+    fetchReposForPage(@page)
+    registerEvents
+  end
+
+  def fetchReposForPage(page)
+    @user.fetchStarredReposForPage(@page)
+    @page += 1
   end
 
 end

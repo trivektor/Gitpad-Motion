@@ -219,10 +219,15 @@ class MasterController < UIViewController
         selectedController = UINavigationController.alloc.initWithRootViewController(newsfeedController)
       end
     when 2
-      if indexPath.row == 0
+      case indexPath.row
+      when 0
         personalReposController = PersonalReposController.alloc.init
         personalReposController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(personalReposController)
+      when 1
+        starredReposController = StarredReposController.alloc.init
+        starredReposController.user = CurrentUserManager.sharedInstance
+        selectedController = UINavigationController.alloc.initWithRootViewController(starredReposController)
       end
     end
 
