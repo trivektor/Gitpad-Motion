@@ -82,8 +82,14 @@ class ReposController < UIViewController
   end
 
   def displayRepos(notification)
-    @repos = notification.object
+    @repos += notification.object
     @table.reloadData
+  end
+
+  def scrollViewDidScroll(scrollView)
+    if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      fetchReposForPage(@page)
+    end
   end
 
 end
