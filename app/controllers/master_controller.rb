@@ -221,7 +221,7 @@ class MasterController < UIViewController
     when 2
       if indexPath.row == 0
         personalReposController = PersonalReposController.alloc.init
-        reposController.user = CurrentUserManager.sharedInstance
+        personalReposController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(personalReposController)
       end
     end

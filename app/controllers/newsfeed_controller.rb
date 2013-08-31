@@ -2,7 +2,7 @@ class NewsfeedCell < UITableViewCell
 
   attr_accessor :event, :titleLabel, :descriptionLabel
 
-  def initWithStyle(style, reuseIdentifier:identifier)initialize
+  def initWithStyle(style, reuseIdentifier:identifier)
     super
     @event = nil
     createLabels
@@ -17,10 +17,6 @@ class NewsfeedCell < UITableViewCell
     self.contentView.addSubview(@iconLabel)
     self.contentView.addSubview(@titleLabel)
     self.contentView.addSubview(@descriptionLabel)
-  end
-
-  def self.reuseIdentifier
-    to_s
   end
 
   def render
