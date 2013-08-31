@@ -4,4 +4,8 @@ class CreateEvent < TimelineEvent
     toActorRepoString('created')
   end
 
+  def toHtmlString
+    toActorRepoHtmlString('created')
+  end
+
 end

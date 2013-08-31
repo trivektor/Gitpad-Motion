@@ -4,4 +4,8 @@ class PublicEvent < TimelineEvent
     toActorRepoString('open sourced')
   end
 
+  def toHtmlString
+    toActorRepoHtmlString('open sourced')
+  end
+
 end

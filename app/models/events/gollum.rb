@@ -4,4 +4,8 @@ class GollumEvent < TimelineEvent
     toActorRepoString('created wiki for')
   end
 
+  def toHtmlString
+    toActorRepoHtmlString('created wiki for')
+  end
+
 end

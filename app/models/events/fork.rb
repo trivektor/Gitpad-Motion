@@ -4,4 +4,8 @@ class ForkEvent < TimelineEvent
     toActorRepoString('forked')
   end
 
+  def toHtmlString
+    toActorRepoHtmlString('forked')
+  end
+
 end

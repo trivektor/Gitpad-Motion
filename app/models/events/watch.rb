@@ -4,4 +4,8 @@ class WatchEvent < TimelineEvent
     toActorRepoString('watched')
   end
 
+  def toHtmlString
+    toActorRepoHtmlString('watched')
+  end
+
 end
