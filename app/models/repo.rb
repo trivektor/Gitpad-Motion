@@ -66,4 +66,12 @@ class Repo
     @data[:owner]
   end
 
+  def forked?
+    @data[:fork].to_s == 'true'
+  end
+
+  def private?
+    @data[:private].to_s == 'true'
+  end
+
 end
