@@ -97,7 +97,7 @@ class ProfileController < UIViewController
     @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @table.delegate = self
     @table.dataSource = self
-    @table.scrollEnabled = true
+    @table.scrollEnabled = false
     @table.registerClass(ProfileCell, forCellReuseIdentifier: ProfileCell.reuseIdentifier)
     @table.backgroundView = nil
 
@@ -130,6 +130,20 @@ class ProfileController < UIViewController
 
     cell.renderForRowAtIndexPath(indexPath)
     cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    case indexPath.row
+    when 0
+    when 4
+      followersController = FollowersController.alloc.init
+      followersController.user = @user
+      self.navigationController.pushViewController(followersController, animated: true)
+    when 5
+      followingController = FollowingController.alloc.init
+      followingController.user = @user
+      self.navigationController.pushViewController(followingController, animated: true)
+    end
   end
 
   def fetchProfileInfo

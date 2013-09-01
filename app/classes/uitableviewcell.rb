@@ -4,4 +4,8 @@ UITableViewCell.class_eval do
     to_s
   end
 
+  def defineAccessoryType
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+  end
+
 end

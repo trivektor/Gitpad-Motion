@@ -62,6 +62,14 @@ class User
     @data[:created_at]
   end
 
+  def followersUrl
+    @data[:followers_url]
+  end
+
+  def followingUrl
+    @data[:following_url].gsub('{/other_user}', '')
+  end
+
   def fetchNewsfeedForPage(page=1)
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
@@ -119,6 +127,30 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}") do |result|
       NSNotificationCenter.defaultCenter.postNotificationName('ProfileInfoFetched', object: self.class.new(result.object))
+    end
+  end
+
+  def fetchFollowers(page=1)
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get(followersUrl, page: page) do |result|
+      if result.success?
+        users = result.object.collect { |u| User.new(u) }
+        NSNotificationCenter.defaultCenter.postNotificationName('FollowUsersFetched', object: users)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchFollowing(page=1)
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get(followingUrl, page: page) do |result|
+      if result.success?
+        users = result.object.collect { |u| User.new(u) }
+        NSNotificationCenter.defaultCenter.postNotificationName('FollowUsersFetched', object: users)
+      else
+        puts result.error.localizedDescription
+      end
     end
   end
 
