@@ -11,6 +11,7 @@ class RepoCell < UITableViewCell
   def render
     @nameLabel.text = @repo.name
     @descriptionLabel.text = @repo.description || 'no description available'
+    self.defineAccessoryType
     setFontAwesomeIcon
   end
 
@@ -71,6 +72,7 @@ class ReposController < UIViewController
 
   def viewDidLoad
     performHousekeepingTasks
+    createBackButton
     loadHud
   end
 

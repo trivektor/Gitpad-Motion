@@ -143,6 +143,14 @@ class ProfileController < UIViewController
       followingController = FollowingController.alloc.init
       followingController.user = @user
       self.navigationController.pushViewController(followingController, animated: true)
+    when 6
+      personalReposController = PersonalReposController.alloc.init
+      personalReposController.user = @user
+      self.navigationController.pushViewController(personalReposController, animated: true)
+    when 7
+      gistsController = GistsController.alloc.init
+      gistsController.user = @user
+      self.navigationController.pushViewController(gistsController, animated: true)
     end
   end
 

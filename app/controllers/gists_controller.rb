@@ -53,6 +53,7 @@ class GistsController < UIViewController
   def viewDidLoad
     super
     performHousekeepingTasks
+    createBackButton
     loadHud
     registerEvents
     fetchGistsForPage(@page)
