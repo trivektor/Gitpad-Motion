@@ -42,4 +42,8 @@ class Gist
     @data[:comments].to_i
   end
 
+  def public?
+    @data[:public].to_s == 'true'
+  end
+
 end

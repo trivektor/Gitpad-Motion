@@ -10,22 +10,31 @@ class GistCell < UITableViewCell
   end
 
   def render
-    @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
-    @nameLabel.text = @gist.id
-    @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
+
+    @nameLabel.text = "gist:#{@gist.id}"
     @descriptionLabel.text = @gist.description
+
+    setFontAwesomeIcon
   end
 
   private
 
   def createLabels
     @fontAwesomeLabel = UILabel.alloc.initWithFrame([[12, 10], [30, 21]])
+    @fontAwesomeLabel.font = FontAwesome.fontWithSize(15)
     @nameLabel = UILabel.alloc.initWithFrame([[50, 9], [445, 21]])
+    @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
     @descriptionLabel = UILabel.alloc.initWithFrame([[50, 36], [738, 21]])
+    @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
 
     self.contentView.addSubview(@fontAwesomeLabel)
     self.contentView.addSubview(@nameLabel)
     self.contentView.addSubview(@descriptionLabel)
+  end
+
+  def setFontAwesomeIcon
+    icon = @gist.public? ? 'code' : 'lock'
+    @fontAwesomeLabel.text = FontAwesome.icon(icon)
   end
 
 end
@@ -44,6 +53,7 @@ class GistsController < UIViewController
   def viewDidLoad
     super
     performHousekeepingTasks
+    loadHud
     registerEvents
     fetchGistsForPage(@page)
   end
@@ -90,6 +100,7 @@ class GistsController < UIViewController
   end
 
   def fetchGistsForPage(page)
+    showHud
     @user.fetchPersonalGistsForPage(@page)
     @page += 1
   end
@@ -97,6 +108,7 @@ class GistsController < UIViewController
   def displayGists(notification)
     @gists += notification.object
     @table.reloadData
+    hideHud
   end
 
 end
