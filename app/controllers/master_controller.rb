@@ -1,4 +1,4 @@
-class ProfileCell < UITableViewCell
+class MasterProfileCell < UITableViewCell
 
   attr_accessor :image, :textLabel
 
@@ -138,7 +138,7 @@ class MasterController < UIViewController
     @table.setBackgroundColor(UIColor.colorWithRed(55/255.0, green:55/255.0, blue:55/255.0, alpha:1.0))
     @table.setSeparatorColor(UIColor.clearColor)
     @table.registerClass(MasterControllerCell, forCellReuseIdentifier:MasterControllerCell.reuseIdentifier)
-    @table.registerClass(ProfileCell, forCellReuseIdentifier:ProfileCell.reuseIdentifier)
+    @table.registerClass(MasterProfileCell, forCellReuseIdentifier:MasterProfileCell.reuseIdentifier)
     self.view.addSubview(@table)
   end
 
@@ -196,7 +196,7 @@ class MasterController < UIViewController
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     if indexPath.section == 0 && indexPath.row == 0
-      cell = ProfileCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:ProfileCell.reuseIdentifier)
+      cell = MasterProfileCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:MasterProfileCell.reuseIdentifier)
       cell.displayAvatarAndUsername
     else
       cell = MasterControllerCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:MasterControllerCell.reuseIdentifier)
