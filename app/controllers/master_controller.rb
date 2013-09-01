@@ -213,6 +213,11 @@ class MasterController < UIViewController
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     case indexPath.section
     when 0
+      if indexPath.row == 0
+        profileController = ProfileController.alloc.init
+        profileController.user = CurrentUserManager.sharedInstance
+        selectedController = UINavigationController.alloc.initWithRootViewController(profileController)
+      end
     when 1
       if indexPath.row == 0
         newsfeedController = NewsfeedController.alloc.init
