@@ -1,6 +1,6 @@
 class RepoCell < UITableViewCell
 
-  attr_accessor :repo, :nameLabel, :descriptionLabel
+  attr_accessor :repo, :nameLabel, :descriptionLabel, :fontAwesomeLabel
 
   def initWithStyle(style, reuseIdentifier:identifier)
     super
@@ -10,19 +10,35 @@ class RepoCell < UITableViewCell
 
   def render
     @nameLabel.text = @repo.name
-    @descriptionLabel.text = @repo.description
+    @descriptionLabel.text = @repo.description || 'no description available'
+    setFontAwesomeIcon
   end
 
   private
 
   def createLabels
-    @nameLabel = UILabel.alloc.initWithFrame([[58, 9], [409, 21]])
+    @nameLabel = UILabel.alloc.initWithFrame([[53, 9], [409, 21]])
     @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
-    @descriptionLabel = UILabel.alloc.initWithFrame([[58, 34], [651, 21]])
+    @descriptionLabel = UILabel.alloc.initWithFrame([[53, 34], [651, 21]])
     @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
+    @fontAwesomeLabel = UILabel.alloc.initWithFrame([[14, 9], [30, 21]])
+    @fontAwesomeLabel.font = FontAwesome.fontWithSize(15)
 
     self.contentView.addSubview(@nameLabel)
     self.contentView.addSubview(@descriptionLabel)
+    self.contentView.addSubview(@fontAwesomeLabel)
+  end
+
+  def setFontAwesomeIcon
+    if @repo.forked?
+      icon = 'code-fork'
+    elsif @repo.private?
+      icon = 'lock'
+    else
+      icon = 'github'
+    end
+
+    @fontAwesomeLabel.text = FontAwesome.icon(icon)
   end
 
 end
@@ -55,6 +71,7 @@ class ReposController < UIViewController
 
   def viewDidLoad
     performHousekeepingTasks
+    loadHud
   end
 
   def numberOfSectionsInTableView
@@ -84,10 +101,12 @@ class ReposController < UIViewController
   def displayRepos(notification)
     @repos += notification.object
     @table.reloadData
+    hideHud
   end
 
   def scrollViewDidScroll(scrollView)
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      showHud
       fetchReposForPage(@page)
     end
   end

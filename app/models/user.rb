@@ -38,7 +38,12 @@ class User
 
   def fetchPersonalReposForPage(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get("/users/#{self.login}/repos", page: page, access_token: AppHelper.getAccessToken) do |result|
+    params = {
+      :page => page,
+      :access_token => AppHelper.getAccessToken,
+      :private => true
+    }
+    AFMotion::Client.shared.get("/user/repos", params) do |result|
       if result.success?
         repos = result.object.collect { |r| Repo.new(r) }
         'ReposFetched'.post_notification(repos)
