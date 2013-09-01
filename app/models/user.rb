@@ -24,6 +24,42 @@ class User
     @data[:login]
   end
 
+  def location
+    @data[:location]
+  end
+
+  def website
+    @data[:blog]
+  end
+
+  def email
+    @data[:email]
+  end
+
+  def company
+    @data[:company]
+  end
+
+  def following
+    @data[:following].to_i
+  end
+
+  def followers
+    @data[:followers].to_i
+  end
+
+  def numPublicRepos
+    @data[:public_repos].to_i
+  end
+
+  def numPublicGists
+    @data[:public_gists].to_i
+  end
+
+  def createdAt
+    @data[:created_at]
+  end
+
   def fetchNewsfeedForPage(page=1)
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
@@ -77,14 +113,14 @@ class User
     end
   end
 
-  class << self
-
-    def fetchProfileInfo
-      buildHttpClient
-      AFMotion::Client.shared.get("/users/#{self.login}") do |result|
-        NSNotificationCenter.defaultCenter.postNotificationName('ProfileInfoFetched', object:self.new(result.object))
-      end
+  def fetchProfileInfo
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get("/users/#{self.login}") do |result|
+      NSNotificationCenter.defaultCenter.postNotificationName('ProfileInfoFetched', object: self.class.new(result.object))
     end
+  end
+
+  class << self
 
     def fetchInfoForUserWithToken(token)
       buildHttpClient
