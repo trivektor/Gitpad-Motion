@@ -1,6 +1,6 @@
 class Repo
 
-  attr_accessor :data
+  attr_accessor :data, :owner
 
   def initialize(data={})
     @data = data
@@ -11,7 +11,7 @@ class Repo
   end
 
   def fullName
-    # TO BE IMPLEMENTED
+    "#{owner.login}/#{name}"
   end
 
   def numForks
@@ -63,7 +63,7 @@ class Repo
   end
 
   def owner
-    User.new(@data[:owner])
+    @owner ||= User.new(@data[:owner])
   end
 
   def forked?
@@ -80,6 +80,20 @@ class Repo
       if result.success?
         'RepoInfoFetched'.post_notification(Repo.new(result.object))
       else
+        puts "failed fetching full info"
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchBranches
+    buildHttpClient
+    AFMotion::Client.shared.get("repos/#{fullName}/branches", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        branches = result.object.collect { |b| Branch.new(b) }
+        'RepoBranchesFetched'.post_notification(branches)
+      else
+        puts "failed fetching branches"
         puts result.error.localizedDescription
       end
     end

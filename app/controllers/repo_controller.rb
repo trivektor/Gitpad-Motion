@@ -33,6 +33,7 @@ class RepoInfoCell < UITableViewCell
     self.contentView.addSubview(@fontAwesomeLabel)
     self.contentView.addSubview(@fieldNameLabel)
     self.contentView.addSubview(@fieldValueLabel)
+    self.backgroundColor = UIColor.whiteColor
   end
 
   def renderForIndexPath(indexPath)
@@ -54,7 +55,7 @@ class RepoInfoCell < UITableViewCell
     when 6
       fieldValue = @repo.updatedAt
     when 7
-      fieldValue = @repo.owner.name
+      fieldValue = @repo.owner.login
     when 8
       fieldValue = @repo.hasIssues? ? @repo.numOpenIssues.to_s : 'Issues are disabled for this repo'
     when 9
@@ -70,15 +71,13 @@ class RepoInfoCell < UITableViewCell
 
 end
 
-class BranchCell < UITableViewCell
-end
-
 class RepoController < UIViewController
 
-  attr_accessor :repo, :scrollView, :infoTable, :branchesTable
+  attr_accessor :repo, :scrollView, :infoTable, :branchesTable, :branches
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
+    @branches = []
     self
   end
 
@@ -87,13 +86,17 @@ class RepoController < UIViewController
     createBackButton
     performHousekeepingTasks
     registerEvents
+    @repo.fetchFullInfo
   end
 
   def performHousekeepingTasks
+    self.navigationItem.title = @repo.name
+
     @scrollView = UIScrollView.alloc.initWithFrame(self.view.bounds)
     @scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    @scrollView.scrollEnabled = true
 
-    @infoTable = UITableView.alloc.initWithFrame([[0, 0], [748, 860]], style: UITableViewStyleGrouped)
+    @infoTable = UITableView.alloc.initWithFrame([[0, 0], [748, 870]], style: UITableViewStyleGrouped)
     @infoTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @infoTable.delegate = self
     @infoTable.dataSource = self
@@ -101,14 +104,20 @@ class RepoController < UIViewController
     @infoTable.registerClass(RepoInfoCell, forCellReuseIdentifier: RepoInfoCell.reuseIdentifier)
     @infoTable.backgroundView = nil
 
-    @branchesTable = UITableView.alloc.initWithFrame([[0, 860], [748, 140]], style: UITableViewStyleGrouped)
+    branchesLabel = UILabel.alloc.initWithFrame([[0, 550], [1024, 20]])
+    branchesLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
+    branchesLabel.textAlignment = NSTextAlignmentCenter
+    branchesLabel.text = 'Branches'
+
+    @branchesTable = UITableView.alloc.initWithFrame([[0, 570], [748, 140]], style: UITableViewStyleGrouped)
     @branchesTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @branchesTable.delegate = self
     @branchesTable.dataSource = self
     @branchesTable.scrollEnabled = false
-    @branchesTable.registerClass(BranchCell, forCellReuseIdentifier: BranchCell.reuseIdentifier)
+    @branchesTable.backgroundView = nil
 
     @scrollView.addSubview(@infoTable)
+    @scrollView.addSubview(branchesLabel)
     @scrollView.addSubview(@branchesTable)
 
     self.view.addSubview(@scrollView)
@@ -119,6 +128,7 @@ class RepoController < UIViewController
     center = NSNotificationCenter.defaultCenter
 
     center.addObserver(self, selector: 'displayRepoInfo:', name: 'RepoInfoFetched', object: nil)
+    center.addObserver(self, selector: 'displayBranches:', name: 'RepoBranchesFetched', object: nil)
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -126,27 +136,36 @@ class RepoController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    if tableView == @infoTable
-      11
-    else
-      2
-    end
+    tableView == @infoTable ? 11 : @branches.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    if tableView == @infoTable
-      cellForInfoTableAtIndexPath(indexPath)
-    else
-      cellForBranchesTableAtIndexPath(indexPath)
-    end
+    tableView == @infoTable ? cellForInfoTableAtIndexPath(indexPath) : cellForBranchesTableAtIndexPath(indexPath)
   end
 
   def displayRepoInfo(notification)
     @repo = notification.object
     @infoTable.reloadData
+    @repo.fetchBranches
+  end
+
+  def displayBranches(notification)
+    puts 'displaying branches'
+    @branches = notification.object
+    @branchesTable.setFrame([[0, 570], [self.view.frame.size.width, @branches.count*44 + 100]])
+    @branchesTable.reloadData
+    adjustFrameHeight
   end
 
   private
+
+  def adjustFrameHeight
+    @scrollView.setContentSize(self.view.frame.size)
+    height = 0
+    @scrollView.subviews.each { |subview| height += subview.frame.size.height }
+
+    @scrollView.setContentSize(CGSizeMake(self.view.frame.size.width, height + 35))
+  end
 
   def cellForInfoTableAtIndexPath(indexPath)
     cell = @infoTable.dequeueReusableCellWithIdentifier(RepoInfoCell.reuseIdentifier) || begin
@@ -164,6 +183,12 @@ class RepoController < UIViewController
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
     end
 
+    branch = @branches[indexPath.row]
+    cell.textAlignment = NSTextAlignmentCenter
+    cell.textLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
+    cell.textLabel.text = branch.name
+    cell.defineAccessoryType
+    cell.backgroundColor = UIColor.whiteColor
     cell
   end
 
