@@ -7,13 +7,13 @@ GIT
 
 GIT
   remote: git@github.com:rubymotion/BubbleWrap.git
-  revision: 32a15eebfbd22bc7c80e18e43e015d187d7876d7
+  revision: 72b6f444b35c961f2a9e1784fdbee079461694fa
   specs:
     bubble-wrap (1.3.0)
 
 GIT
   remote: git@github.com:trivektor/fontawesome.git
-  revision: 83315836958ef9b9b370dbf912e18beea676c469
+  revision: f7c18d303756153f726a2c42e51daf750e3d60a1
   specs:
     motion-fontawesome (0.0.2)
       rake
