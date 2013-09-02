@@ -36,6 +36,12 @@ class RepoTreeController < UIViewController
     self
   end
 
+  def viewWillAppear(animated)
+    unless @table.nil?
+      fetchData
+    end
+  end
+
   def viewDidLoad
     super
     createBackButton
@@ -79,6 +85,21 @@ class RepoTreeController < UIViewController
     cell.node = @nodes[indexPath.row]
     cell.render
     cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    selectedNode = @nodes[indexPath.row]
+
+    if selectedNode.blob?
+
+    else
+      repoTreeController = RepoTreeController.alloc.init
+      repoTreeController.branch = @branch
+      repoTreeController.node = selectedNode
+      repoTreeController.repo = @repo
+
+      self.navigationController.pushViewController(repoTreeController, animated: true)
+    end
   end
 
   def fetchData

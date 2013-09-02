@@ -40,9 +40,9 @@ class RepoTreeNode
 
   def fetchTree
     buildHttpClient
-    AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToke) do |result|
+    AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        nodes = result.object.collect { |n| RepoTreeNode.new(n) }
+        nodes = result.object[:tree].collect { |n| RepoTreeNode.new(n) }
         'TreeFetched'.post_notification(nodes)
       else
         puts result.error.localizedDescription
