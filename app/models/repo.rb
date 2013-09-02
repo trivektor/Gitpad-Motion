@@ -74,6 +74,10 @@ class Repo
     @data[:private].to_s == 'true'
   end
 
+  def treeUrl
+    "#{fullName}/git/trees"
+  end
+
   def fetchFullInfo
     buildHttpClient
     AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToken) do |result|
@@ -88,12 +92,24 @@ class Repo
 
   def fetchBranches
     buildHttpClient
-    AFMotion::Client.shared.get("repos/#{fullName}/branches", access_token: AppHelper.getAccessToken) do |result|
+    AFMotion::Client.shared.get("/repos/#{fullName}/branches", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         branches = result.object.collect { |b| Branch.new(b) }
         'RepoBranchesFetched'.post_notification(branches)
       else
         puts "failed fetching branches"
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchTopLayerForBranch(branch)
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{treeUrl}/#{branch.name}", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        nodes = result.object[:tree].collect { |o| RepoTreeNode.new(o) }
+        'TreeFetched'.post_notification(nodes)
+      else
         puts result.error.localizedDescription
       end
     end

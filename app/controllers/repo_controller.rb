@@ -43,7 +43,7 @@ class RepoInfoCell < UITableViewCell
     when 0
       fieldValue = @repo.name
     when 1
-      fieldValue = 'Website'
+      fieldValue = @repo.homepage || 'n/a'
     when 2
       fieldValue = @repo.numWatchers.to_s
     when 3
@@ -141,6 +141,15 @@ class RepoController < UIViewController
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     tableView == @infoTable ? cellForInfoTableAtIndexPath(indexPath) : cellForBranchesTableAtIndexPath(indexPath)
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    if tableView == @branchesTable
+      repoTreeController = RepoTreeController.alloc.init
+      repoTreeController.branch = @branches[indexPath.row]
+      repoTreeController.repo = @repo
+      self.navigationController.pushViewController(repoTreeController, animated: true)
+    end
   end
 
   def displayRepoInfo(notification)
