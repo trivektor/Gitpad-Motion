@@ -10,15 +10,15 @@ class Repo
     @data[:name]
   end
 
-  def full_name
+  def fullName
     # TO BE IMPLEMENTED
   end
 
-  def forks
+  def numForks
     @data[:forks].to_i
   end
 
-  def watchers
+  def numWatchers
     @data[:watchers].to_i
   end
 
@@ -34,15 +34,15 @@ class Repo
     @data[:url]
   end
 
-  def pushed_at
+  def pushedAt
     @data[:pushed_at]
   end
 
-  def created_at
+  def createdAt
     @data[:created_at]
   end
 
-  def updated_at
+  def updatedAt
     @data[:updated_at]
   end
 
@@ -50,20 +50,20 @@ class Repo
     @data[:description]
   end
 
-  def home_page
+  def homepage
     @data[:homepage]
   end
 
-  def open_issues
+  def numOpenIssues
     @data[:open_issues].to_i
   end
 
-  def has_issues
+  def hasIssues?
     @data[:has_issues]
   end
 
   def owner
-    @data[:owner]
+    User.new(@data[:owner])
   end
 
   def forked?
@@ -72,6 +72,27 @@ class Repo
 
   def private?
     @data[:private].to_s == 'true'
+  end
+
+  def fetchFullInfo
+    buildHttpClient
+    AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        'RepoInfoFetched'.post_notification(Repo.new(result.object))
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  private
+
+  def buildHttpClient
+    @httpClient ||= AFMotion::Client.build_shared(GITHUB_API_HOST) do
+      header "Accept", "application/json"
+      parameter_encoding :json
+      operation :json
+    end
   end
 
 end

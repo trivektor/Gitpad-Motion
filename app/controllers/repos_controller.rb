@@ -100,6 +100,12 @@ class ReposController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    repoController = RepoController.alloc.init
+    repoController.repo = @repos[indexPath.row]
+    self.navigationController.pushViewController(repoController, animated: true)
+  end
+
   def displayRepos(notification)
     @repos += notification.object
     @table.reloadData
