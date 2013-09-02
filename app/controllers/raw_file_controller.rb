@@ -19,6 +19,7 @@ class RawFileController < UIViewController
   def viewDidLoad
     super
     createBackButton
+    loadHud
     performHousekeepingTasks
     fetchRawFile
   end
@@ -50,12 +51,15 @@ class RawFileController < UIViewController
       htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{theme}}', withString: THEMES.first)
                                  .stringByReplacingOccurrencesOfString('{{content}}', withString: encodeHtmlEntities(content))
       @fileWebView.loadHTMLString(htmlString, baseURL: NSBundle.mainBundle.bundlePath.nsurl)
+      hideHud
     end
   end
 
   private
 
   def fetchRawFile
+    showHud
+
     blobPaths = []
 
     self.navigationController.viewControllers.each do |controller|
