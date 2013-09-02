@@ -91,7 +91,12 @@ class RepoTreeController < UIViewController
     selectedNode = @nodes[indexPath.row]
 
     if selectedNode.blob?
+      rawFileController = RawFileController.alloc.init
+      rawFileController.repo = @repo
+      rawFileController.branch = @branch
+      rawFileController.fileName = selectedNode.path
 
+      self.navigationController.pushViewController(rawFileController, animated: true)
     else
       repoTreeController = RepoTreeController.alloc.init
       repoTreeController.branch = @branch
