@@ -34,6 +34,23 @@ class NewRepoController < Formotion::FormController
           ]
         },
         {
+          title: 'Access Control',
+          select_one: true,
+          rows: [
+            {
+              title: 'Public',
+              key: 'public',
+              type: 'check',
+              value: true
+            },
+            {
+              title: 'Private',
+              key: 'private',
+              type: 'check'
+            }
+          ]
+        },
+        {
           rows: [
             {
               title: 'Submit',
