@@ -7,6 +7,7 @@ require 'motion-cocoapods'
 require 'afmotion'
 require 'bubble-wrap'
 require 'motion-i18n'
+require 'formotion'
 
 Bundler.require
 
