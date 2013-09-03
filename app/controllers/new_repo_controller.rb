@@ -2,13 +2,13 @@ class NewRepoController < Formotion::FormController
 
   def viewDidLoad
     super
-    createBackButton
     performHousekeepingTasks
   end
 
   def performHousekeepingTasks
     self.navigationItem.title = 'New Repository'
     self.view.setBackgroundColor(UIColor.whiteColor)
+    self.view.backgroundView = nil
   end
 
   def self.form

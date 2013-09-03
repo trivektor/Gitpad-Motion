@@ -2,6 +2,7 @@
 module Formotion
   class Form < Formotion::Base
     def tableView(tableView, willDisplayCell: cell, forRowAtIndexPath: indexPath)
+      cell.backgroundColor = UIColor.clearColor
       cell.textLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
     end
   end
