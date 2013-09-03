@@ -8,6 +8,7 @@ require 'afmotion'
 require 'bubble-wrap'
 require 'motion-i18n'
 require 'formotion'
+require 'teacup'
 
 Bundler.require
 
