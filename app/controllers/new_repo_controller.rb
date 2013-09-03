@@ -20,6 +20,7 @@ class NewRepoController < Formotion::FormController
               title: 'Name',
               key: 'name',
               type: 'string',
+              placeholder: 'e.g: Rails',
               auto_correction: 'no',
               auto_capitalization: 'none'
             },
@@ -29,11 +30,6 @@ class NewRepoController < Formotion::FormController
               type: 'string',
               auto_correction: 'no',
               auto_capitalization: 'none'
-            },
-            {
-              title: 'Visibility',
-              key: 'visibility',
-              type: 'switch'
             }
           ]
         },
