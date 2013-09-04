@@ -100,6 +100,12 @@ class GistsController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    gistController = GistController.alloc.init
+    gistController.gist = @gists[indexPath.row]
+    self.navigationController.pushViewController(gistController, animated: true)
+  end
+
   def fetchGistsForPage(page)
     showHud
     @user.fetchPersonalGistsForPage(@page)

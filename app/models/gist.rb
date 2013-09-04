@@ -33,11 +33,11 @@ class Gist
   end
 
   def numFiles
-    @data[:files].to_i
+    @data[:files].keys.count
   end
 
   def numForks
-    @data[:forks].to_i
+    @data[:forks].to_a.count
   end
 
   def numComments
