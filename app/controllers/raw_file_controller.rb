@@ -56,9 +56,7 @@ class RawFileController < UIViewController
       rawFileContent = NSString.stringWithContentsOfFile(rawFilePath, encoding: NSUTF8StringEncoding, error: nil)
       content = NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
 
-      @cssFile = CSS_FILES.first
-
-      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{css_file}}', withString: @cssFile)
+      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{css_file}}', withString: @cssFile || CSS_FILES.first)
                                  .stringByReplacingOccurrencesOfString('{{content}}', withString: encodeHtmlEntities(content))
       @fileWebView.loadHTMLString(htmlString, baseURL: NSBundle.mainBundle.bundlePath.nsurl)
 
