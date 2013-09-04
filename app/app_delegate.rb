@@ -7,6 +7,10 @@ class AppDelegate
     self.window.backgroundColor = UIColor.whiteColor
     self.window.makeKeyAndVisible
 
+    UIBarButtonItem.configureFlatButtonsWithColor(UIColor.whiteColor,
+      highlightedColor: UIColor.whiteColor,
+      cornerRadius: 4);
+
     UINavigationBar.appearance.setTintColor(UIColor.whiteColor)
 
     UINavigationBar.appearance.setTitleTextAttributes({

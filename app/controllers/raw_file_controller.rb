@@ -116,10 +116,17 @@ class RawFileController < UIViewController
   end
 
   def addThemeButton
-    @switchThemeBtn = UIBarButtonItem.alloc.initWithTitle('Switch Theme',
+    @switchThemeBtn = UIBarButtonItem.alloc.initWithTitle(
+      FontAwesome.icon('expand'),
       style: UIBarButtonItemStyleBordered,
       target: self,
       action: 'switchTheme')
+
+    @switchThemeBtn.setTitleTextAttributes({
+      UITextAttributeFont => FontAwesome.fontWithSize(22),
+      UITextAttributeTextColor => UIColor.blackColor
+    }, forState: UIControlStateNormal)
+
     self.navigationItem.setRightBarButtonItem(@switchThemeBtn)
   end
 
