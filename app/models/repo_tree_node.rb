@@ -1,5 +1,7 @@
 class RepoTreeNode
 
+  include AFNetWorking
+
   attr_accessor :data
 
   def initialize(data={})
@@ -47,16 +49,6 @@ class RepoTreeNode
       else
         puts result.error.localizedDescription
       end
-    end
-  end
-
-  private
-
-  def buildHttpClient
-    @httpClient ||= AFMotion::Client.build_shared(GITHUB_API_HOST) do
-      header "Accept", "application/json"
-      parameter_encoding :json
-      operation :json
     end
   end
 

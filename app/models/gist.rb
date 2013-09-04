@@ -1,5 +1,7 @@
 class Gist
 
+  include AFNetWorking
+
   attr_accessor :data
 
   def initialize(data={})
@@ -44,6 +46,18 @@ class Gist
 
   def public?
     @data[:public].to_s == 'true'
+  end
+
+  def fetchStats
+    buildHttpClient
+    AFMotion::Client.shared.get("/gists/#{id}", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        gist = Gist.new(result.object)
+        'GistStatsFetched'.post_notification(gist)
+      else
+        puts result.error.localizedDescription
+      end
+    end
   end
 
 end
