@@ -1,13 +1,21 @@
 class RawFileController < UIViewController
 
-  attr_accessor :fileWebView, :fileName, :mimeType, :rawFileRequest, :repo, :branch
+  attr_accessor :fileWebView, :fileName, :mimeType, :rawFileRequest, :repo, :branch, :themeOptions
 
-  THEMES = [
+  CSS_FILES = [
     'prettify.css',
     'desert.css',
     'sunburst.css',
     'son-of-obsidian.css',
     'doxy.css'
+  ]
+
+  THEMES_MENU = [
+    'Default',
+    'Desert',
+    'Sunburst',
+    'Sons of Obsidian',
+    'Doxy'
   ]
 
   def initWithNibName(nibName, bundle:nibBundle)
@@ -48,11 +56,36 @@ class RawFileController < UIViewController
       rawFileContent = NSString.stringWithContentsOfFile(rawFilePath, encoding: NSUTF8StringEncoding, error: nil)
       content = NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
 
-      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{theme}}', withString: THEMES.first)
+      @cssFile = CSS_FILES.first
+
+      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{css_file}}', withString: @cssFile)
                                  .stringByReplacingOccurrencesOfString('{{content}}', withString: encodeHtmlEntities(content))
       @fileWebView.loadHTMLString(htmlString, baseURL: NSBundle.mainBundle.bundlePath.nsurl)
+
+      addThemeButton
       hideHud
     end
+  end
+
+  def actionSheet(actionSheet, clickedButtonAtIndex: buttonIndex)
+    unless buttonIndex == @themeOptions.cancelButtonIndex
+      @cssFile = CSS_FILES[buttonIndex]
+      fetchRawFile
+    end
+  end
+
+  def switchTheme
+    @themeOptions = UIActionSheet.alloc
+
+    @themeOptions.send(:'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:',
+      'Switch Theme',
+      self,
+      'Cancel',
+      nil,
+      'Default', 'Desert', 'Sunburst', 'Sons of Obsidian', 'Doxy', nil
+    )
+    @themeOptions.actionSheetStyle = UIActionSheetStyleBlackOpaque
+    @themeOptions.showInView(UIApplication.sharedApplication.keyWindow)
   end
 
   private
@@ -84,5 +117,12 @@ class RawFileController < UIViewController
              .stringByReplacingOccurrencesOfString('<', withString: '&#60;')
   end
 
+  def addThemeButton
+    @switchThemeBtn = UIBarButtonItem.alloc.initWithTitle('Switch Theme',
+      style: UIBarButtonItemStyleBordered,
+      target: self,
+      action: 'switchTheme')
+    self.navigationItem.setRightBarButtonItem(@switchThemeBtn)
+  end
 
 end
