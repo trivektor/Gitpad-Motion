@@ -56,11 +56,7 @@ class Gist
 
   def files
     return [] if @data[:files].empty?
-    @files ||= [].tap do |files|
-      files << @data[:files].each do |file_name, file_info|
-        files << GistFile.new(file_info)
-      end
-    end
+    @files ||= @data[:files].collect { |name, info| GistFile.new(info) }
   end
 
   def numFiles

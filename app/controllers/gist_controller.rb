@@ -42,7 +42,7 @@ end
 
 class GistController < UIViewController
 
-  attr_accessor :scrollView, :gist, :statsTable, :filesTable, :files
+  attr_accessor :scrollView, :gist, :statsTable, :filesTable
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
@@ -64,7 +64,7 @@ class GistController < UIViewController
     @scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @scrollView.scrollEnabled = true
 
-    @statsTable = UITableView.alloc.initWithFrame([[0, 0], [748, 550]], style: UITableViewStyleGrouped)
+    @statsTable = UITableView.alloc.initWithFrame([[0, 0], [748, 520]], style: UITableViewStyleGrouped)
     @statsTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @statsTable.delegate = self
     @statsTable.dataSource = self
@@ -72,7 +72,21 @@ class GistController < UIViewController
     @statsTable.registerClass(GistStatCell, forCellReuseIdentifier: GistStatCell.reuseIdentifier)
     @statsTable.backgroundView = nil
 
+    filesLabel = UILabel.alloc.initWithFrame([[0, 200], [1024, 20]])
+    filesLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
+    filesLabel.textAlignment = NSTextAlignmentCenter
+    filesLabel.text = 'Files'
+
+    @filesTable = UITableView.alloc.initWithFrame([[0, 220], [748, 140]], style: UITableViewStyleGrouped)
+    @filesTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    @filesTable.delegate = self
+    @filesTable.dataSource = self
+    @filesTable.scrollEnabled = false
+    @filesTable.backgroundView = nil
+
     @scrollView.addSubview(@statsTable)
+    @scrollView.addSubview(filesLabel)
+    @scrollView.addSubview(@filesTable)
 
     self.view.addSubview(@scrollView)
     self.view.setBackgroundColor(UIColor.whiteColor)
@@ -86,7 +100,12 @@ class GistController < UIViewController
 
   def displayGistStats(notification)
     @gist = notification.object
+    @files = @gist.files
     @statsTable.reloadData
+
+    @filesTable.setFrame([[0, 220], [self.view.frame.size.width, @gist.files.count*44 + 100]])
+    @filesTable.reloadData
+    adjustFrameHeight
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -94,7 +113,7 @@ class GistController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    tableView == @statsTable ? 3 : 0
+    tableView == @statsTable ? 3 : @gist.files.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -113,5 +132,28 @@ class GistController < UIViewController
   end
 
   def cellForFilesTableAtIndexPath(indexPath)
+    cell = @filesTable.dequeueReusableCellWithIdentifier('Cell') || begin
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
+    end
+
+    file = @gist.files[indexPath.row]
+    cell.textLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
+    cell.textLabel.textAlignment = NSTextAlignmentCenter
+    cell.textLabel.text = file.name
+    cell.backgroundColor = UIColor.whiteColor
+    cell.defineAccessoryType
+
+    cell
   end
+
+  private
+
+  def adjustFrameHeight
+    @scrollView.setContentSize(self.view.frame.size)
+    height = 0
+    @scrollView.subviews.each { |subview| height += subview.frame.size.height }
+
+    @scrollView.setContentSize(CGSizeMake(self.view.frame.size.width, height + 35))
+  end
+
 end
