@@ -146,6 +146,14 @@ class GistController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    if tableView == @filesTable
+      gistRawFileController = GistRawFileController.alloc.init
+      gistRawFileController.gistFile = @gist.files[indexPath.row]
+      self.navigationController.pushViewController(gistRawFileController, animated: true)
+    end
+  end
+
   private
 
   def adjustFrameHeight
