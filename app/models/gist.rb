@@ -1,3 +1,25 @@
+class GistFile
+
+  attr_accessor :data
+
+  def initialize(data={})
+    @data = data
+  end
+
+  def name
+    @data[:filename]
+  end
+
+  def rawUrl
+    @data[:raw_url]
+  end
+
+  def size
+    @data[:size]
+  end
+
+end
+
 class Gist
 
   include AFNetWorking
@@ -32,8 +54,17 @@ class Gist
     @data[:comments_url]
   end
 
+  def files
+    return [] if @data[:files].empty?
+    @files ||= [].tap do |files|
+      files << @data[:files].each do |file_name, file_info|
+        files << GistFile.new(file_info)
+      end
+    end
+  end
+
   def numFiles
-    @data[:files].keys.count
+    files.count
   end
 
   def numForks
