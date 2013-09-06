@@ -9,6 +9,7 @@ require 'bubble-wrap'
 require 'motion-i18n'
 require 'formotion'
 require 'teacup'
+require 'sugarcube'
 
 Bundler.require
 

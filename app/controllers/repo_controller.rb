@@ -129,6 +129,7 @@ class RepoController < UIViewController
 
     center.addObserver(self, selector: 'displayRepoInfo:', name: 'RepoInfoFetched', object: nil)
     center.addObserver(self, selector: 'displayBranches:', name: 'RepoBranchesFetched', object: nil)
+    center.addObserver(self, selector: 'closeMiscModal', name: 'CloseRepoMiscModal', object: nil)
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -152,8 +153,8 @@ class RepoController < UIViewController
     else
       case indexPath.row
       when 10
-        repoMiscController = RepoMiscController.alloc.init
-        self.presentSemiModalViewController(repoMiscController)
+        @repoMiscController = RepoMiscController.alloc.init
+        self.presentSemiModalViewController(@repoMiscController)
       end
     end
   end
@@ -205,6 +206,10 @@ class RepoController < UIViewController
     cell.defineAccessoryType
     cell.backgroundColor = UIColor.whiteColor
     cell
+  end
+
+  def closeMiscModal
+    self.dismissSemiModalViewController(@repoMiscController)
   end
 
 end
