@@ -49,7 +49,7 @@ class FollowController < UIViewController
     cell = tableView.dequeueReusableCellWithIdentifier('Cell') || begin
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
     end
-    
+
     user = @users[indexPath.row]
 
     cell.textLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
@@ -58,6 +58,12 @@ class FollowController < UIViewController
     cell.defineAccessoryType
 
     cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    @profileController = ProfileController.alloc.init
+    @profileController.user = @users[indexPath.row]
+    self.navigationController.pushViewController(@profileController, animated: true)
   end
 
 end
@@ -75,7 +81,7 @@ class FollowingController < FollowController
     @user.fetchFollowing(@page)
     @page += 1
   end
-  
+
   def scrollViewDidScroll(scrollView)
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
       fetchFollowing
@@ -97,7 +103,7 @@ class FollowersController < FollowController
     @user.fetchFollowers(@page)
     @page += 1
   end
-  
+
   def scrollViewDidScroll(scrollView)
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
       fetchFollowers

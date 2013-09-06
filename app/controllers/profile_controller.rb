@@ -86,6 +86,7 @@ class ProfileController < UIViewController
 
   def viewDidLoad
     super
+    createBackButton
     performHousekeepingTasks
     loadHud
     registerEvents
