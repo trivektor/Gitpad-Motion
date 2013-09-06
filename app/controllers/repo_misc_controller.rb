@@ -47,6 +47,9 @@ class RepoMiscController < TDSemiModalViewController
       iconFontSize: 26
     )
 
+    @contributorsBtn.addTarget(self, action: 'showContributors', forControlEvents: UIControlEventTouchUpInside)
+    @commitActivityBtn.addTarget(self, action: 'showCommitActivity', forControlEvents: UIControlEventTouchUpInside)
+    @punchCardBtn.addTarget(self, action: 'showPunchCard', forControlEvents: UIControlEventTouchUpInside)
     @closeBtn.addTarget(self, action: 'closeMiscModal', forControlEvents: UIControlEventTouchUpInside)
 
     @subView.addSubview(@contributorsBtn)
@@ -80,7 +83,19 @@ class RepoMiscController < TDSemiModalViewController
   end
 
   def closeMiscModal
-    NSNotificationCenter.defaultCenter.postNotificationName('CloseRepoMiscModal', object: nil);
+    'CloseRepoMiscModal'.post_notification
+  end
+
+  def showContributors
+    'ShowRepoMiscInfo'.post_notification('Contributors')
+  end
+
+  def showCommitActivity
+    'ShowRepoMiscInfo'.post_notification('CommitActivity')
+  end
+
+  def showPunchCard
+    'ShowRepoMiscInfo'.post_notification('PunchCard')
   end
 
 end

@@ -130,6 +130,7 @@ class RepoController < UIViewController
     center.addObserver(self, selector: 'displayRepoInfo:', name: 'RepoInfoFetched', object: nil)
     center.addObserver(self, selector: 'displayBranches:', name: 'RepoBranchesFetched', object: nil)
     center.addObserver(self, selector: 'closeMiscModal', name: 'CloseRepoMiscModal', object: nil)
+    center.addObserver(self, selector: 'showRepoMiscInfo:', name: 'ShowRepoMiscInfo', object: nil)
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -210,6 +211,13 @@ class RepoController < UIViewController
 
   def closeMiscModal
     self.dismissSemiModalViewController(@repoMiscController)
+  end
+
+  def showRepoMiscInfo(notification)
+    puts 'show misc info'
+    closeMiscModal
+    controller = Kernel.const_get("#{notification.object}Controller").alloc.init
+    self.navigationController.pushViewController(controller, animated: true)
   end
 
 end

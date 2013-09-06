@@ -1,0 +1,2 @@
+class PunchCardController < UIViewController
+end

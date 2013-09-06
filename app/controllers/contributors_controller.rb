@@ -1,0 +1,2 @@
+class ContributorsController < UIViewController
+end
