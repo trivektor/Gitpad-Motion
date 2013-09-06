@@ -117,4 +117,16 @@ class Repo
     end
   end
 
+  def fetchContributors
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/stats/contributors", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        contributions = result.object.collect { |o| Contribution.new(o) }
+        'ContributorsFetched'.post_notification(contributions)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
 end

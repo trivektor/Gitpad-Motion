@@ -217,6 +217,7 @@ class RepoController < UIViewController
     puts 'show misc info'
     closeMiscModal
     controller = Kernel.const_get("#{notification.object}Controller").alloc.init
+    controller.repo = @repo
     self.navigationController.pushViewController(controller, animated: true)
   end
 

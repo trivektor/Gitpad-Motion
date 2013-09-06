@@ -1,2 +1,66 @@
 class ContributorsController < UIViewController
+
+  attr_accessor :repo, :contributions
+
+  def initWithNibName(nibName, bundle: nibBundle)
+    super
+    @contributions = []
+    self
+  end
+
+  def viewDidLoad
+    super
+    createBackButton
+    performHousekeepingTasks
+    registerEvents
+    @repo.fetchContributors
+  end
+
+  def performHousekeepingTasks
+    self.navigationItem.title = 'Contributors'
+
+    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStylePlain)
+    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    @table.delegate = self
+    @table.dataSource = self
+    @table.backgroundView = nil
+
+    self.view.addSubview(@table)
+  end
+
+  def registerEvents
+    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayContributors:', name: 'ContributorsFetched', object: nil)
+  end
+
+  def displayContributors(notification)
+    @contributions = notification.object
+    @table.reloadData
+  end
+
+  def numberOfSectionsInTableView(tableView)
+    1
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @contributions.count
+  end
+
+  def tableView(tableView, cellForRowAtIndexPath: indexPath)
+    cell = @table.dequeueReusableCellWithIdentifier('Cell') || begin
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
+    end
+
+    contribution = @contributions[indexPath.row]
+    cell.textLabel.text = contribution.author.login
+    cell.textLabel.font = FontAwesome.fontWithSize(15)
+    cell.imageView.setImageWithURL(contribution.author.avatarUrl.nsurl, placeholderImage: UIImage.imageNamed(AVATAR_PLACEHOLDER))
+    cell.defineAccessoryType
+
+    cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+
+  end
+
 end
