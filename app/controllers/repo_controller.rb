@@ -149,6 +149,12 @@ class RepoController < UIViewController
       repoTreeController.branch = @branches[indexPath.row]
       repoTreeController.repo = @repo
       self.navigationController.pushViewController(repoTreeController, animated: true)
+    else
+      case indexPath.row
+      when 10
+        repoMiscController = RepoMiscController.alloc.init
+        self.presentSemiModalViewController(repoMiscController)
+      end
     end
   end
 

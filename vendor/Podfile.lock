@@ -4,6 +4,7 @@ PODS:
   - FontAwesomeIconFactory (1.2)
   - MBProgressHUD (0.7)
   - SSKeychain (1.2.0)
+  - TDSemiModal (0.0.1)
   - ViewDeck (2.2.11)
 
 DEPENDENCIES:
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - FontAwesomeIconFactory
   - MBProgressHUD
   - SSKeychain
+  - TDSemiModal
   - ViewDeck (= 2.2.11)
 
 SPEC CHECKSUMS:
@@ -20,6 +22,7 @@ SPEC CHECKSUMS:
   FontAwesomeIconFactory: 0d1f4593693d4b79a5cb20b5fedcb454b68cb970
   MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
   SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
+  TDSemiModal: eb66ea9b5d47ddf8ba15f85886f6d98a54be5196
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139
 
 COCOAPODS: 0.23.0
