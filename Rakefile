@@ -46,5 +46,6 @@ Motion::Project::App.setup do |app|
     pod 'MBProgressHUD'
     pod 'FontAwesomeIconFactory'
     pod 'FlatUIKit'
+    pod 'TDSemiModal'
   end
 end
