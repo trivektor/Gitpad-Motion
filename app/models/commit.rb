@@ -47,7 +47,7 @@ class Commit
   end
 
   def commitedAt
-    details[:date]
+    @data[:commit][:author][:date]
   end
 
 end
