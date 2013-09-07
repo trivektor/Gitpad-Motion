@@ -45,6 +45,7 @@ class RepoTreeController < UIViewController
   def viewDidLoad
     super
     createBackButton
+    createCommitsButton
     performHousekeepingTasks
     registerEvents
     fetchData
@@ -114,6 +115,25 @@ class RepoTreeController < UIViewController
   def displayTree(notification)
     @nodes = notification.object
     @table.reloadData
+  end
+
+  def showBranchCommits
+    commitsController = CommitsController.alloc.init
+    commitsController.branch = @branch
+    self.navigationController.pushViewController(commitsController, animated: true)
+  end
+
+  def createCommitsButton
+    commitBtn = UIBarButtonItem.titled(FontAwesome.icon('cloud-upload')) do
+      self.showBranchCommits
+    end
+
+    commitBtn.setTitleTextAttributes({
+      UITextAttributeFont => FontAwesome.fontWithSize(20),
+      UITextAttributeTextColor => :black.uicolor
+    }, forState: UIControlStateNormal)
+
+    self.navigationItem.setRightBarButtonItem(commitBtn)
   end
 
 end
