@@ -29,4 +29,23 @@ UIViewController.class_eval do
     self.navigationController.popViewControllerAnimated(true)
   end
 
+  def createTable(options={})
+    table = UITableView.alloc.initWithFrame(
+      options[:frame] || self.view.bounds,
+      style: options[:style] || UITableViewStylePlain
+    )
+
+    table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    table.delegate = self
+    table.dataSource = self
+    table.scrollEnabled = options[:scrollEnabled] || true
+
+    unless options[:cell].nil?
+      table.registerClass(options[:cell], forCellReuseIdentifier: options[:cell].reuseIdentifier)
+    end
+
+    table.backgroundView = nil
+    table
+  end
+
 end
