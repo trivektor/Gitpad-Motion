@@ -1,4 +1,4 @@
-class CommitActivityController < UIViewController
+class PunchCardController < UIViewController
 
   attr_accessor :repo
 
@@ -11,11 +11,11 @@ class CommitActivityController < UIViewController
     super
     createBackButton
     performHousekeepingTasks
-    renderActivities
+    renderPunchCard
   end
 
   def performHousekeepingTasks
-    self.navigationItem.title = 'Commit Activity'
+    self.navigationItem.title = 'Punch Card'
 
     @fileWebview = UIWebView.alloc.initWithFrame(self.view.bounds)
     @fileWebview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
@@ -24,11 +24,11 @@ class CommitActivityController < UIViewController
     self.view.addSubview(@fileWebview)
   end
 
-  def renderActivities
+  def renderPunchCard
     bundle = NSBundle.mainBundle
-    commitActivity = bundle.pathForResource('html/commit_activity', ofType: 'html')
+    commitActivity = bundle.pathForResource('html/punch_card', ofType: 'html')
     html = NSString.stringWithContentsOfFile(commitActivity, encoding: NSUTF8StringEncoding, error: nil)
-    html = html.stringByReplacingOccurrencesOfString('{{commit_activity_url}}', withString: @repo.commitActivityApiUrl)
+    html = html.stringByReplacingOccurrencesOfString('{{punch_card_url}}', withString: @repo.punchCardApiUrl)
     @fileWebview.loadHTMLString(html, baseURL: NSURL.fileURLWithPath(bundle.bundlePath))
   end
 

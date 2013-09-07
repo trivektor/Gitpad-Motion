@@ -146,4 +146,8 @@ class Repo
     "#{GITHUB_API_HOST}/repos/#{fullName}/stats/commit_activity?access_token=#{AppHelper.getAccessToken}"
   end
 
+  def punchCardApiUrl
+    "#{GITHUB_API_HOST}/repos/#{fullName}/stats/punch_card?access_token=#{AppHelper.getAccessToken}"
+  end
+
 end
