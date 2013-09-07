@@ -129,4 +129,21 @@ class Repo
     end
   end
 
+  def fetchCommitActivity
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/stats/commit_activity", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        puts 'fetching commit activity'
+        commit_activities = result.object.collect { |o| CommitActivity.new(o) }
+        'CommitActivityDataFetched'.post_notification(commit_activities)
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def commitActivityApiUrl
+    "#{GITHUB_API_HOST}/repos/#{fullName}/stats/commit_activity?access_token=#{AppHelper.getAccessToken}"
+  end
+
 end
