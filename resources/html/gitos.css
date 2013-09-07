@@ -1,0 +1,104 @@
+html, body {
+    width: 100%
+}
+
+input[type=text], input[type=email], textarea {
+    -webkit-appearance: none;
+}
+
+.commit-stats {
+    text-align: right;
+}
+
+.commit-stats .label {
+    margin-left: 5px
+}
+
+.label {
+    margin-left: 5px
+}
+
+table {
+    width: 100%
+}
+
+table td, table th {
+    word-wrap: break-word;
+}
+
+.avatar {
+    display: block;
+    margin-right: 10px;
+    border-radius: 3px;
+    max-width: 50px;
+}
+
+#issue-comments-table .issue-creator {
+    width: 50px;
+}
+
+#issue-comments-table .issue-creator .label {
+    display: block;
+    margin-top: 5px;
+    margin-left: 0;
+    line-height: normal;
+    text-align: center;
+}
+
+#issue-comments-table h3 {
+    font-size: 15px;
+    line-height: normal;
+    margin-bottom: 10px
+}
+
+#issue-comments-table .comment-details {
+    margin-left: 60px;
+    margin-right: 0;
+}
+
+#commit-table .avatar {
+    width: 25px;
+}
+
+#commit-overview {
+    background: #f5f5f5
+}
+
+#commit-overview h4 {
+    margin-top: 0
+}
+
+#commit-overview p {
+    margin-bottom: 0
+}
+
+#feedback-form {
+    padding: 30px
+}
+
+.commits-list {
+    width: 100%;
+    margin-top: 0
+}
+
+.commit-block {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    background: #eee;
+}
+
+#contributions .label {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+#contributions .month {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.lightgrey {
+    color: #aaa;
+}

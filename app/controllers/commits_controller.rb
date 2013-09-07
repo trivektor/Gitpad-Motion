@@ -48,6 +48,12 @@ class CommitsController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    commitController = CommitController.alloc.init
+    commitController.commit = @commits[indexPath.row]
+    self.navigationController.pushViewController(commitController, animated: true)
+  end
+
   def displayCommits(notification)
     @commits = notification.object
     @table.reloadData

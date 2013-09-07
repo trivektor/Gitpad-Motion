@@ -48,4 +48,11 @@ UIViewController.class_eval do
     table
   end
 
+  def createWebView(options={})
+    webView = UIWebView.alloc.initWithFrame(self.view.bounds)
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    webView.delegate = self
+    webView
+  end
+
 end
