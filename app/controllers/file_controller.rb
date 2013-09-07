@@ -3,11 +3,11 @@ class FileController < UIViewController
   attr_accessor :fileWebView, :themeOptions, :mimeType
 
   CSS_FILES = [
-    'prettify.css',
-    'desert.css',
-    'sunburst.css',
-    'son-of-obsidian.css',
-    'doxy.css'
+    'prettify',
+    'desert',
+    'sunburst',
+    'son-of-obsidian',
+    'doxy'
   ]
 
   THEMES_MENU = [
@@ -83,11 +83,14 @@ class FileController < UIViewController
     if image
       @fileWebView.loadRequest(@rawFileRequest)
     else
-      rawFilePath = NSBundle.mainBundle.pathForResource('html/raw_file', ofType: 'html')
+      bundle = NSBundle.mainBundle
+      rawFilePath = bundle.pathForResource('html/raw_file', ofType: 'html')
       rawFileContent = NSString.stringWithContentsOfFile(rawFilePath, encoding: NSUTF8StringEncoding, error: nil)
       content = NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
 
-      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{css_file}}', withString: @cssFile || CSS_FILES.first)
+      cssFile = bundle.pathForResource("html/prettify_themes/#{@cssFile || CSS_FILES.first}", ofType: 'css')
+
+      htmlString = rawFileContent.stringByReplacingOccurrencesOfString('{{css_file}}', withString: cssFile)
                                  .stringByReplacingOccurrencesOfString('{{content}}', withString: encodeHtmlEntities(content))
       @fileWebView.loadHTMLString(htmlString, baseURL: NSBundle.mainBundle.bundlePath.nsurl)
 
