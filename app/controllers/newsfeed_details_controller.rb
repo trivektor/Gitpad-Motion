@@ -23,18 +23,11 @@ class NewsfeedDetailsController < UIViewController
   end
 
   def loadNewsfeed
-    mainBundle = NSBundle.mainBundle
-
-    html = NSString.stringWithContentsOfFile(
-      mainBundle.pathForResource('html/newsfeed', ofType: 'html'),
-      encoding: NSASCIIStringEncoding,
-      error: nil)
-
-    contentHtml = html.stringByReplacingOccurrencesOfString('%@', withString: self.event.toHtmlString)
-
-    data = contentHtml.dataUsingEncoding(NSUTF8StringEncoding)
-    @wview.loadData(data, MIMEType: 'text/html', textEncodingName: 'utf-8', baseURL: NSURL.fileURLWithPath(mainBundle.bundlePath))
-    # @wview.loadHTMLString(contentHtml, baseUrl: )
+    bundle = NSBundle.mainBundle
+    newsfeed = bundle.pathForResource('html/newsfeed', ofType: 'html')
+    html = NSString.stringWithContentsOfFile(newsfeed, encoding: NSUTF8StringEncoding, error: nil)
+    html = html.stringByReplacingOccurrencesOfString('%@', withString: self.event.toHtmlString)
+    @wview.loadHTMLString(html, baseURL: NSURL.fileURLWithPath(bundle.bundlePath))
   end
 
   def webView(webView, shouldStartLoadWithRequest: request, navigationType: navigationType)
