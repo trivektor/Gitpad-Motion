@@ -49,7 +49,7 @@ class Commit
   end
 
   def author
-    @author ||= User.new(@data[:author])
+    @author ||= User.new(@data[:commit][:author])
   end
 
   def commitedAt
@@ -85,7 +85,7 @@ class Commit
       <span class='pull-right commit-stats'> \
       <b>#{file.totalChanges}</b> \
       <label class='label label-success'>#{file.additions} additions</label> \
-      <label class='label label-important'>#{file.deletions} deletions</label> \
+      <label class='label label-danger'>#{file.deletions} deletions</label> \
       </span> \
       </div> \
       <pre><code>#{file.patch}</code></pre> \
