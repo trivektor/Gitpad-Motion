@@ -1,7 +1,7 @@
 class Issue
 
   attr_accessor :data
-  
+
   def initialize(data={})
     @data = data
   end
@@ -48,6 +48,10 @@ class Issue
 
   def closedAt
     Time.parse(@data[:closed_at])
+  end
+
+  def createdAt
+    @data[:created_at]
   end
 
 end

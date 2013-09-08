@@ -153,6 +153,10 @@ class RepoController < UIViewController
       self.navigationController.pushViewController(repoTreeController, animated: true)
     else
       case indexPath.row
+      when 8
+        issuesController = IssuesController.alloc.init
+        issuesController.repo = @repo
+        self.navigationController.pushViewController(issuesController, animated: true)
       when 10
         @repoMiscController = RepoMiscController.alloc.init
         self.presentSemiModalViewController(@repoMiscController)

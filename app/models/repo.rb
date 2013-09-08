@@ -2,10 +2,11 @@ class Repo
 
   include AFNetWorking
 
-  attr_accessor :data, :owner
+  attr_accessor :data, :owner, :issues
 
   def initialize(data={})
     @data = data
+    @issues = []
   end
 
   def name
@@ -101,6 +102,17 @@ class Repo
       else
         puts "failed fetching branches"
         puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchIssues(page=1)
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/issues", access_token: AppHelper.getAccessToken, page: page) do |result|
+      if result.success?
+        self.issues = result.object.collect { |i| Issue.new(i) }
+        'RepoIssuesFetched'.post_notification
+      else
       end
     end
   end
