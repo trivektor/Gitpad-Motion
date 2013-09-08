@@ -59,6 +59,10 @@ class MasterControllerCell < UITableViewCell
     @textLabel.backgroundColor = UIColor.clearColor
     @textLabel.text = 'text'
 
+    selectedBackgroundView = UIView.alloc.initWithFrame(self.frame)
+    selectedBackgroundView.backgroundColor = UIColor.iOS7redColor
+    self.selectedBackgroundView = selectedBackgroundView
+
     self.contentView.addSubview(@iconLabel)
     self.contentView.addSubview(@textLabel)
   end
