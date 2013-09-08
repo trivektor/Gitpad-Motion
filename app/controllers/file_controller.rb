@@ -37,14 +37,14 @@ class FileController < UIViewController
   end
 
   def actionSheet(actionSheet, clickedButtonAtIndex: buttonIndex)
-    unless buttonIndex == @themeOptions.cancelButtonIndex
+    unless @themeOptions.buttonTitleAtIndex(buttonIndex) == 'Cancel'
       @cssFile = CSS_FILES[buttonIndex]
       fetchRawFile
     end
   end
 
   def switchTheme
-    @themeOptions = UIActionSheet.alloc
+    @themeOptions = IBActionSheet.alloc
 
     @themeOptions.send(:'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:',
       'Switch Theme',
@@ -53,8 +53,12 @@ class FileController < UIViewController
       nil,
       'Default', 'Desert', 'Sunburst', 'Sons of Obsidian', 'Doxy', nil
     )
-    @themeOptions.actionSheetStyle = UIActionSheetStyleBlackOpaque
-    @themeOptions.showInView(UIApplication.sharedApplication.keyWindow)
+
+    @themeOptions.setFont(UIFont.fontWithName('Roboto-Light', size: 15))
+    @themeOptions.setTitleFont(UIFont.fontWithName('Roboto-Bold', size: 17))
+    @themeOptions.setTitleTextColor(UIColor.iOS7redColor)
+    @themeOptions.showInView(self.navigationController.view)
+    @themeOptions.rotateToCurrentOrientation
   end
 
   def encodeHtmlEntities(rawString)
