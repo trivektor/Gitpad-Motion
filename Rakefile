@@ -48,5 +48,8 @@ Motion::Project::App.setup do |app|
     pod 'FontAwesomeIconFactory'
     pod 'FlatUIKit'
     pod 'TDSemiModal'
+    pod 'iOS7Colors', '~> 2.0.0'
   end
+
+  app.vendor_project('vendor/IBActionSheet', :static, :cflags => '-fobjc-arc')
 end
