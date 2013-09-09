@@ -2,11 +2,13 @@ class Repo
 
   include AFNetWorking
 
-  attr_accessor :data, :owner, :issues
+  attr_accessor :data, :owner, :issues, :branches, :contributors
 
   def initialize(data={})
     @data = data
     @issues = []
+    @branches = []
+    @contributors = []
   end
 
   def name
@@ -97,8 +99,8 @@ class Repo
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/branches", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        branches = result.object.collect { |b| Branch.new(b) }
-        'RepoBranchesFetched'.post_notification(branches)
+        self.branches = result.object.collect { |b| Branch.new(b) }
+        'RepoBranchesFetched'.post_notification
       else
         puts "failed fetching branches"
         puts result.error.localizedDescription
@@ -133,21 +135,8 @@ class Repo
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/stats/contributors", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        contributions = result.object.collect { |o| Contribution.new(o) }
-        'ContributorsFetched'.post_notification(contributions)
-      else
-        puts result.error.localizedDescription
-      end
-    end
-  end
-
-  def fetchCommitActivity
-    buildHttpClient
-    AFMotion::Client.shared.get("/repos/#{fullName}/stats/commit_activity", access_token: AppHelper.getAccessToken) do |result|
-      if result.success?
-        puts 'fetching commit activity'
-        commit_activities = result.object.collect { |o| CommitActivity.new(o) }
-        'CommitActivityDataFetched'.post_notification(commit_activities)
+        self.contributors = result.object.collect { |o| Contribution.new(o) }
+        'ContributorsFetched'.post_notification
       else
         puts result.error.localizedDescription
       end

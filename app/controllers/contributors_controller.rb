@@ -29,11 +29,10 @@ class ContributorsController < UIViewController
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayContributors:', name: 'ContributorsFetched', object: nil)
+    'ContributorsFetched'.add_observer(self, 'displayContributors')
   end
 
-  def displayContributors(notification)
-    @contributions = notification.object
+  def displayContributors
     @table.reloadData
   end
 
@@ -42,7 +41,7 @@ class ContributorsController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @contributions.count
+    @repo.contributors.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -50,7 +49,7 @@ class ContributorsController < UIViewController
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
     end
 
-    contribution = @contributions[indexPath.row]
+    contribution = @repo.contributors[indexPath.row]
     cell.textLabel.text = contribution.author.login
     cell.textLabel.font = FontAwesome.fontWithSize(15)
     cell.imageView.setImageWithURL(contribution.author.avatarUrl.nsurl, placeholderImage: UIImage.imageNamed(AVATAR_PLACEHOLDER))

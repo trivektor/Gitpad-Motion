@@ -73,11 +73,10 @@ end
 
 class RepoController < UIViewController
 
-  attr_accessor :repo, :scrollView, :infoTable, :branchesTable, :branches
+  attr_accessor :repo, :scrollView, :infoTable, :branchesTable
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
-    @branches = []
     self
   end
 
@@ -125,12 +124,10 @@ class RepoController < UIViewController
   end
 
   def registerEvents
-    center = NSNotificationCenter.defaultCenter
-
-    center.addObserver(self, selector: 'displayRepoInfo:', name: 'RepoInfoFetched', object: nil)
-    center.addObserver(self, selector: 'displayBranches:', name: 'RepoBranchesFetched', object: nil)
-    center.addObserver(self, selector: 'closeMiscModal', name: 'CloseRepoMiscModal', object: nil)
-    center.addObserver(self, selector: 'showRepoMiscInfo:', name: 'ShowRepoMiscInfo', object: nil)
+    'RepoInfoFetched'.add_observer(self, 'displayRepoInfo:')
+    'RepoBranchesFetched'.add_observer(self, 'displayBranches:')
+    'CloseRepoMiscModal'.add_observer(self, 'closeMiscModal')
+    'ShowRepoMiscInfo'.add_observer(self, 'showRepoMiscInfo:')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -138,7 +135,7 @@ class RepoController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    tableView == @infoTable ? 11 : @branches.count
+    tableView == @infoTable ? 11 : @repo.branches.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -148,7 +145,7 @@ class RepoController < UIViewController
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     if tableView == @branchesTable
       repoTreeController = RepoTreeController.alloc.init
-      repoTreeController.branch = @branches[indexPath.row]
+      repoTreeController.branch = @repo.branches[indexPath.row]
       repoTreeController.repo = @repo
       self.navigationController.pushViewController(repoTreeController, animated: true)
     else
@@ -171,9 +168,7 @@ class RepoController < UIViewController
   end
 
   def displayBranches(notification)
-    puts 'displaying branches'
-    @branches = notification.object
-    @branchesTable.setFrame([[0, 570], [self.view.frame.size.width, @branches.count*44 + 100]])
+    @branchesTable.setFrame([[0, 570], [self.view.frame.size.width, @repo.branches.count*44 + 100]])
     @branchesTable.reloadData
     adjustFrameHeight
   end
@@ -204,7 +199,7 @@ class RepoController < UIViewController
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
     end
 
-    branch = @branches[indexPath.row]
+    branch = @repo.branches[indexPath.row]
     cell.textAlignment = NSTextAlignmentCenter
     cell.textLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
     cell.textLabel.text = branch.name
