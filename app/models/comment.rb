@@ -1,13 +1,13 @@
 class Comment
 
-  attr_accessor :data
+  attr_accessor :data, :user
 
   def initialize(data={})
     @data = data
   end
 
   def user
-    User.new(@data[:user])
+    @user ||= User.new(@data[:user])
   end
 
   def body
@@ -20,6 +20,24 @@ class Comment
 
   def updatedAt
     @data[:updated_at]
+  end
+
+  def toHtmlString
+    "<tr>
+      <td>
+        <img src='#{user.avatarUrl}' class='avatar pull-left' />
+          <div class='comment-details'>
+            <b>#{user.login}</b>
+            <span class='lightgrey'>commented #{createdAt}</span>
+            <p>#{encodeHtmlEntities(body)}</p>
+          </div>
+      </td>
+    </tr>"
+  end
+
+  def encodeHtmlEntities(rawString)
+    rawString.stringByReplacingOccurrencesOfString('>', withString: '&#62;')
+             .stringByReplacingOccurrencesOfString('<', withString: '&#60;')
   end
 
 end

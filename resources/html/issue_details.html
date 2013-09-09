@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' />
+    <link rel='stylesheet' href='{{css_file}}' />
+  </head>
+  <body>
+    <table class='table' id='issue-comments-table'>
+      <tr>
+        <td>
+          <aside class='issue-creator pull-left'>
+            <img src='{{avatar}}' class='avatar' />
+            <span class='label'>{{state}}</span>
+          </aside>
+          <div class='comment-details'>
+            <b>{{login}}</b>
+            <span class='lightgrey'>opened this {{created_at}}</span>
+            <h3>{{title}}</h3>
+            <p>{{body}}</p>
+          </div>
+        </td>
+      </tr>
+      {{comments}}
+    </table>
+  </body>
+</html>

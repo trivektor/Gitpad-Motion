@@ -43,6 +43,12 @@ class IssuesController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    issueController = IssueController.alloc.init
+    issueController.issue = @repo.issues[indexPath.row]
+    self.navigationController.pushViewController(issueController, animated: true)
+  end
+
   def displayIssues(notification)
     @table.reloadData
   end

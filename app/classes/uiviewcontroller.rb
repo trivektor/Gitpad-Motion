@@ -55,4 +55,9 @@ UIViewController.class_eval do
     webView
   end
 
+  def encodeHtmlEntities(rawString)
+    rawString.stringByReplacingOccurrencesOfString('>', withString: '&#62;')
+             .stringByReplacingOccurrencesOfString('<', withString: '&#60;')
+  end
+
 end

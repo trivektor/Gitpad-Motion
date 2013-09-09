@@ -1,9 +1,12 @@
 class Issue
 
-  attr_accessor :data
+  include AFNetWorking
+
+  attr_accessor :data, :comments, :user
 
   def initialize(data={})
     @data = data
+    @comments = []
   end
 
   def labelsUrl
@@ -27,7 +30,7 @@ class Issue
   end
 
   def user
-    User.new(@data[:user])
+    @user ||= User.new(@data[:user])
   end
 
   def state
@@ -52,6 +55,22 @@ class Issue
 
   def createdAt
     @data[:created_at]
+  end
+
+  def fetchComments
+    buildHttpClient
+    AFMotion::Client.shared.get(commentsUrl, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        self.comments = result.object.collect { |o| Comment.new(o) }
+        'IssueCommentsFetch'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def commentsHtmlString
+    self.comments.collect { |comment| comment.toHtmlString }.join('')
   end
 
 end

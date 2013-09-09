@@ -61,11 +61,6 @@ class FileController < UIViewController
     @themeOptions.rotateToCurrentOrientation
   end
 
-  def encodeHtmlEntities(rawString)
-    rawString.stringByReplacingOccurrencesOfString('>', withString: '&#62;')
-             .stringByReplacingOccurrencesOfString('<', withString: '&#60;')
-  end
-
   def addThemeButton
     @switchThemeBtn = UIBarButtonItem.alloc.initWithTitle(
       FontAwesome.icon('expand'),
