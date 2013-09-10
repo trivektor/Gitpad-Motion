@@ -9,16 +9,15 @@ class NewsfeedDetailsController < UIViewController
 
   def viewDidLoad
     super
-    self.navigationItem.title = 'Details'
+    createBackButton
     performHousekeepingTasks
     loadNewsfeed
   end
 
   def performHousekeepingTasks
-    createBackButton
-    @wview = UIWebView.alloc.initWithFrame(self.view.bounds)
-    @wview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @wview.delegate = self
+    self.navigationItem.title = 'Details'
+
+    @wview = createWebView
     self.view.addSubview(@wview)
   end
 

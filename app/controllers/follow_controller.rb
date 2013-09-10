@@ -18,16 +18,11 @@ class FollowController < UIViewController
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayFollowUsers:', name: 'FollowUsersFetched', object: nil)
+    'FollowUsersFetched'.add_observer(self, 'displayFollowUsers:')
   end
 
   def performHouseKeepingTasks
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.scrollEnabled = true
-
+    @table = createTable
     self.view.addSubview(@table)
   end
 

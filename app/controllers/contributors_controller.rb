@@ -19,12 +19,7 @@ class ContributorsController < UIViewController
   def performHousekeepingTasks
     self.navigationItem.title = 'Contributors'
 
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.backgroundView = nil
-
+    @table = createTable
     self.view.addSubview(@table)
   end
 

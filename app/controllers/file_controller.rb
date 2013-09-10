@@ -25,10 +25,7 @@ class FileController < UIViewController
   end
 
   def performHousekeepingTasks
-    @fileWebView = UIWebView.alloc.initWithFrame(self.view.bounds)
-    @fileWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @fileWebView.delegate = self
-
+    @fileWebView = self.createWebView
     self.view.addSubview(@fileWebView)
   end
 

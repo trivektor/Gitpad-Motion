@@ -16,11 +16,7 @@ class CommitActivityController < UIViewController
 
   def performHousekeepingTasks
     self.navigationItem.title = 'Commit Activity'
-
-    @fileWebview = UIWebView.alloc.initWithFrame(self.view.bounds)
-    @fileWebview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @fileWebview.delegate = self
-
+    @fileWebview = createWebView
     self.view.addSubview(@fileWebview)
   end
 

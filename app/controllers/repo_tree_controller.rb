@@ -54,20 +54,15 @@ class RepoTreeController < UIViewController
   def performHousekeepingTasks
     self.navigationItem.title = node.nil? ? @branch.name : @node.path
 
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.scrollEnabled = true
+    @table = createTable
     @table.registerClass(RepoTreeCell, forCellReuseIdentifier: RepoTreeCell.reuseIdentifier)
-    @table.backgroundView = nil
 
     self.view.addSubview(@table)
     self.view.setBackgroundColor(UIColor.whiteColor)
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayTree:', name: 'TreeFetched', object: nil)
+    'TreeFetched'.add_observer(self, 'displayTree:')
   end
 
   def numberOfSectionsInTableView(tableView)

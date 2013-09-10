@@ -62,18 +62,14 @@ class GistsController < UIViewController
   def performHousekeepingTasks
     self.navigationItem.title = 'Gists'
 
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style:UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.scrollEnabled = true
+    @table = createTable
     @table.registerClass(GistCell, forCellReuseIdentifier:GistCell.reuseIdentifier)
 
     self.view.addSubview(@table)
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayGists:', name: 'GistsFetched', object: nil)
+    'GistsFetched'.add_observer(self, 'displayGists:')
   end
 
   def numberOfSectionsInTableView(tableView)

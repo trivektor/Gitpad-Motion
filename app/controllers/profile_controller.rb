@@ -94,20 +94,15 @@ class ProfileController < UIViewController
   end
 
   def performHousekeepingTasks
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStyleGrouped)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.scrollEnabled = false
+    @table = createTable(scrollEnabled: false, style: UITableViewStyleGrouped)
     @table.registerClass(ProfileCell, forCellReuseIdentifier: ProfileCell.reuseIdentifier)
-    @table.backgroundView = nil
 
     self.view.addSubview(@table)
     self.view.setBackgroundColor(UIColor.whiteColor)
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayProfileInfo:', name: 'ProfileInfoFetched', object: nil)
+    'ProfileInfoFetched'.add_observer(self, 'displayProfileInfo:')
   end
 
   def numberOfSectionsInTableView(tableView)

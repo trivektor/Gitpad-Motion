@@ -56,18 +56,14 @@ class ReposController < UIViewController
   end
 
   def performHousekeepingTasks
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStylePlain)
-    @table.delegate = self
-    @table.dataSource = self
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.scrollEnabled = true
+    @table = createTable
     @table.registerClass(RepoCell, forCellReuseIdentifier: RepoCell.reuseIdentifier)
 
     self.view.addSubview(@table)
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayRepos:', name: 'ReposFetched', object: nil)
+    'ReposFetched'.add_observer(self, 'displayRepos:')
   end
 
   def viewDidLoad

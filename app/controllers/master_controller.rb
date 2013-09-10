@@ -147,7 +147,8 @@ class MasterController < UIViewController
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector:'toggleViewDeck', name:'ToggleViewDeck', object:nil)
+    'ToggleViewDeck'.add_observer(self, 'toggleViewDeck')
+    'CloseViewDeck'.add_observer(self, 'closeViewDeck')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -261,6 +262,10 @@ class MasterController < UIViewController
 
   def toggleViewDeck
     # TO BE IMPLEMENTED
+  end
+
+  def closeViewDeck
+    self.viewDeckController.closeLeftViewAnimated(true, completion: nil)
   end
 
   def navigateToSelectedController(selectedController)

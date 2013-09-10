@@ -17,10 +17,7 @@ class PunchCardController < UIViewController
   def performHousekeepingTasks
     self.navigationItem.title = 'Punch Card'
 
-    @fileWebview = UIWebView.alloc.initWithFrame(self.view.bounds)
-    @fileWebview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @fileWebview.delegate = self
-
+    @fileWebview = createWebView
     self.view.addSubview(@fileWebview)
   end
 

@@ -7,6 +7,7 @@ class CommitController < UIViewController
     createBackButton
     performHousekeepingTasks
     registerEvents
+    @commit.fetchDetails
   end
 
   def performHousekeepingTasks
@@ -14,7 +15,6 @@ class CommitController < UIViewController
 
     @fileWebView = createWebView
     self.view.addSubview(@fileWebView)
-    @commit.fetchDetails
   end
 
   def registerEvents

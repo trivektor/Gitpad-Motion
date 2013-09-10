@@ -26,7 +26,7 @@ class NewsfeedCell < UITableViewCell
     @iconLabel.text = @event ? FontAwesome.icon(@event.icon) : ''
     @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
     @descriptionLabel.text = @event.createdAt
-    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+    self.defineAccessoryType
   end
 
 end
@@ -52,18 +52,13 @@ class NewsfeedController < UIViewController
   end
 
   def performHousekeepingTasks
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style:UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
-    @table.scrollEnabled = true
-    @table.registerClass(NewsfeedCell, forCellReuseIdentifier:NewsfeedCell.reuseIdentifier)
-
+    @table = createTable
+    @table.registerClass(NewsfeedCell, forCellReuseIdentifier: NewsfeedCell.reuseIdentifier)
     self.view.addSubview(@table)
   end
 
   def registerEvents
-    NSNotificationCenter.defaultCenter.addObserver(self, selector: 'displayUserNewsfeed:', name: 'NewsFeedFetched', object: nil)
+    'NewsFeedFetched'.add_observer(self, 'displayUserNewsfeed:')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -79,10 +74,8 @@ class NewsfeedController < UIViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    cell = @table.dequeueReusableCellWithIdentifier(NewsfeedCell.reuseIdentifier)
-
-    if !cell
-      cell = NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
+    cell = @table.dequeueReusableCellWithIdentifier(NewsfeedCell.reuseIdentifier) || begin
+      NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
     end
 
     cell.event = @events[indexPath.row]
@@ -91,6 +84,7 @@ class NewsfeedController < UIViewController
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    'CloseViewDeck'.post_notification
     detailsController = NewsfeedDetailsController.alloc.init
     detailsController.event = @events[indexPath.row]
     self.navigationController.pushViewController(detailsController, animated: true)
