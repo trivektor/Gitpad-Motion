@@ -47,10 +47,10 @@ class RepoMiscController < TDSemiModalViewController
       iconFontSize: 26
     )
 
-    @contributorsBtn.addTarget(self, action: 'showContributors', forControlEvents: UIControlEventTouchUpInside)
-    @commitActivityBtn.addTarget(self, action: 'showCommitActivity', forControlEvents: UIControlEventTouchUpInside)
-    @punchCardBtn.addTarget(self, action: 'showPunchCard', forControlEvents: UIControlEventTouchUpInside)
-    @closeBtn.addTarget(self, action: 'closeMiscModal', forControlEvents: UIControlEventTouchUpInside)
+    @contributorsBtn.when(UIControlEventTouchUpInside) { self.showContributors }
+    @commitActivityBtn.when(UIControlEventTouchUpInside) { self.showCommitActivity }
+    @punchCardBtn.when(UIControlEventTouchUpInside) { self.showPunchCard }
+    @closeBtn.when(UIControlEventTouchUpInside) { self.closeMiscModal }
 
     @subView.addSubview(@contributorsBtn)
     @subView.addSubview(@commitActivityBtn)
