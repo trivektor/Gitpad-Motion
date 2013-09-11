@@ -55,6 +55,8 @@ Motion::Project::App.setup do |app|
     pod 'FlatUIKit'
     pod 'TDSemiModal'
     pod 'iOS7Colors', '~> 2.0.0'
+    pod 'NSData+Base64'
+    pod 'MMMarkdown'
   end
 
   app.vendor_project('vendor/IBActionSheet', :static, :cflags => '-fobjc-arc')

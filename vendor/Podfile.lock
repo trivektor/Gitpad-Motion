@@ -4,6 +4,8 @@ PODS:
   - FontAwesomeIconFactory (1.2)
   - iOS7Colors (2.0.0)
   - MBProgressHUD (0.7)
+  - MMMarkdown (0.2.3)
+  - NSData+Base64 (1.0.0)
   - SSKeychain (1.2.0)
   - TDSemiModal (0.0.1)
   - ViewDeck (2.2.11)
@@ -14,6 +16,8 @@ DEPENDENCIES:
   - FontAwesomeIconFactory
   - iOS7Colors (~> 2.0.0)
   - MBProgressHUD
+  - MMMarkdown
+  - NSData+Base64
   - SSKeychain
   - TDSemiModal
   - ViewDeck (= 2.2.11)
@@ -24,6 +28,8 @@ SPEC CHECKSUMS:
   FontAwesomeIconFactory: 0d1f4593693d4b79a5cb20b5fedcb454b68cb970
   iOS7Colors: 80d700ca0fe4415eeea1cfb74d4d790ffa0375ab
   MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
+  MMMarkdown: 1775ba63d27e999aedecf75f58153243e1778ea0
+  NSData+Base64: 36c4e5b6479259c1a68866ccd2a8dd385c9744f7
   SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
   TDSemiModal: eb66ea9b5d47ddf8ba15f85886f6d98a54be5196
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139

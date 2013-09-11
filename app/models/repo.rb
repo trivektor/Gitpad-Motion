@@ -2,7 +2,7 @@ class Repo
 
   include AFNetWorking
 
-  attr_accessor :data, :owner, :issues, :branches, :contributors
+  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme
 
   def initialize(data={})
     @data = data
@@ -140,6 +140,14 @@ class Repo
       else
         puts result.error.localizedDescription
       end
+    end
+  end
+
+  def fetchReadme
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/readme", access_token: AppHelper.getAccessToken) do |result|
+      self.readme = result.success? ? Readme.new(result.object) : Readme.new
+      'RepoReadmeFetched'.post_notification
     end
   end
 

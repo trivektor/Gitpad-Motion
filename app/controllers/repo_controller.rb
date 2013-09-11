@@ -154,6 +154,10 @@ class RepoController < UIViewController
         issuesController = IssuesController.alloc.init
         issuesController.repo = @repo
         self.navigationController.pushViewController(issuesController, animated: true)
+      when 9
+        readmeController = ReadmeController.alloc.init
+        readmeController.repo = @repo
+        self.navigationController.pushViewController(readmeController, animated: true)
       when 10
         @repoMiscController = RepoMiscController.alloc.init
         self.presentSemiModalViewController(@repoMiscController)
