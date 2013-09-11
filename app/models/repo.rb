@@ -2,13 +2,14 @@ class Repo
 
   include AFNetWorking
 
-  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme
+  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages
 
   def initialize(data={})
     @data = data
     @issues = []
     @branches = []
     @contributors = []
+    @languages = []
   end
 
   def name
@@ -99,7 +100,7 @@ class Repo
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/branches", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        self.branches = result.object.collect { |b| Branch.new(b) }
+        @branches = result.object.collect { |b| Branch.new(b) }
         'RepoBranchesFetched'.post_notification
       else
         puts "failed fetching branches"
@@ -112,7 +113,7 @@ class Repo
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/issues", access_token: AppHelper.getAccessToken, page: page) do |result|
       if result.success?
-        self.issues = result.object.collect { |i| Issue.new(i) }
+        @issues = result.object.collect { |i| Issue.new(i) }
         'RepoIssuesFetched'.post_notification
       else
       end
@@ -135,7 +136,7 @@ class Repo
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/stats/contributors", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        self.contributors = result.object.collect { |o| Contribution.new(o) }
+        @contributors = result.object.collect { |o| Contribution.new(o) }
         'ContributorsFetched'.post_notification
       else
         puts result.error.localizedDescription
@@ -148,6 +149,19 @@ class Repo
     AFMotion::Client.shared.get("/repos/#{fullName}/readme", access_token: AppHelper.getAccessToken) do |result|
       self.readme = result.success? ? Readme.new(result.object) : Readme.new
       'RepoReadmeFetched'.post_notification
+    end
+  end
+
+  def fetchLanguages
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/languages", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        total = result.object.values.inject(:+)
+        result.object.each { |k, v| @languages << {name: k, percentage: (v*100.0/total).round(2)} }
+        'RepoLanguagesFetched'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
     end
   end
 

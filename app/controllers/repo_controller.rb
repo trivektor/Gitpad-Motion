@@ -150,6 +150,14 @@ class RepoController < UIViewController
       self.navigationController.pushViewController(repoTreeController, animated: true)
     else
       case indexPath.row
+      when 4
+        languagesController = LanguagesController.alloc.init
+        languagesController.repo = @repo
+        self.navigationController.pushViewController(languagesController, animated: true)
+      when 7
+        profileController = ProfileController.alloc.init
+        profileController.user = @repo.owner
+        self.navigationController.pushViewController(profileController, animated: true)
       when 8
         issuesController = IssuesController.alloc.init
         issuesController.repo = @repo
