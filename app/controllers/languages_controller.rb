@@ -37,11 +37,27 @@ class LanguagesController < UIViewController
     language = @repo.languages[indexPath.row]
     cell.textLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
     cell.textLabel.text = "#{language[:name]} (#{language[:percentage]}%)"
+    cell.selectionStyle = UITableViewCellSelectionStyleNone
     cell
   end
 
   def displayLanguages
     @table.reloadData
+    createPieChartButton
+  end
+
+  def createPieChartButton
+    pieChartBtn = createFontAwesomeButton(
+      icon: 'bar-chart',
+      touchHandler: 'showPieChart'
+    )
+    self.navigationItem.setRightBarButtonItem(pieChartBtn)
+  end
+
+  def showPieChart
+    pieChartLanguagesController = LanguagesPieChartController.alloc.init
+    pieChartLanguagesController.distributions = @repo.languages
+    self.navigationController.pushViewController(pieChartLanguagesController, animated: true)
   end
 
 end

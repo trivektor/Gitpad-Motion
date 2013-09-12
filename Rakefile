@@ -57,6 +57,7 @@ Motion::Project::App.setup do |app|
     pod 'iOS7Colors', '~> 2.0.0'
     pod 'NSData+Base64'
     pod 'MMMarkdown'
+    pod 'XYPieChart'
   end
 
   app.vendor_project('vendor/IBActionSheet', :static, :cflags => '-fobjc-arc')

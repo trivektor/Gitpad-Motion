@@ -119,15 +119,10 @@ class RepoTreeController < UIViewController
   end
 
   def createCommitsButton
-    commitBtn = UIBarButtonItem.titled(FontAwesome.icon('cloud-upload')) do
-      self.showBranchCommits
-    end
-
-    commitBtn.setTitleTextAttributes({
-      UITextAttributeFont => FontAwesome.fontWithSize(20),
-      UITextAttributeTextColor => :black.uicolor
-    }, forState: UIControlStateNormal)
-
+    commitBtn = createFontAwesomeButton(
+      icon: 'cloud-upload',
+      touchHandler: 'showBranchCommits'
+    )
     self.navigationItem.setRightBarButtonItem(commitBtn)
   end
 

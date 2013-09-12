@@ -60,4 +60,15 @@ UIViewController.class_eval do
              .stringByReplacingOccurrencesOfString('<', withString: '&#60;')
   end
 
+  def createFontAwesomeButton(options={})
+    btn = UIBarButtonItem.titled(FontAwesome.icon(options[:icon])) do
+      self.send(options[:touchHandler])
+    end
+
+    btn.setTitleTextAttributes({
+      UITextAttributeFont => FontAwesome.fontWithSize(options[:size] || 20),
+      UITextAttributeTextColor => (options[:color] || :black).uicolor
+    }, forState: UIControlStateNormal)
+  end
+
 end

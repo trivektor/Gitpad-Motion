@@ -157,6 +157,7 @@ class Repo
     AFMotion::Client.shared.get("/repos/#{fullName}/languages", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         total = result.object.values.inject(:+)
+        @languages.clear
         result.object.each { |k, v| @languages << {name: k, percentage: (v*100.0/total).round(2)} }
         'RepoLanguagesFetched'.post_notification
       else
