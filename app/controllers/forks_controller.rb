@@ -41,6 +41,12 @@ class ForksController < UIViewController
     cell
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    repoController = RepoController.alloc.init
+    repoController.repo = @repo.forks[indexPath.row]
+    self.navigationController.pushViewController(repoController, animated: true)
+  end
+
   def displayForks
     @table.reloadData
   end
