@@ -248,6 +248,9 @@ class MasterController < UIViewController
         personalGistsController = GistsController.alloc.init
         personalGistsController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(personalGistsController)
+      when 1
+        searchController = SearchController.alloc.init
+        selectedController = UINavigationController.alloc.initWithRootViewController(searchController)
       end
     end
 
