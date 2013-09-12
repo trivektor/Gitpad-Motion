@@ -150,6 +150,10 @@ class RepoController < UIViewController
       self.navigationController.pushViewController(repoTreeController, animated: true)
     else
       case indexPath.row
+      when 3
+        forksController = ForksController.alloc.init
+        forksController.repo = @repo
+        self.navigationController.pushViewController(forksController, animated: true)
       when 4
         languagesController = LanguagesController.alloc.init
         languagesController.repo = @repo

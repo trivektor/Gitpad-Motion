@@ -2,7 +2,7 @@ class Repo
 
   include AFNetWorking
 
-  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages
+  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages, :forks
 
   def initialize(data={})
     @data = data
@@ -10,6 +10,7 @@ class Repo
     @branches = []
     @contributors = []
     @languages = []
+    @forks = []
   end
 
   def name
@@ -17,7 +18,7 @@ class Repo
   end
 
   def fullName
-    "#{owner.login}/#{name}"
+    @data[:full_name]
   end
 
   def numForks
@@ -104,6 +105,18 @@ class Repo
         'RepoBranchesFetched'.post_notification
       else
         puts "failed fetching branches"
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchForks(page=1)
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/forks", access_token: AppHelper.getAccessToken, page: page) do |result|
+      if result.success?
+        @forks = result.object.collect { |o| Repo.new(o) }
+        'RepoForksFetched'.post_notification
+      else
         puts result.error.localizedDescription
       end
     end

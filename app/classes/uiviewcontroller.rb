@@ -26,6 +26,7 @@ UIViewController.class_eval do
   end
 
   def popBack
+    'CloseViewDeck'.post_notification
     self.navigationController.popViewControllerAnimated(true)
   end
 
