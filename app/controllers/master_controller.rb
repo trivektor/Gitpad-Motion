@@ -251,6 +251,10 @@ class MasterController < UIViewController
       when 1
         searchController = SearchController.alloc.init
         selectedController = UINavigationController.alloc.initWithRootViewController(searchController)
+      when 2
+        notificationsController = NotificationsController.alloc.init
+        notificationsController.user = CurrentUserManager.sharedInstance
+        selectedController = UINavigationController.alloc.initWithRootViewController(notificationsController)
       end
     end
 
