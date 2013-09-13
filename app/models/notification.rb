@@ -34,4 +34,8 @@ class Notification
     @data[:last_read_at]
   end
 
+  def read?
+    !lastReadAt.nil?
+  end
+
 end

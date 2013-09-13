@@ -157,7 +157,7 @@ class User
 
   def fetchNotifications(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get('/notifications', page: page, access_token: AppHelper.getAccessToken) do |result|
+    AFMotion::Client.shared.get('/notifications', page: page, access_token: AppHelper.getAccessToken, all: true) do |result|
       if result.success?
         @notifications = result.object.collect { |o| Notification.new(o) }
         'UserNotificationsFetched'.post_notification
