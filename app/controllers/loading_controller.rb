@@ -15,16 +15,15 @@ class LoadingController < UIViewController
   end
 
   def registerEvents
-    @center = NSNotificationCenter.defaultCenter
-    @center.addObserver(self, selector:'enterMainStage:', name:'AuthenticatedUserFetched', object:nil)
+    'AuthenticatedUserFetched'.add_observer(self, 'enterMainStage:')
   end
 
   def enterMainStage(notification)
     puts 'entering main stage'
     currentUser = notification.object
     CurrentUserManager.initWithUser(currentUser)
-    SSKeychain.setPassword(currentUser.login, forService:'username', account:APP_KEYCHAIN_ACCOUNT)
-    AppInitialization.run(self.view.window, withUser:currentUser)
+    SSKeychain.setPassword(currentUser.login, forService: 'username', account: APP_KEYCHAIN_ACCOUNT)
+    AppInitialization.run(self.view.window, withUser: currentUser)
   end
 
 end

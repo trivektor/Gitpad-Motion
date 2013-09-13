@@ -38,9 +38,8 @@ class LoginController < UIViewController
   end
 
   def registerEvents
-    @center = NSNotificationCenter.defaultCenter
-    @center.addObserver(self, selector:'authenticate', name:'ExistingAuthorizationsDeleted', object:nil)
-    @center.addObserver(self, selector:'fetchUser', name:'UserAutheticated', object:nil)
+    'ExistingAuthorizationsDeleted'.add_observer(self, 'authenticate')
+    'UserAutheticated'.add_observer(self, 'fetchUser')
   end
 
   def authenticate
@@ -50,7 +49,7 @@ class LoginController < UIViewController
 
     puts "authenticating"
 
-    AFMotion::Client.shared.post("/authorizations") do |result|
+    AFMotion::Client.shared.post('/authorizations', scopes: OAUTH_PARAMS[:scopes], note: 'Gitpad Motion auth') do |result|
       if result.success?
         puts "authorization created successfully"
 
@@ -58,7 +57,7 @@ class LoginController < UIViewController
         puts authorization.token
         SSKeychain.deletePasswordForService('access_token', account:APP_KEYCHAIN_ACCOUNT)
         SSKeychain.setPassword(authorization.token, forService:'access_token', account:APP_KEYCHAIN_ACCOUNT)
-        @center.postNotificationName('UserAutheticated', object:nil)
+        'UserAutheticated'.post_notification
       else
         puts result.error.localizedDescription
       end

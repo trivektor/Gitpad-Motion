@@ -255,10 +255,22 @@ class MasterController < UIViewController
         notificationsController = NotificationsController.alloc.init
         notificationsController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(notificationsController)
+      when 4
+        @signoutConfirmSheet = UIActionSheet.alert('Are you sure you want to sign out?') do |pressed|
+          self.signout if pressed == 'OK'
+        end
+        return
       end
     end
 
     navigateToSelectedController(selectedController)
+  end
+
+  def signout
+    SSKeychain.deletePasswordForService('access_token', account: APP_KEYCHAIN_ACCOUNT)
+    loginController = LoginController.alloc.init
+    navController = UINavigationController.alloc.initWithRootViewController(loginController)
+    self.view.window.setRootViewController(navController)
   end
 
   private
