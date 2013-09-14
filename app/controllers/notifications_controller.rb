@@ -19,12 +19,11 @@ class NotificationCell < UITableViewCell
     @fontAwesomeLabel.backgroundColor = UIColor.clearColor
 
     @titleLabel = UILabel.alloc.initWithFrame([[40, 11], [950, 21]])
-    @titleLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
-    @titleLabel.textColor = UIColor.iOS7darkBlueColor
+    @titleLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
     @titleLabel.backgroundColor = UIColor.clearColor
 
     @dateLabel = UILabel.alloc.initWithFrame([[40, 32], [950, 21]])
-    @dateLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
+    @dateLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
     @dateLabel.backgroundColor = UIColor.clearColor
 
     self.contentView.addSubview(@fontAwesomeLabel)
@@ -38,7 +37,6 @@ class NotificationCell < UITableViewCell
 
     self.contentView.backgroundColor = notification.read? ? '#f5f5f5'.uicolor : UIColor.whiteColor
     @fontAwesomeLabel.text = FontAwesome.icon(ICONS[notification.type][:icon])
-    @fontAwesomeLabel.textColor = UIColor.iOS7darkBlueColor
   end
 
 end

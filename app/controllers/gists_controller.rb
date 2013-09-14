@@ -20,11 +20,11 @@ class GistCell < UITableViewCell
   private
 
   def createLabels
-    @fontAwesomeLabel = UILabel.alloc.initWithFrame([[12, 10], [30, 21]])
+    @fontAwesomeLabel = UILabel.alloc.initWithFrame([[12, 10], [26, 21]])
     @fontAwesomeLabel.font = FontAwesome.fontWithSize(15)
-    @nameLabel = UILabel.alloc.initWithFrame([[50, 9], [445, 21]])
+    @nameLabel = UILabel.alloc.initWithFrame([[40, 9], [445, 21]])
     @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
-    @descriptionLabel = UILabel.alloc.initWithFrame([[50, 36], [738, 21]])
+    @descriptionLabel = UILabel.alloc.initWithFrame([[40, 36], [738, 21]])
     @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
 
     self.contentView.addSubview(@fontAwesomeLabel)

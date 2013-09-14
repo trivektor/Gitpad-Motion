@@ -18,12 +18,12 @@ class RepoCell < UITableViewCell
   private
 
   def createLabels
-    @nameLabel = UILabel.alloc.initWithFrame([[53, 9], [409, 21]])
+    @nameLabel = UILabel.alloc.initWithFrame([[40, 9], [409, 21]])
     @nameLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
-    @descriptionLabel = UILabel.alloc.initWithFrame([[53, 34], [651, 21]])
+    @descriptionLabel = UILabel.alloc.initWithFrame([[40, 34], [651, 21]])
     @descriptionLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
-    @fontAwesomeLabel = UILabel.alloc.initWithFrame([[14, 9], [30, 21]])
-    @fontAwesomeLabel.font = FontAwesome.fontWithSize(15)
+    @fontAwesomeLabel = UILabel.alloc.initWithFrame([[14, 9], [26, 21]])
+    @fontAwesomeLabel.font = FontAwesome.fontWithSize(13)
 
     self.contentView.addSubview(@nameLabel)
     self.contentView.addSubview(@descriptionLabel)

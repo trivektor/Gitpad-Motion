@@ -10,9 +10,9 @@ class NewsfeedCell < UITableViewCell
   end
 
   def createLabels
-    @iconLabel = UILabel.alloc.initWithFrame(CGRectMake(20, 9, 20, 21))
-    @titleLabel = UILabel.alloc.initWithFrame(CGRectMake(53, 8, 916, 21))
-    @descriptionLabel = UILabel.alloc.initWithFrame(CGRectMake(53, 28, 916, 21))
+    @iconLabel = UILabel.alloc.initWithFrame(CGRectMake(14, 9, 27, 21))
+    @titleLabel = UILabel.alloc.initWithFrame(CGRectMake(40, 8, 916, 21))
+    @descriptionLabel = UILabel.alloc.initWithFrame(CGRectMake(40, 28, 916, 21))
 
     self.contentView.addSubview(@iconLabel)
     self.contentView.addSubview(@titleLabel)
