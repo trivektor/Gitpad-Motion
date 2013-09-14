@@ -1,13 +1,15 @@
 class PullRequest
 
-  attr_accessor :data
+  include AFNetWorking
+
+  attr_accessor :data, :repo, :owner
 
   def initialize(data={})
     @data = data
   end
 
   def repo
-    Repo.new(@data[:repository])
+    @repo ||= Repo.new(@data[:repository])
   end
 
   def subject
@@ -23,7 +25,7 @@ class PullRequest
   end
 
   def owner
-    User.new(@data[:user])
+    @owner ||= User.new(@data[:user])
   end
 
   def state
@@ -36,6 +38,18 @@ class PullRequest
 
   def closedAt
     @data[:closed_at]
+  end
+
+  def fetchComments
+    buildHttpClient
+    AFMotion::Client.shared.get(commentsUrl, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        @comments = result.object.collect { |o| Comment.new(o) }
+        'PullRequestCommentsFetch'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
   end
 
 end

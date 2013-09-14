@@ -61,7 +61,7 @@ class Issue
     buildHttpClient
     AFMotion::Client.shared.get(commentsUrl, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        self.comments = result.object.collect { |o| Comment.new(o) }
+        @comments = result.object.collect { |o| Comment.new(o) }
         'IssueCommentsFetch'.post_notification
       else
         puts result.error.localizedDescription
@@ -70,7 +70,7 @@ class Issue
   end
 
   def commentsHtmlString
-    self.comments.collect { |comment| comment.toHtmlString }.join('')
+    @comments.collect { |comment| comment.toHtmlString }.join('')
   end
 
 end

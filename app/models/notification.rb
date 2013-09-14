@@ -1,5 +1,7 @@
 class Notification
 
+  include AFNetWorking
+
   attr_accessor :data, :repo
 
   def initialize(data={})
@@ -36,6 +38,22 @@ class Notification
 
   def read?
     !lastReadAt.nil?
+  end
+
+  def url
+    subject[:url]
+  end
+
+  def fetch
+    buildHttpClient
+    AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        object = Kernel.const_get(type).new(result.object)
+        'NotificationDetailsFetched'.post_notification(object)
+      else
+        puts result.error.localizedDescription
+      end
+    end
   end
 
 end

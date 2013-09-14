@@ -61,6 +61,7 @@ class NotificationsController < UIViewController
 
   def registerEvents
     'UserNotificationsFetched'.add_observer(self, 'displayNotifications')
+    'NotificationDetailsFetched'.add_observer(self, 'displayNotificationDetails:')
   end
 
   def numberOfSectionsInTableView
@@ -86,10 +87,17 @@ class NotificationsController < UIViewController
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    @user.notifications[indexPath.row].fetch
   end
 
   def displayNotifications
     @table.reloadData
+  end
+
+  def displayNotificationDetails(notification)
+    issueController = IssueController.alloc.init
+    issueController.issue = notification.object
+    self.navigationController.pushViewController(issueController, animated: true)
   end
 
 end
