@@ -18,11 +18,12 @@ class NotificationCell < UITableViewCell
     @fontAwesomeLabel.font = FontAwesome.fontWithSize(15)
     @fontAwesomeLabel.backgroundColor = UIColor.clearColor
 
-    @titleLabel = UILabel.alloc.initWithFrame([[49, 11], [950, 21]])
-    @titleLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
+    @titleLabel = UILabel.alloc.initWithFrame([[40, 11], [950, 21]])
+    @titleLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
+    @titleLabel.textColor = UIColor.iOS7darkBlueColor
     @titleLabel.backgroundColor = UIColor.clearColor
 
-    @dateLabel = UILabel.alloc.initWithFrame([[49, 32], [950, 21]])
+    @dateLabel = UILabel.alloc.initWithFrame([[40, 32], [950, 21]])
     @dateLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
     @dateLabel.backgroundColor = UIColor.clearColor
 
@@ -35,9 +36,9 @@ class NotificationCell < UITableViewCell
     @titleLabel.text = @notification.title
     @dateLabel.text = @notification.updatedAt
 
-    self.contentView.backgroundColor = notification.read? ? '#eee'.uicolor : UIColor.whiteColor
+    self.contentView.backgroundColor = notification.read? ? '#f5f5f5'.uicolor : UIColor.whiteColor
     @fontAwesomeLabel.text = FontAwesome.icon(ICONS[notification.type][:icon])
-    @fontAwesomeLabel.textColor = ICONS[notification.type][:color]
+    @fontAwesomeLabel.textColor = UIColor.iOS7darkBlueColor
   end
 
 end
@@ -69,19 +70,30 @@ class NotificationsController < UIViewController
   end
 
   def tableView(tableView, heightForHeaderInSection: section)
-    25
+    30
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
     return 0 if @user.notifications == {}
     repoName = @user.notifications.keys[section]
-    numberOfRowsInSection = @user.notifications[repoName].count
-    "put num of rows in section #{section}: #{numberOfRowsInSection}"
-    numberOfRowsInSection
+    @user.notifications[repoName].count
   end
 
   def tableView(tableView, titleForHeaderInSection: section)
     @user.notifications.keys[section]
+  end
+
+  def tableView(tableView, viewForHeaderInSection: section)
+    label = UILabel.alloc.initWithFrame([[10, 3], [1024, 25]])
+    label.font = UIFont.fontWithName('Roboto-Bold', size: 15)
+    label.textColor = UIColor.iOS7pinkColor
+    label.text = tableView(tableView, titleForHeaderInSection: section)
+    label.backgroundColor = UIColor.clearColor
+
+    backgroundView = UIView.alloc.initWithFrame([[0, 0], [1024, 25]])
+    backgroundView.setBackgroundColor('#eee'.uicolor)
+    backgroundView.addSubview(label)
+    backgroundView
   end
 
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
