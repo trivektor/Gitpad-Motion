@@ -64,12 +64,24 @@ class NotificationsController < UIViewController
     'NotificationDetailsFetched'.add_observer(self, 'displayNotificationDetails:')
   end
 
-  def numberOfSectionsInTableView
-    1
+  def numberOfSectionsInTableView(tableView)
+    @user.notifications.keys.count
+  end
+
+  def tableView(tableView, heightForHeaderInSection: section)
+    25
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @user.notifications.count
+    return 0 if @user.notifications == {}
+    repoName = @user.notifications.keys[section]
+    numberOfRowsInSection = @user.notifications[repoName].count
+    "put num of rows in section #{section}: #{numberOfRowsInSection}"
+    numberOfRowsInSection
+  end
+
+  def tableView(tableView, titleForHeaderInSection: section)
+    @user.notifications.keys[section]
   end
 
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
@@ -81,13 +93,17 @@ class NotificationsController < UIViewController
       NotificationCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: NotificationCell.reuseIdentifier)
     end
 
-    cell.notification = @user.notifications[indexPath.row]
+    repoName = @user.notifications.keys[indexPath.section]
+
+    cell.notification = @user.notifications[repoName][indexPath.row]
     cell.render
     cell
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    @user.notifications[indexPath.row].fetch
+    repoName = @user.notifications.keys[indexPath.section]
+    repo = @user.notifications[repoName][indexPath.row]
+    repo.fetch
   end
 
   def displayNotifications

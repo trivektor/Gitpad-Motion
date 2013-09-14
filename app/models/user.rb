@@ -4,7 +4,7 @@ class User
 
   def initialize(data={})
     @data = data
-    @notifications = []
+    @notifications = {}
   end
 
   def avatarUrl
@@ -159,10 +159,21 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get('/notifications', page: page, access_token: AppHelper.getAccessToken, all: true) do |result|
       if result.success?
-        @notifications = result.object.collect { |o| Notification.new(o) }
+        notifications = result.object.collect { |o| Notification.new(o) }
+        @notifications = groupNotificationsByRepo(notifications)
         'UserNotificationsFetched'.post_notification
       else
         puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def groupNotificationsByRepo(notifications)
+    {}.tap do |groups|
+      notifications.each do |notification|
+        repoName = notification.repository.fullName
+        groups[repoName] = [notification] unless groups.key?(repoName)
+        groups[repoName] << notification
       end
     end
   end
