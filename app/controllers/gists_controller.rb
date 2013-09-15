@@ -41,12 +41,11 @@ end
 
 class GistsController < UIViewController
 
-  attr_accessor :user, :gists, :page, :table
+  attr_accessor :user, :page, :table
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
     @page = 1
-    @gists = []
     self
   end
 
@@ -69,7 +68,7 @@ class GistsController < UIViewController
   end
 
   def registerEvents
-    'GistsFetched'.add_observer(self, 'displayGists:')
+    'GistsFetched'.add_observer(self, 'displayGists')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -77,7 +76,7 @@ class GistsController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @gists.count
+    @user.gists.count
   end
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
@@ -85,13 +84,11 @@ class GistsController < UIViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    cell = @table.dequeueReusableCellWithIdentifier(GistCell.reuseIdentifier)
-
-    if !cell
-      cell = GistCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:GistCell.reuseIdentifier)
+    cell = @table.dequeueReusableCellWithIdentifier(GistCell.reuseIdentifier) || begin
+      GistCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: GistCell.reuseIdentifier)
     end
 
-    cell.gist = @gists[indexPath.row]
+    cell.gist = @user.gists[indexPath.row]
     cell.render
     cell
   end
@@ -108,8 +105,7 @@ class GistsController < UIViewController
     @page += 1
   end
 
-  def displayGists(notification)
-    @gists += notification.object
+  def displayGists
     @table.reloadData
     hideHud
   end

@@ -1,6 +1,6 @@
 class User
 
-  attr_accessor :data, :notifications, :followers, :following, :personal_repos, :starred_repos
+  attr_accessor :data, :notifications, :followers, :following, :personal_repos, :starred_repos, :gists
 
   def initialize(data={})
     @data = data
@@ -9,6 +9,7 @@ class User
     @following = []
     @personal_repos = []
     @starred_repos = []
+    @gists = []
   end
 
   def avatarUrl
@@ -120,8 +121,8 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        gists = result.object.collect { |r| Gist.new(r) }
-        'GistsFetched'.post_notification(gists)
+        @gists += result.object.collect { |r| Gist.new(r) }
+        'GistsFetched'.post_notification
       else
         puts result.error.localizedDescription
       end
