@@ -24,6 +24,14 @@ Motion::Project::App.setup do |app|
   app.codesign_certificate = ENV['MOTION_CODESIGN_CERTIFICATE']
   app.detect_dependencies = false
 
+  # Icons
+  app.icons = [
+    'icon.png',
+    'icon@2x.png'
+  ]
+
+  app.prerendered_icon = true
+
   # Frameworks
   frameworks = %w(
     QuartzCore
