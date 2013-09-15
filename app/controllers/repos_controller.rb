@@ -91,7 +91,7 @@ class ReposController < UIViewController
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     repoController = RepoController.alloc.init
-    repoController.repo = @repos[indexPath.row]
+    repoController.repo = repoForRowAtIndexPath(indexPath)
     self.navigationController.pushViewController(repoController, animated: true)
   end
 
