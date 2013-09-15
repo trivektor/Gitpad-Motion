@@ -226,6 +226,7 @@ class MasterController < UIViewController
     when 1
       if indexPath.row == 0
         newsfeedController = NewsfeedController.alloc.init
+        newsfeedController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(newsfeedController)
       end
     when 2

@@ -6,6 +6,7 @@ class AppInitialization
       masterController = MasterController.alloc.init
       masterController.user = user
       newsfeedController = NewsfeedController.alloc.init
+      newsfeedController.user = CurrentUserManager.sharedInstance
       mainNavController = UINavigationController.alloc.initWithRootViewController(newsfeedController)
 
       deckController = IIViewDeckController.alloc.initWithCenterViewController(mainNavController, leftViewController:masterController)

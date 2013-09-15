@@ -1,9 +1,10 @@
 class User
 
-  attr_accessor :data, :notifications, :followers, :following, :personal_repos, :starred_repos, :gists
+  attr_accessor :data, :notifications, :events, :followers, :following, :personal_repos, :starred_repos, :gists
 
   def initialize(data={})
     @data = data
+    @events = []
     @notifications = {}
     @followers = []
     @following = []
@@ -80,8 +81,8 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        events = result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
-        NSNotificationCenter.defaultCenter.postNotificationName('NewsFeedFetched', object: events)
+        @events += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
+        'NewsFeedFetched'.post_notification
       else
         puts result.error.localizedDescription
       end

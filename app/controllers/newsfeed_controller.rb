@@ -33,12 +33,11 @@ end
 
 class NewsfeedController < UIViewController
 
-  attr_accessor :page, :events
+  attr_accessor :page, :user
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
     @page = 1
-    @events = []
     self
   end
 
@@ -58,7 +57,7 @@ class NewsfeedController < UIViewController
   end
 
   def registerEvents
-    'NewsFeedFetched'.add_observer(self, 'displayUserNewsfeed:')
+    'NewsFeedFetched'.add_observer(self, 'displayUserNewsfeed')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -66,7 +65,7 @@ class NewsfeedController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @events.count
+    @user.events.count
   end
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
@@ -78,7 +77,7 @@ class NewsfeedController < UIViewController
       NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
     end
 
-    cell.event = @events[indexPath.row]
+    cell.event = @user.events[indexPath.row]
     cell.render
     cell
   end
@@ -86,7 +85,7 @@ class NewsfeedController < UIViewController
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     'CloseViewDeck'.post_notification
     detailsController = NewsfeedDetailsController.alloc.init
-    detailsController.event = @events[indexPath.row]
+    detailsController.event = @user.events[indexPath.row]
     self.navigationController.pushViewController(detailsController, animated: true)
   end
 
@@ -96,8 +95,7 @@ class NewsfeedController < UIViewController
     end
   end
 
-  def displayUserNewsfeed(notification)
-    @events += notification.object
+  def displayUserNewsfeed
     @table.reloadData
     hideHud
   end
