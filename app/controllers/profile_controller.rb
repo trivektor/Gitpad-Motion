@@ -39,9 +39,9 @@ class ProfileCell < UITableViewCell
     when 3
       fieldValue = @user.company
     when 4
-      fieldValue = @user.followers
+      fieldValue = @user.numFollowers
     when 5
-      fieldValue = @user.following
+      fieldValue = @user.numFollowing
     when 6
       fieldValue = @user.numPublicRepos
     when 7

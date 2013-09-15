@@ -1,11 +1,10 @@
 class FollowController < UIViewController
 
-  attr_accessor :user, :users, :page, :table
+  attr_accessor :user, :page, :table
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
     @page = 1
-    @users = []
     self
   end
 
@@ -18,7 +17,7 @@ class FollowController < UIViewController
   end
 
   def registerEvents
-    'FollowUsersFetched'.add_observer(self, 'displayFollowUsers:')
+    'FollowUsersFetched'.add_observer(self, 'displayFollowUsers')
   end
 
   def performHouseKeepingTasks
@@ -26,8 +25,7 @@ class FollowController < UIViewController
     self.view.addSubview(@table)
   end
 
-  def displayFollowUsers(notification)
-    @users += notification.object
+  def displayFollowUsers
     @table.reloadData
     hideHud
   end
@@ -36,16 +34,12 @@ class FollowController < UIViewController
     1
   end
 
-  def tableView(tableView, numberOfRowsInSection: section)
-    @users.count
-  end
-
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     cell = tableView.dequeueReusableCellWithIdentifier('Cell') || begin
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: 'Cell')
     end
 
-    user = @users[indexPath.row]
+    user = getUserForRowAtIndexPath(indexPath)
 
     cell.textLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
     cell.textLabel.text = user.login
@@ -57,7 +51,7 @@ class FollowController < UIViewController
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     @profileController = ProfileController.alloc.init
-    @profileController.user = @users[indexPath.row]
+    @profileController.user = getUserForRowAtIndexPath(indexPath)
     self.navigationController.pushViewController(@profileController, animated: true)
   end
 
@@ -75,6 +69,14 @@ class FollowingController < FollowController
     showHud
     @user.fetchFollowing(@page)
     @page += 1
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @user.following.count
+  end
+
+  def getUserForRowAtIndexPath(indexPath)
+    @user.following[indexPath.row]
   end
 
   def scrollViewDidScroll(scrollView)
@@ -97,6 +99,14 @@ class FollowersController < FollowController
     showHud
     @user.fetchFollowers(@page)
     @page += 1
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @user.followers.count
+  end
+
+  def getUserForRowAtIndexPath(indexPath)
+    @user.followers[indexPath.row]
   end
 
   def scrollViewDidScroll(scrollView)

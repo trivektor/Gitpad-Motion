@@ -1,10 +1,12 @@
 class User
 
-  attr_accessor :data, :notifications
+  attr_accessor :data, :notifications, :followers, :following
 
   def initialize(data={})
     @data = data
     @notifications = {}
+    @followers = []
+    @following = []
   end
 
   def avatarUrl
@@ -43,11 +45,11 @@ class User
     @data[:company]
   end
 
-  def following
+  def numFollowing
     @data[:following].to_i
   end
 
-  def followers
+  def numFollowers
     @data[:followers].to_i
   end
 
@@ -133,10 +135,10 @@ class User
 
   def fetchFollowers(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get(followersUrl, page: page) do |result|
+    AFMotion::Client.shared.get(followersUrl, page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        users = result.object.collect { |u| User.new(u) }
-        NSNotificationCenter.defaultCenter.postNotificationName('FollowUsersFetched', object: users)
+        @followers += result.object.collect { |u| User.new(u) }
+        'FollowUsersFetched'.post_notification
       else
         puts result.error.localizedDescription
       end
@@ -147,8 +149,8 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get(followingUrl, page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        users = result.object.collect { |u| User.new(u) }
-        NSNotificationCenter.defaultCenter.postNotificationName('FollowUsersFetched', object: users)
+        @following += result.object.collect { |u| User.new(u) }
+        'FollowUsersFetched'.post_notification
       else
         puts result.error.localizedDescription
       end
