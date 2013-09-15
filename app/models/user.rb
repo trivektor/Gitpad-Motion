@@ -1,12 +1,14 @@
 class User
 
-  attr_accessor :data, :notifications, :followers, :following
+  attr_accessor :data, :notifications, :followers, :following, :personal_repos, :starred_repos
 
   def initialize(data={})
     @data = data
     @notifications = {}
     @followers = []
     @following = []
+    @personal_repos = []
+    @starred_repos = []
   end
 
   def avatarUrl
@@ -94,8 +96,8 @@ class User
     }
     AFMotion::Client.shared.get("/user/repos", params) do |result|
       if result.success?
-        repos = result.object.collect { |r| Repo.new(r) }
-        'ReposFetched'.post_notification(repos)
+        @personal_repos += result.object.collect { |r| Repo.new(r) }
+        'ReposFetched'.post_notification
       else
         puts result.error.localizedDescription
       end
@@ -106,8 +108,8 @@ class User
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{self.login}/starred", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        repos = result.object.collect { |r| Repo.new(r) }
-        'ReposFetched'.post_notification(repos)
+        @starred_repos += result.object.collect { |r| Repo.new(r) }
+        'ReposFetched'.post_notification
       else
         puts result.error.localizedDescription
       end

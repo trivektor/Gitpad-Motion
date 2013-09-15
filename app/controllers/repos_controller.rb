@@ -46,12 +46,11 @@ end
 
 class ReposController < UIViewController
 
-  attr_accessor :table, :user, :repos, :page
+  attr_accessor :table, :user, :page
 
   def initWithNibName(nibName, bundle:nibBundle)
     super
     @page = 1
-    @repos = []
     self
   end
 
@@ -63,7 +62,7 @@ class ReposController < UIViewController
   end
 
   def registerEvents
-    'ReposFetched'.add_observer(self, 'displayRepos:')
+    'ReposFetched'.add_observer(self, 'displayRepos')
   end
 
   def viewDidLoad
@@ -76,22 +75,16 @@ class ReposController < UIViewController
     1
   end
 
-  def tableView(tableView, numberOfRowsInSection: section)
-    @repos.count
-  end
-
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
     67
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    cell = @table.dequeueReusableCellWithIdentifier(RepoCell.reuseIdentifier)
-
-    if !cell
-      cell = RepoCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: RepoCell.reuseIdentifier)
+    cell = @table.dequeueReusableCellWithIdentifier(RepoCell.reuseIdentifier) || begin
+      RepoCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: RepoCell.reuseIdentifier)
     end
 
-    cell.repo = @repos[indexPath.row]
+    cell.repo = repoForRowAtIndexPath(indexPath)
     cell.render
     cell
   end
@@ -102,8 +95,7 @@ class ReposController < UIViewController
     self.navigationController.pushViewController(repoController, animated: true)
   end
 
-  def displayRepos(notification)
-    @repos += notification.object
+  def displayRepos
     @table.reloadData
     hideHud
   end
@@ -131,6 +123,14 @@ class PersonalReposController < ReposController
     @page += 1
   end
 
+  def tableView(tableView, numberOfRowsInSection: section)
+    @user.personal_repos.count
+  end
+
+  def repoForRowAtIndexPath(indexPath)
+    @user.personal_repos[indexPath.row]
+  end
+
 end
 
 class StarredReposController < ReposController
@@ -145,6 +145,14 @@ class StarredReposController < ReposController
   def fetchReposForPage(page)
     @user.fetchStarredReposForPage(@page)
     @page += 1
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @user.starred_repos.count
+  end
+
+  def repoForRowAtIndexPath(indexPath)
+    @user.starred_repos[indexPath.row]
   end
 
 end
