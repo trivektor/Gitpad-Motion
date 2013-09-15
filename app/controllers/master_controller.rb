@@ -263,6 +263,9 @@ class MasterController < UIViewController
           self.signout if pressed == 'OK'
         end
         return
+      when 5
+        attributionsController = AttributionsController.alloc.init
+        selectedController = UINavigationController.alloc.initWithRootViewController(attributionsController)
       end
     end
 
