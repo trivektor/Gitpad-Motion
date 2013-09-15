@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' />
+    <link rel='stylesheet' href='gitos.css' />
+    <link rel='stylesheet' href='github.css' />
+  </head>
+  <body>
+    <ul id='contributions' class='list-unstyled'>
+    </ul>
+    <script>
+      var CONTRIBUTIONS_URL = 'https://github.com/users/{{user_login}}/contributions_calendar_data?_=' + (new Date).getTime();
+      var MONTH_MAPPINGS = {
+          "01" : "Jan",
+          "02" : "Feb",
+          "03" : "Mar",
+          "04" : "Apr",
+          "05" : "May",
+          "06" : "Jun",
+          "07" : "Jul",
+          "08" : "Aug",
+          "09" : "Sep",
+          "10" : "Oct",
+          "11" : "Nov",
+          "12" : "Dec"
+      }
+
+//            var TEMPLATE = _.template(" \
+//                <td> \
+//                    <% _.each(contrib, function(year) { %> \
+//                        <label class='label'><%= year %></label> \
+//                    <% }) %> \
+//                </td> \
+//            ");
+
+      var contrib = {
+          createCORSRequest: function(method, url) {
+              var xhr = new XMLHttpRequest;
+              xhr.open(method, url, true);
+              return xhr;
+          },
+          fetchContributions: function() {
+              this.request = this.createCORSRequest('GET', CONTRIBUTIONS_URL);
+              this.request.onload = this.displayContributions.bind(this);
+              this.request.send();
+          },
+          displayContributions: function() {
+              // Refactor (use templating)
+              var contributions = this.parseData(),
+                  fragment      = document.createDocumentFragment(),
+                  li, td, year, month, day, html, num_commits;
+
+              for (year in contributions) {
+                  li = document.createElement('li');
+                  
+                  html = '';
+
+                  for (month in contributions[year]) {
+                      html += '<div class="month">';
+                      html += '<label class="label label-important">' + month + ' ' + year + '</label>';
+                      html += '<div class="clearfix">';
+                      
+                      for (day in contributions[year][month]) {
+                          num_commits = contributions[year][month][day];
+                          html += '<span class="commit-block" style="background:' + this.getColor(num_commits) + '" data-commits="'+ num_commits + '"></span>';
+                      }
+
+                      html += '</div>';
+                      html += '</div>';
+                  }
+
+                  li.innerHTML = html;
+                  fragment.appendChild(li);
+              }
+
+              var c = document.getElementById("contributions");
+              c.appendChild(fragment);
+              this.highlightCommits();
+          },
+          getColor: function(num_commits) {
+              if (num_commits == 0) {
+                  return '#eee';
+              } else if (num_commits > 0 && num_commits < 3) {
+                  return '#D6E685';
+              } else if (num_commits >= 3 && num_commits < 5) {
+                  return '#8CC665';
+              } else if (num_commits >= 5 && num_commits < 8) {
+                  return '#44A340';
+              } else if (num_commits >= 8) {
+                  return '#1E6823';
+              }
+          },
+          parseData: function() {
+              var days = window.JSON.parse(this.request.responseText).reverse();
+              var commits = 0, dateComponents;
+              var day, month, year;
+              var contributions = {}
+
+              for (var i=0, len=days.length; i < len; i++) {
+                  dateComponents = days[i][0].split("/");
+                  year  = dateComponents[0];
+                  month = MONTH_MAPPINGS[dateComponents[1]];
+                  day   = dateComponents[2];
+                  commits = days[i][1];
+
+                  if (!(year in contributions)) {
+                      contributions[year] = {}
+                  }
+                  if (!(month in contributions[year])) {
+                      contributions[year][month] = {}
+                  }
+                  contributions[year][month][day] = commits;
+              }
+
+              return contributions;
+          }
+      }
+      
+      contrib.fetchContributions();
+    </script>
+  </body>
+</html>
