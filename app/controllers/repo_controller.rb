@@ -95,25 +95,23 @@ class RepoController < UIViewController
     @scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     @scrollView.scrollEnabled = true
 
-    @infoTable = UITableView.alloc.initWithFrame([[0, 0], [748, 870]], style: UITableViewStyleGrouped)
-    @infoTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @infoTable.delegate = self
-    @infoTable.dataSource = self
-    @infoTable.scrollEnabled = false
-    @infoTable.registerClass(RepoInfoCell, forCellReuseIdentifier: RepoInfoCell.reuseIdentifier)
-    @infoTable.backgroundView = nil
+    @infoTable = createTable(
+      frame: [[0, 0], [748, 870]],
+      style: UITableViewStyleGrouped,
+      scrollEnabled: false,
+      cell: RepoInfoCell
+    )
 
     branchesLabel = UILabel.alloc.initWithFrame([[0, 550], [1024, 20]])
     branchesLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
     branchesLabel.textAlignment = NSTextAlignmentCenter
     branchesLabel.text = 'Branches'
 
-    @branchesTable = UITableView.alloc.initWithFrame([[0, 570], [748, 140]], style: UITableViewStyleGrouped)
-    @branchesTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @branchesTable.delegate = self
-    @branchesTable.dataSource = self
-    @branchesTable.scrollEnabled = false
-    @branchesTable.backgroundView = nil
+    @branchesTable = createTable(
+      frame: [[0, 570], [748, 140]],
+      style: UITableViewStyleGrouped,
+      scrollEnabled: false
+    )
 
     @scrollView.addSubview(@infoTable)
     @scrollView.addSubview(branchesLabel)

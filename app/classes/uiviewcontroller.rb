@@ -5,7 +5,7 @@ UIViewController.class_eval do
   def loadHud
     @hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
     @hud.mode = MBProgressHUDAnimationFade;
-    @hud.labelText = I18n.t('hud_loading_msg')
+    @hud.labelText = 'Loading'
   end
 
   def showHud
@@ -39,7 +39,12 @@ UIViewController.class_eval do
     table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     table.delegate = self
     table.dataSource = self
-    table.scrollEnabled = options[:scrollEnabled] || true
+
+    if options[:scrollEnabled].nil?
+      table.setScrollEnabled(true)
+    else
+      table.setScrollEnabled(options[:scrollEnabled])
+    end
 
     unless options[:cell].nil?
       table.registerClass(options[:cell], forCellReuseIdentifier: options[:cell].reuseIdentifier)
