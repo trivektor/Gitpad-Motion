@@ -29,10 +29,11 @@ class LanguagesPieChartController < UIViewController
     view.backgroundColor = UIColor.whiteColor
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
 
-    @pieChart = XYPieChart.alloc.initWithFrame([[340, 100], [400, 400]])
+    @pieChart = XYPieChart.alloc.initWithFrame([[312, 162], [400, 400]])
     @pieChart.pieRadius = 200
     @pieChart.delegate = self
     @pieChart.dataSource = self
+    @pieChart.showPercentage = false
     view.addSubview(@pieChart)
 
     self.view.addSubview(view)
