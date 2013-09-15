@@ -147,6 +147,10 @@ class ProfileController < UIViewController
       gistsController = GistsController.alloc.init
       gistsController.user = @user
       self.navigationController.pushViewController(gistsController, animated: true)
+    when 9
+      organizationsController = OrganizationsController.alloc.init
+      organizationsController.user = @user
+      self.navigationController.pushViewController(organizationsController, animated: true)
     when 10
       activitiesController = ActivitiesController.alloc.init
       activitiesController.user = @user

@@ -1,6 +1,6 @@
 class User
 
-  attr_accessor :data, :notifications, :events, :activities, :followers, :following, :personal_repos, :starred_repos, :gists
+  attr_accessor :data, :notifications, :events, :activities, :followers, :following, :personal_repos, :starred_repos, :gists, :organizations
 
   def initialize(data={})
     @data = data
@@ -12,6 +12,7 @@ class User
     @personal_repos = []
     @starred_repos = []
     @gists = []
+    @organizations = []
   end
 
   def avatarUrl
@@ -80,7 +81,7 @@ class User
 
   def fetchNewsfeedForPage(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get("/users/#{self.login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
+    AFMotion::Client.shared.get("/users/#{login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @events += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
         'NewsFeedFetched'.post_notification
@@ -121,7 +122,7 @@ class User
 
   def fetchStarredReposForPage(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get("/users/#{self.login}/starred", page: page, access_token: AppHelper.getAccessToken) do |result|
+    AFMotion::Client.shared.get("/users/#{login}/starred", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @starred_repos += result.object.collect { |r| Repo.new(r) }
         'ReposFetched'.post_notification
@@ -133,7 +134,7 @@ class User
 
   def fetchPersonalGistsForPage(page=1)
     self.class.buildHttpClient
-    AFMotion::Client.shared.get("/users/#{self.login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
+    AFMotion::Client.shared.get("/users/#{login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @gists += result.object.collect { |r| Gist.new(r) }
         'GistsFetched'.post_notification
@@ -143,9 +144,21 @@ class User
     end
   end
 
+  def fetchOrganizations
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get("/users/#{login}/orgs", access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        @organizations = result.object.collect { |o| Organization.new(o) }
+        'OrganizationsFetched'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
   def fetchProfileInfo
     self.class.buildHttpClient
-    AFMotion::Client.shared.get("/users/#{self.login}") do |result|
+    AFMotion::Client.shared.get("/users/#{login}") do |result|
       NSNotificationCenter.defaultCenter.postNotificationName('ProfileInfoFetched', object: self.class.new(result.object))
     end
   end
