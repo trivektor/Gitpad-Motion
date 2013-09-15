@@ -1,10 +1,11 @@
 class User
 
-  attr_accessor :data, :notifications, :events, :followers, :following, :personal_repos, :starred_repos, :gists
+  attr_accessor :data, :notifications, :events, :activities, :followers, :following, :personal_repos, :starred_repos, :gists
 
   def initialize(data={})
     @data = data
     @events = []
+    @activities = []
     @notifications = {}
     @followers = []
     @following = []
@@ -83,6 +84,18 @@ class User
       if result.success?
         @events += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
         'NewsFeedFetched'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchActivitiesForPage(page=1)
+    self.class.buildHttpClient
+    AFMotion::Client.shared.get("/users/#{login}/events", page: page, access_token: AppHelper.getAccessToken) do |result|
+      if result.success?
+        @activities += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
+        'ActivitiesFetched'.post_notification
       else
         puts result.error.localizedDescription
       end

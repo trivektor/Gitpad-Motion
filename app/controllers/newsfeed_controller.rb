@@ -43,21 +43,27 @@ class NewsfeedController < UIViewController
 
   def viewDidLoad
     super
-    navigationItem.title = 'Newsfeed'
+    createBackButton
     performHousekeepingTasks
     registerEvents
     loadHud
-    fetchUserNewsfeed
+    fetchEvents
   end
 
   def performHousekeepingTasks
+    self.navigationItem.title = title
+
     @table = createTable
     @table.registerClass(NewsfeedCell, forCellReuseIdentifier: NewsfeedCell.reuseIdentifier)
     self.view.addSubview(@table)
   end
 
+  def title
+    'Newsfeed'
+  end
+
   def registerEvents
-    'NewsFeedFetched'.add_observer(self, 'displayUserNewsfeed')
+    'NewsFeedFetched'.add_observer(self, 'displayEvents')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -77,7 +83,7 @@ class NewsfeedController < UIViewController
       NewsfeedCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:NewsfeedCell.reuseIdentifier)
     end
 
-    cell.event = @user.events[indexPath.row]
+    cell.event = eventForRowAtIndexPath(indexPath)
     cell.render
     cell
   end
@@ -85,25 +91,54 @@ class NewsfeedController < UIViewController
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     'CloseViewDeck'.post_notification
     detailsController = NewsfeedDetailsController.alloc.init
-    detailsController.event = @user.events[indexPath.row]
+    detailsController.event = eventForRowAtIndexPath(indexPath)
     self.navigationController.pushViewController(detailsController, animated: true)
+  end
+
+  def eventForRowAtIndexPath(indexPath)
+    @user.events[indexPath.row]
   end
 
   def scrollViewDidScroll(scrollView)
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
-      fetchUserNewsfeed
+      fetchEvents
     end
   end
 
-  def displayUserNewsfeed
+  def displayEvents
     @table.reloadData
     hideHud
   end
 
-  def fetchUserNewsfeed
+  def fetchEvents
     showHud
-    currentUser = CurrentUserManager.sharedInstance
-    currentUser.fetchNewsfeedForPage(@page)
+    user.fetchNewsfeedForPage(@page)
+    @page += 1
+  end
+
+end
+
+class ActivitiesController < NewsfeedController
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @user.activities.count
+  end
+
+  def title
+    'Recent Activity'
+  end
+
+  def registerEvents
+    'ActivitiesFetched'.add_observer(self, 'displayEvents')
+  end
+
+  def eventForRowAtIndexPath(indexPath)
+    @user.activities[indexPath.row]
+  end
+
+  def fetchEvents
+    showHud
+    user.fetchActivitiesForPage(@page)
     @page += 1
   end
 
