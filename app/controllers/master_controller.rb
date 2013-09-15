@@ -29,8 +29,9 @@ class MasterProfileCell < UITableViewCell
 
     @textLabel.text = currentUser.login
 
-    backgroundView = UIView.alloc.initWithFrame(self.frame)
-    self.selectedBackgroundView = backgroundView
+    selectedBackgroundView = UIView.alloc.initWithFrame(self.frame)
+    selectedBackgroundView.backgroundColor = UIColor.iOS7redColor
+    self.selectedBackgroundView = selectedBackgroundView
   end
 
   def self.reuseIdentifier
@@ -135,10 +136,7 @@ class MasterController < UIViewController
   end
 
   def performHousekeepingTasks
-    @table = UITableView.alloc.initWithFrame(self.view.bounds, style:UITableViewStylePlain)
-    @table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @table.delegate = self
-    @table.dataSource = self
+    @table = createTable
     @table.setBackgroundColor(UIColor.colorWithRed(55/255.0, green:55/255.0, blue:55/255.0, alpha:1.0))
     @table.setSeparatorColor(UIColor.clearColor)
     @table.registerClass(MasterControllerCell, forCellReuseIdentifier:MasterControllerCell.reuseIdentifier)
