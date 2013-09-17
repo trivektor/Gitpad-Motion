@@ -110,4 +110,11 @@ class GistsController < UIViewController
     hideHud
   end
 
+  def scrollViewDidScroll(scrollView)
+    if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      showHud
+      fetchGistsForPage(@page)
+    end
+  end
+
 end
