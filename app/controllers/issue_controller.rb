@@ -33,8 +33,8 @@ class IssueController < UIViewController
                               .stringByReplacingOccurrencesOfString('{{login}}', withString: @issue.user.login)
                               .stringByReplacingOccurrencesOfString('{{created_at}}', withString: @issue.createdAt)
                               .stringByReplacingOccurrencesOfString('{{title}}', withString: @issue.title)
-                              .stringByReplacingOccurrencesOfString('{{body}}', withString: @issue.body)
-                              .stringByReplacingOccurrencesOfString('{{comments}}', withString: @issue.commentsHtmlString)
+                              .stringByReplacingOccurrencesOfString('{{body}}', withString: @issue.body || '')
+                              .stringByReplacingOccurrencesOfString('{{comments}}', withString: @issue.commentsHtmlString || '')
                               .stringByReplacingOccurrencesOfString('{{css_file}}', withString: cssFile)
 
     @fileWebView.loadHTMLString(contentHtml, baseURL: bundle.bundlePath.nsurl)
