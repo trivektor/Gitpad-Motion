@@ -22,10 +22,30 @@ class ReadmeController < UIViewController
 
   def displayReadmeContent
     bundle = NSBundle.mainBundle
+
     readmeFile = bundle.pathForResource('html/readme', ofType: 'html')
     html = NSString.stringWithContentsOfFile(readmeFile, encoding: NSUTF8StringEncoding, error: nil)
-    html = html.stringByReplacingOccurrencesOfString('{{readme_content}}', withString: @repo.readme.content)
+
+    if @repo.readme
+      html = html.stringByReplacingOccurrencesOfString('{{readme_content}}', withString: @repo.readme.content)
+    else
+      html = 'This repo does not seem to have README file'
+      createReadmeBtn
+    end
     @fileWebView.loadHTMLString(html, baseURL: NSURL.fileURLWithPath(bundle.bundlePath))
+  end
+
+  private
+
+  def createReadmeBtn
+    readmeBtn = createFontAwesomeButton(
+      icon: 'file-alt',
+      touchHandler: 'showReadmeEditor'
+    )
+    self.navigationItem.setRightBarButtonItem(readmeBtn)
+  end
+
+  def showReadmeEditor
   end
 
 end

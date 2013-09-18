@@ -160,7 +160,7 @@ class Repo
   def fetchReadme
     buildHttpClient
     AFMotion::Client.shared.get("/repos/#{fullName}/readme", access_token: AppHelper.getAccessToken) do |result|
-      self.readme = result.success? ? Readme.new(result.object) : Readme.new
+      self.readme = result.success? ? Readme.new(result.object) : nil
       'RepoReadmeFetched'.post_notification
     end
   end
