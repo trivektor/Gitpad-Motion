@@ -31,7 +31,7 @@ class CommitFile
   end
 
   def patch
-    encodeHtmlEntities(@data[:patch])
+    encodeHtmlEntities(@data[:patch] || '')
   end
 
   def totalChanges
