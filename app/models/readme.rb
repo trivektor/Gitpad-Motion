@@ -15,7 +15,8 @@ class Readme
   end
 
   def content
-    content = NSData.dataFromBase64String(@data[:content].to_s).nsstring
+    return 'This repo does not seem to have README file' if !@data[:content]
+    content = NSData.dataFromBase64String(@data[:content]).nsstring
     MMMarkdown.HTMLStringWithMarkdown(content, error: nil)
   end
 
