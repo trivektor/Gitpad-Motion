@@ -44,15 +44,11 @@ class Commit
     @files ||= @data[:files].collect { |f| CommitFile.new(f) }
   end
 
-  def files=(filesArray=[])
-    @files = filesArray.collect { |f| CommitFile.new(f) }
-  end
-
   def author
-    @author ||= User.new(@data[:commit][:author])
+    @author ||= User.new(@data[:author])
   end
 
-  def commitedAt
+  def committedAt
     @data[:commit][:author][:date]
   end
 
@@ -69,7 +65,7 @@ class Commit
     <h4>#{message}</h4> \
     <p> \
     <img src='#{author.avatarUrl}' class='avatar pull-left' /> \
-    authored #{author.login} \
+    authored #{committedAt} \
     </p> \
     </td> \
     </tr>
@@ -93,23 +89,25 @@ class Commit
       </tr>"
     end
 
-    commitDetailsPath = NSBundle.mainBundle.pathForResource('html/commit_details', ofType: 'html')
+    bundle = NSBundle.mainBundle
+
+    commitDetailsPath = bundle.pathForResource('html/commit_details', ofType: 'html')
     commitDetails = NSString.stringWithContentsOfFile(commitDetailsPath, encoding: NSUTF8StringEncoding, error: nil)
 
-    gitosCss = NSBundle.mainBundle.pathForResource('html/gitos', ofType: 'css')
-    githubCss = NSBundle.mainBundle.pathForResource('html/github', ofType: 'css')
+    gitosCss = bundle.pathForResource('html/gitos', ofType: 'css')
+    githubCss = bundle.pathForResource('html/github', ofType: 'css')
 
-    contentHtml = commitDetails.stringByReplacingOccurrencesOfString('{{message}}', withString: commitMessageString)
-                               .stringByReplacingOccurrencesOfString('{{html}}', withString: commitHtmlString)
-                               .stringByReplacingOccurrencesOfString('{{gitos_css}}', withString: gitosCss)
-                               .stringByReplacingOccurrencesOfString('{{github_css}}', withString: githubCss)
+    commitDetails.stringByReplacingOccurrencesOfString('{{message}}', withString: commitMessageString)
+                 .stringByReplacingOccurrencesOfString('{{html}}', withString: commitHtmlString)
+                 .stringByReplacingOccurrencesOfString('{{gitos_css}}', withString: gitosCss)
+                 .stringByReplacingOccurrencesOfString('{{github_css}}', withString: githubCss)
   end
 
   def fetchDetails
     buildHttpClient
     AFMotion::Client.shared.get(url, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
-        self.files = result.object[:files]
+        @files = result.object[:files].collect { |f| CommitFile.new(f) }
         'CommitDetailsFetched'.post_notification
       else
         puts result.error.localizedDescription

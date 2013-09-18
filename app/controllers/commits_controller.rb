@@ -43,7 +43,7 @@ class CommitsController < UIViewController
     cell.textLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
     cell.textLabel.text = commit.message
     cell.detailTextLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
-    cell.detailTextLabel.text = commit.commitedAt.to_s
+    cell.detailTextLabel.text = commit.committedAt.to_s
 
     cell
   end
