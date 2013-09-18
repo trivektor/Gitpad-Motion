@@ -1,14 +1,14 @@
 class CommitsController < UIViewController
 
-  attr_accessor :branch, :commits
+  attr_accessor :branch, :commits, :page
 
   def viewDidLoad
     super
-    @commits = []
+    @page = 1
     createBackButton
     performHousekeepingTasks
     registerEvents
-    @branch.fetchCommits
+    fetchCommitsForPage(@page)
   end
 
   def performHousekeepingTasks
@@ -18,7 +18,7 @@ class CommitsController < UIViewController
   end
 
   def registerEvents
-    'CommitsFetched'.add_observer(self, 'displayCommits:')
+    'CommitsFetched'.add_observer(self, 'displayCommits')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -26,7 +26,7 @@ class CommitsController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @commits.count
+    @branch.commits.count
   end
 
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
@@ -35,14 +35,14 @@ class CommitsController < UIViewController
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     cell = @table.dequeueReusableCellWithIdentifier('Cell') || begin
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: 'Cell')
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: 'Cell')
     end
 
-    commit = @commits[indexPath.row]
+    commit = @branch.commits[indexPath.row]
 
-    cell.textLabel.font = UIFont.fontWithName('Roboto-Bold', size: 15)
+    cell.textLabel.font = UIFont.fontWithName('Roboto-Bold', size: 13)
     cell.textLabel.text = commit.message
-    cell.detailTextLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
+    cell.detailTextLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
     cell.detailTextLabel.text = commit.commitedAt.to_s
 
     cell
@@ -50,13 +50,23 @@ class CommitsController < UIViewController
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     commitController = CommitController.alloc.init
-    commitController.commit = @commits[indexPath.row]
+    commitController.commit = @branch.commits[indexPath.row]
     self.navigationController.pushViewController(commitController, animated: true)
   end
 
-  def displayCommits(notification)
-    @commits = notification.object
+  def displayCommits
     @table.reloadData
+  end
+
+  def fetchCommitsForPage(page=1)
+    @branch.fetchCommits(@page)
+    @page += 1
+  end
+
+  def scrollViewDidScroll(scrollView)
+    if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      fetchCommitsForPage(@page)
+    end
   end
 
 end

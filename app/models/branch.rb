@@ -2,10 +2,11 @@ class Branch
 
   include AFNetWorking
 
-  attr_accessor :data, :commit, :endSha
+  attr_accessor :data, :commit, :endSha, :commits
 
   def initialize(data={})
     @data = data
+    @commits = []
   end
 
   def name
@@ -41,9 +42,9 @@ class Branch
 
     AFMotion::Client.shared.get(commitsIndexUrl, access_token: AppHelper.getAccessToken, sha: sha, page: page) do |result|
       if result.success?
-        commits = result.object.drop(startIndex).collect { |o| Commit.new(o) }
+        @commits += result.object.drop(startIndex).collect { |o| Commit.new(o) }
         @endSha = commits.last.sha
-        'CommitsFetched'.post_notification(commits)
+        'CommitsFetched'.post_notification
       else
         puts result.error.localizedDescription
       end
