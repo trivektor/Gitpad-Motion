@@ -46,6 +46,11 @@ class ReadmeController < UIViewController
   end
 
   def showReadmeEditor
+    readmeEditorController = ReadmeEditorController.alloc.init
+    readmeEditorController.repo = @repo
+    navController = UINavigationController.alloc.initWithRootViewController(readmeEditorController)
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical
+    self.presentViewController(navController, animated: true, completion: nil)
   end
 
 end
