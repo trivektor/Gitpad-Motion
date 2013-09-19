@@ -81,6 +81,11 @@ class Repo
     @data[:private].to_s == 'true'
   end
 
+  def editable?
+    currentUser = CurrentUserManager.sharedInstance
+    owner.login == currentUser.login
+  end
+
   def treeUrl
     "#{fullName}/git/trees"
   end
