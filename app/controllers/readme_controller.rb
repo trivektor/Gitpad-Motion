@@ -38,6 +38,8 @@ class ReadmeController < UIViewController
   private
 
   def createReadmeBtn
+    return if !@repo.editable?
+
     readmeBtn = createFontAwesomeButton(
       icon: 'file-alt',
       touchHandler: 'showReadmeEditor'

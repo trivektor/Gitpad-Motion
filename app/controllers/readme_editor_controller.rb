@@ -5,6 +5,7 @@ class ReadmeEditorController < UIViewController
   def viewDidLoad
     super
     performHouskeepingTasks
+    createBackButton
   end
 
   def performHouskeepingTasks
@@ -13,6 +14,10 @@ class ReadmeEditorController < UIViewController
     self.view.addSubview(@fileWebView)
 
     initializeEditor
+  end
+
+  def popBack
+    self.dismissViewControllerAnimated(true, completion: nil)
   end
 
   private

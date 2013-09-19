@@ -3,9 +3,20 @@
   <head>
     <title>Readme Editor</title>
     <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' />
+    <link href='http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' rel='stylesheet'>
   </head>
   <body>
+    <div style='padding: 20px'>
+      <textarea id='editor' class='form-control' rows='20' placeholder='Enter Readme content...'
+        autocapitalize='off' autocorrect='off' spellcheck='false'></textarea>
+    </div>
     <script src='{{jquery}}'></script>
     <script src='{{bootstrap_markdown}}'></script>
+    <script>
+      $('#editor').markdown({
+        autofocus: true,
+        savable: false
+      });
+    </script>
   </body>
 </html>
