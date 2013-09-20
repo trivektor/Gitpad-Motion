@@ -3,7 +3,7 @@ class Repo
   include AFNetWorking
   include RelativeTime
 
-  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages, :forks
+  attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages, :forks, :watchers
 
   def initialize(data={})
     @data = data
@@ -12,6 +12,7 @@ class Repo
     @contributors = []
     @languages = []
     @forks = []
+    @watchers = []
   end
 
   def name
@@ -47,7 +48,7 @@ class Repo
   end
 
   def relativePushedAt
-    relativeTime(pushedAt)
+    relativeTime(pushedAt).downcase
   end
 
   def createdAt
@@ -115,6 +116,18 @@ class Repo
         'RepoBranchesFetched'.post_notification
       else
         puts "failed fetching branches"
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def fetchWatchers(page=1)
+    buildHttpClient
+    AFMotion::Client.shared.get("/repos/#{fullName}/watchers", access_token: AppHelper.getAccessToken, page: page) do |result|
+      if result.success?
+        @watchers += result.object.collect { |o| User.new(o) }
+        'RepoWatchersFetched'.post_notification
+      else
         puts result.error.localizedDescription
       end
     end

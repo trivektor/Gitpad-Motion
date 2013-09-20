@@ -148,6 +148,10 @@ class RepoController < UIViewController
       self.navigationController.pushViewController(repoTreeController, animated: true)
     else
       case indexPath.row
+      when 2
+        watchersControler = WatchersController.alloc.init
+        watchersControler.repo = @repo
+        self.navigationController.pushViewController(watchersControler, animated: true)
       when 3
         forksController = ForksController.alloc.init
         forksController.repo = @repo

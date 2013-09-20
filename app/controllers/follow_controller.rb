@@ -116,3 +116,44 @@ class FollowersController < FollowController
   end
 
 end
+
+class WatchersController < FollowController
+
+  attr_accessor :repo
+
+  def viewDidLoad
+    super
+    self.navigationItem.title = "#{repo.name}'s watchers"
+    fetchWatchers
+  end
+
+  def registerEvents
+    'RepoWatchersFetched'.add_observer(self, 'displayWatchers')
+  end
+
+  def fetchWatchers
+    showHud
+    @repo.fetchWatchers(@page)
+    @page += 1
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @repo.watchers.count
+  end
+
+  def getUserForRowAtIndexPath(indexPath)
+    @repo.watchers[indexPath.row]
+  end
+
+  def displayWatchers
+    @table.reloadData
+    hideHud
+  end
+
+  def scrollViewDidScroll(scrollView)
+    if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
+      fetchWatchers
+    end
+  end
+
+end
