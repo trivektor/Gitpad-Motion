@@ -47,7 +47,7 @@ class ProfileCell < UITableViewCell
     when 7
       fieldValue = @user.numPublicGists
     when 8
-      fieldValue = @user.createdAt
+      fieldValue = @user.relativeCreatedAt
     when 9
       fieldValue = 'view all'
     when 10

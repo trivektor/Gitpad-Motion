@@ -1,5 +1,6 @@
 class Issue
 
+  include RelativeTime
   include AFNetWorking
 
   attr_accessor :data, :comments, :user

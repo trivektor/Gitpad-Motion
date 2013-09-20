@@ -33,7 +33,7 @@ class NotificationCell < UITableViewCell
 
   def render
     @titleLabel.text = @notification.title
-    @dateLabel.text = @notification.updatedAt
+    @dateLabel.text = @notification.relativeUpdatedAt
 
     self.contentView.backgroundColor = notification.read? ? '#f5f5f5'.uicolor : UIColor.whiteColor
     @fontAwesomeLabel.text = FontAwesome.icon(ICONS[notification.type][:icon])

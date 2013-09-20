@@ -1,6 +1,7 @@
 class PullRequest
 
   include AFNetWorking
+  include RelativeTime
 
   attr_accessor :data, :repo, :owner
 

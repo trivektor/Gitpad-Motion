@@ -1,5 +1,7 @@
 class TimelineEvent
 
+  include RelativeTime
+
   attr_accessor :data
 
   ICONS = {

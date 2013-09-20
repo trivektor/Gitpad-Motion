@@ -1,6 +1,7 @@
 class Notification
 
   include AFNetWorking
+  include RelativeTime
 
   attr_accessor :data, :repo
 

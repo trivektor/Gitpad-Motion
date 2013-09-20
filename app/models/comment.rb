@@ -1,5 +1,7 @@
 class Comment
 
+  include RelativeTime
+
   attr_accessor :data, :user
 
   def initialize(data={})

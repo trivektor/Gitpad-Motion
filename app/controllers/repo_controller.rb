@@ -51,9 +51,9 @@ class RepoInfoCell < UITableViewCell
     when 4
       fieldValue = @repo.language || 'n/a'
     when 5
-      fieldValue = @repo.createdAt
+      fieldValue = @repo.relativeCreatedAt
     when 6
-      fieldValue = @repo.updatedAt
+      fieldValue = @repo.relativeUpdatedAt
     when 7
       fieldValue = @repo.owner.login
     when 8

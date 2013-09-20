@@ -1,5 +1,7 @@
 class User
 
+  include RelativeTime
+
   attr_accessor :data, :notifications, :events, :activities, :followers, :following, :personal_repos, :starred_repos, :gists, :organizations
 
   def initialize(data={})

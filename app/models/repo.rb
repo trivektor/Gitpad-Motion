@@ -1,6 +1,7 @@
 class Repo
 
   include AFNetWorking
+  include RelativeTime
 
   attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages, :forks
 

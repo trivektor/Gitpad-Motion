@@ -39,7 +39,7 @@ class IssuesController < UIViewController
     cell.textLabel.font = UIFont.fontWithName('Roboto-Medium', size: 15)
     cell.textLabel.text = issue.title
     cell.detailTextLabel.font = UIFont.fontWithName('Roboto-Light', size: 15)
-    cell.detailTextLabel.text = issue.createdAt
+    cell.detailTextLabel.text = issue.relativeCreatedAt
     cell
   end
 

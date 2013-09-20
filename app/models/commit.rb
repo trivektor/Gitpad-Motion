@@ -1,6 +1,7 @@
 class Commit
 
   include AFNetWorking
+  include RelativeTime
 
   attr_accessor :data, :details, :parent, :files
 
@@ -50,6 +51,10 @@ class Commit
 
   def committedAt
     @data[:commit][:author][:date]
+  end
+
+  def relativeCommitedAt
+    relativeTime(committedAt)
   end
 
   def treeUrl
