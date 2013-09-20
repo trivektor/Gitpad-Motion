@@ -1,5 +1,7 @@
 class ProfileCell < UITableViewCell
 
+  include RelativeTime
+
   attr_accessor :user, :fontAwesomeLabel, :fieldNameLabel, :fieldValueLabel
 
   PRESENTATION_DATA = {
@@ -47,7 +49,7 @@ class ProfileCell < UITableViewCell
     when 7
       fieldValue = @user.numPublicGists
     when 8
-      fieldValue = @user.relativeCreatedAt
+      fieldValue = relativeTime(@user.createdAt)
     when 9
       fieldValue = 'view all'
     when 10
@@ -102,7 +104,7 @@ class ProfileController < UIViewController
   end
 
   def registerEvents
-    'ProfileInfoFetched'.add_observer(self, 'displayProfileInfo:')
+    'ProfileInfoFetched'.add_observer(self, 'displayProfileInfo')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -167,8 +169,7 @@ class ProfileController < UIViewController
     @user.fetchProfileInfo
   end
 
-  def displayProfileInfo(notifcation)
-    @user = notifcation.object
+  def displayProfileInfo
     self.navigationItem.title = "#{@user.login}'s profile"
     @table.reloadData
     hideHud

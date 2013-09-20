@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<signatures version='1.0'>
+<enum name='RDDTimeUnitDays' value='32'/>
+<enum name='RDDTimeUnitHours' value='16'/>
+<enum name='RDDTimeUnitMilliSeconds' value='2'/>
+<enum name='RDDTimeUnitMinutes' value='8'/>
+<enum name='RDDTimeUnitMonths' value='64'/>
+<enum name='RDDTimeUnitMostSignificant' value='1'/>
+<enum name='RDDTimeUnitSeconds' value='4'/>
+<enum name='RDDTimeUnitYears' value='128'/>
+<class name='RelativeDateDescriptor'>
+<method selector='describeDate:relativeTo:'>
+<arg index='0' type='@' name='targetDate' declared_type='NSDate*'/>
+<arg index='1' type='@' name='referenceDate' declared_type='NSDate*'/>
+<retval type='@' declared_type='NSString*'/>
+</method>
+<method selector='expressedUnits'>
+<retval type='I' declared_type='NSUInteger'/>
+</method>
+<method selector='initWithPriorDateDescriptionFormat:postDateDescriptionFormat:'>
+<arg index='0' type='@' name='priorFormat' declared_type='NSString*'/>
+<arg index='1' type='@' name='postFormat' declared_type='NSString*'/>
+<retval type='@' declared_type='id'/>
+</method>
+<method selector='postDateDescriptionFormat'>
+<retval type='@' declared_type='NSString*'/>
+</method>
+<method selector='priorDateDescriptionFormat'>
+<retval type='@' declared_type='NSString*'/>
+</method>
+<method selector='setExpressedUnits:'>
+<arg index='0' type='I' name='expressedUnits' declared_type='NSUInteger'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='setPostDateDescriptionFormat:'>
+<arg index='0' type='@' name='postDateDescriptionFormat' declared_type='NSString*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='setPriorDateDescriptionFormat:'>
+<arg index='0' type='@' name='priorDateDescriptionFormat' declared_type='NSString*'/>
+<retval type='v' declared_type='void'/>
+</method>
+</class>
+</signatures>

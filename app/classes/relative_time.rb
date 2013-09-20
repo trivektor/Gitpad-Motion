@@ -3,8 +3,10 @@ module RelativeTime
   def relativeTime(originalDateTime)
     @dateFormatter ||= NSDateFormatter.alloc.init
     @dateFormatter.setDateFormat(DATE_TIME_FORMAT)
-    date = @dateFormatter.dateFromString(originalDateTime)
-    date.timeAgo
+    @dateDescriptor ||= RelativeDateDescriptor.alloc.initWithPriorDateDescriptionFormat('%@ ago', postDateDescriptionFormat: 'in %@')
+    date = @dateFormatter.dateFromString(originalDateTime.to_s)
+    # date.timeAgo
+    @dateDescriptor.describeDate(date, relativeTo: NSDate.date)
   end
 
   def relativeCreatedAt

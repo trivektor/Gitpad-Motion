@@ -161,7 +161,8 @@ class User
   def fetchProfileInfo
     self.class.buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}") do |result|
-      NSNotificationCenter.defaultCenter.postNotificationName('ProfileInfoFetched', object: self.class.new(result.object))
+      @data = result.object
+      'ProfileInfoFetched'.post_notification
     end
   end
 
