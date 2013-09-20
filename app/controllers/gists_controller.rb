@@ -95,7 +95,7 @@ class GistsController < UIViewController
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     gistController = GistController.alloc.init
-    gistController.gist = @gists[indexPath.row]
+    gistController.gist = @user.gists[indexPath.row]
     self.navigationController.pushViewController(gistController, animated: true)
   end
 
