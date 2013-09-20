@@ -33,13 +33,13 @@ class ProfileCell < UITableViewCell
 
     case indexPath.row
     when 0
-      fieldValue = @user.location
+      fieldValue = @user.location || 'not specified'
     when 1
-      fieldValue = @user.website
+      fieldValue = @user.website || 'not specified'
     when 2
-      fieldValue = @user.email
+      fieldValue = @user.email || 'not specified'
     when 3
-      fieldValue = @user.company
+      fieldValue = @user.company || 'not specified'
     when 4
       fieldValue = @user.numFollowers
     when 5
