@@ -8,11 +8,11 @@ module RelativeTime
   end
 
   def relativeCreatedAt
-    relativeTime(createdAt)
+    relativeTime(createdAt).downcase
   end
 
   def relativeUpdatedAt
-    relativeTime(updatedAt)
+    relativeTime(updatedAt).downcase
   end
 
 end

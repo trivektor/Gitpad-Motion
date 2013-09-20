@@ -46,7 +46,7 @@ class Commit
   end
 
   def author
-    @author ||= User.new(@data[:author])
+    @author ||= User.new(@data[:author] || @data[:commit][:author])
   end
 
   def committedAt
@@ -54,7 +54,7 @@ class Commit
   end
 
   def relativeCommitedAt
-    relativeTime(committedAt)
+    relativeTime(committedAt).downcase
   end
 
   def treeUrl
@@ -69,8 +69,9 @@ class Commit
     <td> \
     <h4>#{message}</h4> \
     <p> \
-    <img src='#{author.avatarUrl}' class='avatar pull-left' /> \
-    authored #{committedAt} \
+    <img src='#{author.avatarUrl || AVATAR_PLACEHOLDER}' class='avatar pull-left' /> \
+    <b>#{author.login || author.name}</b> \
+    authored #{relativeCommitedAt} \
     </p> \
     </td> \
     </tr>
