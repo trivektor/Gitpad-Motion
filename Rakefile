@@ -66,6 +66,7 @@ Motion::Project::App.setup do |app|
     pod 'NSData+Base64'
     pod 'MMMarkdown'
     pod 'XYPieChart'
+    pod 'NSDate+TimeAgo'
   end
 
   app.vendor_project('vendor/IBActionSheet', :static, :cflags => '-fobjc-arc')
