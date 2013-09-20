@@ -46,6 +46,10 @@ class Repo
     @data[:pushed_at]
   end
 
+  def relativePushedAt
+    relativeTime(pushedAt)
+  end
+
   def createdAt
     @data[:created_at]
   end

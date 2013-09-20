@@ -53,7 +53,7 @@ class RepoInfoCell < UITableViewCell
     when 5
       fieldValue = @repo.relativeCreatedAt
     when 6
-      fieldValue = @repo.relativeUpdatedAt
+      fieldValue = @repo.relativePushedAt
     when 7
       fieldValue = @repo.owner.login
     when 8
