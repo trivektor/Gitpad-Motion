@@ -31,7 +31,7 @@ class IssueController < UIViewController
     contentHtml = issueDetails.stringByReplacingOccurrencesOfString('{{avatar}}', withString: @issue.user.avatarUrl)
                               .stringByReplacingOccurrencesOfString('{{state}}', withString: @issue.state)
                               .stringByReplacingOccurrencesOfString('{{login}}', withString: @issue.user.login)
-                              .stringByReplacingOccurrencesOfString('{{created_at}}', withString: @issue.createdAt)
+                              .stringByReplacingOccurrencesOfString('{{created_at}}', withString: @issue.relativeCreatedAt)
                               .stringByReplacingOccurrencesOfString('{{title}}', withString: @issue.title)
                               .stringByReplacingOccurrencesOfString('{{body}}', withString: @issue.body || '')
                               .stringByReplacingOccurrencesOfString('{{comments}}', withString: @issue.commentsHtmlString || '')

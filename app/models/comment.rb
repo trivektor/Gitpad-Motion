@@ -30,7 +30,7 @@ class Comment
         <img src='#{user.avatarUrl}' class='avatar pull-left' />
           <div class='comment-details'>
             <b>#{user.login}</b>
-            <span class='lightgrey'>commented #{createdAt}</span>
+            <span class='lightgrey'>commented #{relativeCreatedAt}</span>
             <p>#{encodeHtmlEntities(body)}</p>
           </div>
       </td>
