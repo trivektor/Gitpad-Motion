@@ -17,6 +17,8 @@ UIViewController.class_eval do
   end
 
   def createBackButton
+    return if self.navigationController.viewControllers.length == 1
+
     backBtn = UIButton.buttonWithType(UIButtonTypeCustom)
     backBtnBackgroundImage = UIImage.imageNamed('chevron-left.png')
     backBtn.frame = CGRectMake(0, 0, backBtnBackgroundImage.size.width, backBtnBackgroundImage.size.height)
