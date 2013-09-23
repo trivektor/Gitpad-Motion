@@ -81,7 +81,7 @@ class LoginController < UIViewController
       UIAlertView.alert 'Please enter both username and password'
     else
       showHud
-      buildHttpClient
+      buildHttpClient(authorization: {username: username, password: password})
       AFMotion::Client.shared.get("/authorizations") do |result|
         if result.success?
           authorizations = result.object.map { |hash| Authorization.new(hash) }
@@ -114,6 +114,7 @@ class LoginController < UIViewController
     @usernameCell.selectionStyle = UITableViewCellSelectionStyleNone
     @usernameField = UITextField.alloc.initWithFrame(CGRectMake(8, 7, 916, 30))
     @usernameField.attributedPlaceholder = NSAttributedString.alloc.initWithString('Username or email')
+    @usernameField.font = UIFont.fontWithName('Roboto-Light', size: 15)
     @usernameField.setAutocorrectionType(UITextAutocorrectionTypeNo)
     @usernameField.setAutocapitalizationType(UITextAutocapitalizationTypeNone)
     @usernameCell.backgroundColor = UIColor.whiteColor
@@ -123,6 +124,7 @@ class LoginController < UIViewController
     @passwordCell.selectionStyle = UITableViewCellSelectionStyleNone
     @passwordField = UITextField.alloc.initWithFrame(CGRectMake(8, 7, 916, 30))
     @passwordField.attributedPlaceholder = NSAttributedString.alloc.initWithString('Password')
+    @passwordField.font = UIFont.fontWithName('Roboto-Light', size: 15)
     @passwordField.secureTextEntry = true
     @passwordCell.backgroundColor = UIColor.whiteColor
     @passwordCell.contentView.addSubview(@passwordField)
