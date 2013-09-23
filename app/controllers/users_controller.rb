@@ -1,4 +1,4 @@
-class FollowController < UIViewController
+class UsersController < UIViewController
 
   attr_accessor :user, :page, :table
 
@@ -57,7 +57,8 @@ class FollowController < UIViewController
 
 end
 
-class FollowingController < FollowController
+# User's following
+class FollowingController < UsersController
 
   def viewDidLoad
     super
@@ -87,7 +88,8 @@ class FollowingController < FollowController
 
 end
 
-class FollowersController < FollowController
+# User's followers
+class FollowersController < UsersController
 
   def viewDidLoad
     super
@@ -117,7 +119,8 @@ class FollowersController < FollowController
 
 end
 
-class WatchersController < FollowController
+# Repo's watchers
+class WatchersController < UsersController
 
   attr_accessor :repo
 
@@ -154,6 +157,36 @@ class WatchersController < FollowController
     if scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height
       fetchWatchers
     end
+  end
+
+end
+
+# Repo's contributors
+class ContributorsController < UsersController
+
+  attr_accessor :repo
+
+  def viewDidLoad
+    super
+    self.navigationItem.title = 'Contributors'
+    @repo.fetchContributors
+  end
+
+  def registerEvents
+    'ContributorsFetched'.add_observer(self, 'displayContributors')
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @repo.contributors.count
+  end
+
+  def getUserForRowAtIndexPath(indexPath)
+    @repo.contributors[indexPath.row].author
+  end
+
+  def displayContributors
+    @table.reloadData
+    hideHud
   end
 
 end
