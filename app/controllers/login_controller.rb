@@ -90,14 +90,8 @@ class LoginController < UIViewController
     username = @usernameField.text || ''
     password = @passwordField.text || ''
 
-    @alert ||= UIAlertView.alloc.initWithTitle('Error',
-      message:'Please enter both username and password',
-      delegate:nil,
-      cancelButtonTitle:'Back',
-      otherButtonTitles:'OK')
-
     if username.length == 0 || password.length == 0
-      @alert.show
+      UIAlertView.alert 'Please enter both username and password'
     else
       AFMotion::Client.build_shared(GITHUB_API_HOST) do
         header "Accept", "application/json"
@@ -114,9 +108,7 @@ class LoginController < UIViewController
             if authorization.name == APP_NAME
               puts "deleting existing authorization id: #{authorization.id}"
               AFMotion::Client.shared.delete("/authorizations/#{authorization.id}") do |result|
-                if result.success?
-
-                else
+                if !result.success?
                   puts result.error.localizedDescription
                 end
               end
@@ -125,8 +117,7 @@ class LoginController < UIViewController
           end
           NSNotificationCenter.defaultCenter.postNotificationName('ExistingAuthorizationsDeleted', object:nil)
         elsif result.failure?
-          @alert.setMessage(result.error.localizedDescription)
-          @alert.show
+          UIAlertView.alert('Username or password is incorrect')
         end
       end
     end
