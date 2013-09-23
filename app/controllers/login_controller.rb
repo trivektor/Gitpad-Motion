@@ -1,40 +1,28 @@
 class LoginController < UIViewController
 
-  def initWithNibName(nibName, bundle:nibBundle)
-    super
-    self
-  end
+  include AFNetWorking
 
   def viewDidLoad
     super
-    navigationItem.title = 'Login'
     performHouseKeepingTasks
+    createCustomCells
+    registerEvents
   end
 
   def performHouseKeepingTasks
-    createCustomCells
+    navigationItem.title = 'Login'
 
-    containerView = UIView.alloc.initWithFrame(self.view.bounds)
-    containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    self.view.addSubview containerView
-
-    @loginTable = UITableView.alloc.initWithFrame(containerView.bounds, style: UITableViewStyleGrouped)
-    @loginTable.delegate = self
-    @loginTable.dataSource = self
-    @loginTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-    @loginTable.backgroundView = nil
-    @loginTable.scrollEnabled = false
-    containerView.addSubview @loginTable
+    @loginTable = createTable(style: UITableViewStyleGrouped)
+    self.view.addSubview(@loginTable)
 
     submitButton = UIButton.alloc.initWithFrame(CGRectMake(44, 143, 936, 44), style: UIButtonTypeRoundedRect)
     submitButton.setTitle('Submit', forState: UIControlStateNormal)
     submitButton.titleLabel.textColor = UIColor.whiteColor
+    submitButton.titleLabel.font = UIFont.fontWithName('Roboto-Bold', size: 17)
     submitButton.backgroundColor = UIColor.colorWithRed(72/255.0, green: 201/255.0, blue: 176/255.0, alpha: 1.0)
     submitButton.layer.cornerRadius = 6.0
-    submitButton.addTarget(self, action:'login', forControlEvents:UIControlEventTouchUpInside);
-    containerView.addSubview(submitButton, aboveSubview: @loginTable)
-
-    registerEvents
+    submitButton.addTarget(self, action: 'login', forControlEvents: UIControlEventTouchUpInside);
+    self.view.addSubview(submitButton, aboveSubview: @loginTable)
   end
 
   def registerEvents
@@ -79,11 +67,7 @@ class LoginController < UIViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    if indexPath.row == 0
-      @usernameCell
-    else
-      @passwordCell
-    end
+    indexPath.row == 0 ? @usernameCell : @passwordCell
   end
 
   def login
@@ -93,13 +77,7 @@ class LoginController < UIViewController
     if username.length == 0 || password.length == 0
       UIAlertView.alert 'Please enter both username and password'
     else
-      AFMotion::Client.build_shared(GITHUB_API_HOST) do
-        header "Accept", "application/json"
-        authorization(username: username, password: password)
-        parameter_encoding :json
-        operation :json
-      end
-
+      buildHttpClient
       AFMotion::Client.shared.get("/authorizations") do |result|
         if result.success?
           authorizations = result.object.map { |hash| Authorization.new(hash) }
@@ -115,7 +93,7 @@ class LoginController < UIViewController
               break
             end
           end
-          NSNotificationCenter.defaultCenter.postNotificationName('ExistingAuthorizationsDeleted', object:nil)
+          'ExistingAuthorizationsDeleted'.post_notification
         elsif result.failure?
           UIAlertView.alert('Username or password is incorrect')
         end
