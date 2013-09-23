@@ -6,6 +6,7 @@ class LoginController < UIViewController
     super
     performHouseKeepingTasks
     createCustomCells
+    loadHud(hideAfterCreate: true)
     registerEvents
   end
 
@@ -71,12 +72,15 @@ class LoginController < UIViewController
   end
 
   def login
+    self.view.endEditing(true)
+
     username = @usernameField.text || ''
     password = @passwordField.text || ''
 
     if username.length == 0 || password.length == 0
       UIAlertView.alert 'Please enter both username and password'
     else
+      showHud
       buildHttpClient
       AFMotion::Client.shared.get("/authorizations") do |result|
         if result.success?
@@ -96,6 +100,7 @@ class LoginController < UIViewController
           'ExistingAuthorizationsDeleted'.post_notification
         elsif result.failure?
           UIAlertView.alert('Username or password is incorrect')
+          hideHud
         end
       end
     end

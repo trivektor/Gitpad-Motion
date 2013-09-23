@@ -2,10 +2,11 @@ UIViewController.class_eval do
 
   attr_accessor :hud
 
-  def loadHud
+  def loadHud(options={})
     @hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
     @hud.mode = MBProgressHUDAnimationFade;
     @hud.labelText = 'Loading'
+    hideHud if options[:hideAfterCreate] === true
   end
 
   def showHud
@@ -13,7 +14,7 @@ UIViewController.class_eval do
   end
 
   def hideHud
-    MBProgressHUD.hideHUDForView(self.view, animated: true)
+    @hud.hide(true)
   end
 
   def createBackButton
