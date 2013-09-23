@@ -8,6 +8,7 @@ class CommitsController < UIViewController
     createBackButton
     performHousekeepingTasks
     registerEvents
+    loadHud
     fetchCommitsForPage(@page)
   end
 
@@ -56,9 +57,11 @@ class CommitsController < UIViewController
 
   def displayCommits
     @table.reloadData
+    hideHud
   end
 
   def fetchCommitsForPage(page=1)
+    showHud
     @branch.fetchCommits(@page)
     @page += 1
   end
