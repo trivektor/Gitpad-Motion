@@ -36,6 +36,7 @@ Motion::Project::App.setup do |app|
   frameworks = %w(
     QuartzCore
     Security
+    CoreAnimation
   )
   frameworks.each { |framework| app.frameworks << framework }
 
