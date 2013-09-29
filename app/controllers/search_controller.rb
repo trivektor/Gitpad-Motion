@@ -1,6 +1,8 @@
 class SearchController < UIViewController
 
-  attr_accessor :searchBar, :searchResults
+  attr_accessor :searchBar, :searchToggle, :searchResults
+
+  TOGGLES = ['Repo', 'User']
 
   def viewDidLoad
     super
@@ -10,12 +12,13 @@ class SearchController < UIViewController
 
   def performHousekeepingTasks
     self.navigationItem.title = 'Search'
-    buildSearchBar
+    createSearchBar
+    createSearchToggle
     @table = createTable(frame: [[0, 44], [1024, 1024]])
     self.view.addSubview(@table)
   end
 
-  def buildSearchBar
+  def createSearchBar
     @searchBar = UISearchBar.alloc.initWithFrame([[0, 0], [1024, 44]])
     @searchBar.setTintColor([220, 220, 220].uicolor)
     searchBarTextField = @searchBar.subviews.select { |v| v.is_a? UITextField }.first
@@ -30,6 +33,15 @@ class SearchController < UIViewController
     layer.shadowOpacity = 0
     layer.masksToBounds = true
     self.view.addSubview(@searchBar)
+  end
+
+  def createSearchToggle
+    @searchToggle = UISegmentedControl.alloc.initWithItems(TOGGLES)
+    @searchToggle.segmentedControlStyle = UISegmentedControlStyleBar
+    @searchToggle.momentary = false
+    @searchToggle.selectedSegmentIndex = 0
+    searchToggleBtn = UIBarButtonItem.alloc.initWithCustomView(@searchToggle)
+    self.navigationItem.rightBarButtonItem = searchToggleBtn
   end
 
   def numberOfSectionsInTableView(tableView)
