@@ -17,6 +17,18 @@ class SearchController < UIViewController
 
   def buildSearchBar
     @searchBar = UISearchBar.alloc.initWithFrame([[0, 0], [1024, 44]])
+    @searchBar.setTintColor([220, 220, 220].uicolor)
+    searchBarTextField = @searchBar.subviews.select { |v| v.is_a? UITextField }.first
+    searchBarTextField.borderStyle = UITextBorderStyleNone
+    searchBarTextField.backgroundColor = UIColor.whiteColor
+    searchBarTextField.background = nil
+
+    layer = searchBarTextField.layer
+    layer.borderWidth = 1.0
+    layer.borderColor = [178, 178, 178].uicolor
+    layer.cornerRadius = 3.0
+    layer.shadowOpacity = 0
+    layer.masksToBounds = true
     self.view.addSubview(@searchBar)
   end
 
