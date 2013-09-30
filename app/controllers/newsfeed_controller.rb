@@ -88,22 +88,22 @@ class NewsfeedController < UIViewController
     cell
   end
 
-  def tableView(tableView, willDisplayCell: cell, forRowAtIndexPath: indexPath)
-    rotation = CATransform3DMakeRotation( (90.0 * 3.14)/180, 0.0, 0.7, 0.4)
-    rotation.m34 = 1.0/ -600
-
-    cell.layer.shadowColor = :black.uicolor.cgcolor
-    cell.layer.shadowOffset = CGSizeMake(10, 10)
-    cell.alpha = 0
-    cell.layer.transform = rotation
-    cell.layer.anchorPoint = CGPointMake(0, 0.5)
-    UIView.beginAnimations('rotation', context: nil)
-    UIView.setAnimationDuration(0.8)
-    cell.layer.transform = CATransform3DIdentity
-    cell.alpha = 1
-    cell.layer.shadowOffset = CGSizeMake(0, 0)
-    UIView.commitAnimations
-  end
+  # def tableView(tableView, willDisplayCell: cell, forRowAtIndexPath: indexPath)
+  #   rotation = CATransform3DMakeRotation( (90.0 * 3.14)/180, 0.0, 0.7, 0.4)
+  #   rotation.m34 = 1.0/ -600
+  #
+  #   cell.layer.shadowColor = :black.uicolor.cgcolor
+  #   cell.layer.shadowOffset = CGSizeMake(10, 10)
+  #   cell.alpha = 0
+  #   cell.layer.transform = rotation
+  #   cell.layer.anchorPoint = CGPointMake(0, 0.5)
+  #   UIView.beginAnimations('rotation', context: nil)
+  #   UIView.setAnimationDuration(0.8)
+  #   cell.layer.transform = CATransform3DIdentity
+  #   cell.alpha = 1
+  #   cell.layer.shadowOffset = CGSizeMake(0, 0)
+  #   UIView.commitAnimations
+  # end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     'CloseViewDeck'.post_notification
