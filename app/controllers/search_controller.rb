@@ -84,9 +84,9 @@ class SearchController < UIViewController
     end
 
     result = @searchResults[indexPath.row]
-    text = if result.is_a?(Repo)
+    text = if result.is_a? Repo
       result.name
-    elsif result.is_a?(User)
+    elsif result.is_a? User
       result.login
     end
 
@@ -94,6 +94,20 @@ class SearchController < UIViewController
     cell.textLabel.text = text
     cell.defineAccessoryType
     cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    result = @searchResults[indexPath.row]
+
+    if result.is_a? Repo
+      controller = RepoController.alloc.init
+      controller.repo = result
+    elsif result.is_a? User
+      controller = ProfileController.alloc.init
+      controller.user = result
+    end
+
+    self.navigationController.pushViewController(controller, animated: true)
   end
 
 end
