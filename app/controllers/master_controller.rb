@@ -255,7 +255,7 @@ class MasterController < UIViewController
         notificationsController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(notificationsController)
       when 3
-        feedbackController = FeedbackController.alloc.initWithForm(FeedbackController.form)
+        feedbackController = FeedbackController.alloc.init
         selectedController = UINavigationController.alloc.initWithRootViewController(feedbackController)
       when 4
         @signoutConfirmSheet = UIActionSheet.alert('Are you sure you want to sign out?') do |pressed|
