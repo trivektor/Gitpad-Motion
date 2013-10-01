@@ -46,6 +46,8 @@ class SearchController < UIViewController
     @searchToggle.segmentedControlStyle = UISegmentedControlStyleBar
     @searchToggle.momentary = false
     @searchToggle.selectedSegmentIndex = 0
+    @searchToggle.tintColor = [52, 73, 94].uicolor
+    @searchToggle.subviews.first.tintColor = [231, 76, 60].uicolor
     searchToggleBtn = UIBarButtonItem.alloc.initWithCustomView(@searchToggle)
     self.navigationItem.rightBarButtonItem = searchToggleBtn
   end
