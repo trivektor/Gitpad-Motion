@@ -54,17 +54,26 @@ class FeedbackController < Formotion::FormController
     self.view.backgroundView = nil
   end
 
+  def registerEvents
+    'FeedbackSucceed'.add_observer(self, 'postFeedbackHandler')
+  end
+
   def sendFeedback
     data = @form.render
 
     name = data['name']
-    email = data['email']
-    message = data['message']
+    from = data['email']
+    text = data['message']
 
-    if name.length == 0 || email.length == 0 || message.length == 0
+    if name.length == 0 || from.length == 0 || text.length == 0
       UIAlertView.alert 'Please enter all required fields'
     else
+      Feedback.sendToServer(name: name, from: from, text: text)
     end
+  end
+
+  def postFeedbackHandler
+    UIAlertView.all 'Feedback has been sent successfully'
   end
 
 end

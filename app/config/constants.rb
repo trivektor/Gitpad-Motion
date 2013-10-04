@@ -11,3 +11,4 @@ APP_KEYCHAIN_ACCOUNT = 'gitpad_motion'
 GITHUB_OCTOCAT = 'http://octodex.github.com/images/original.jpg'
 AVATAR_PLACEHOLDER = 'avatar-placeholder.png'
 DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZZ"
+GITOS_HOST = 'http://thawing-crag-8872.herokuapp.com'
