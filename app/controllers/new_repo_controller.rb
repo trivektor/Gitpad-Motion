@@ -1,18 +1,7 @@
 class NewRepoController < Formotion::FormController
 
-  def viewDidLoad
-    super
-    performHousekeepingTasks
-  end
-
-  def performHousekeepingTasks
-    self.navigationItem.title = 'New Repository'
-    self.view.setBackgroundColor(UIColor.whiteColor)
-    self.view.backgroundView = nil
-  end
-
-  def self.form
-    Formotion::Form.new({
+  def init
+    form = Formotion::Form.new(
       sections: [
         {
           rows: [
@@ -27,6 +16,13 @@ class NewRepoController < Formotion::FormController
             {
               title: 'Description',
               key: 'description',
+              type: 'string',
+              auto_correction: 'no',
+              auto_capitalization: 'none'
+            },
+            {
+              title: 'Home page',
+              key: 'homepage',
               type: 'string',
               auto_correction: 'no',
               auto_capitalization: 'none'
@@ -45,8 +41,19 @@ class NewRepoController < Formotion::FormController
             },
             {
               title: 'Private',
-              key: 'private',
-              type: 'check'
+              key: 'public',
+              type: 'check',
+              value: false
+            }
+          ]
+        },
+        {
+          title: 'Auto init',
+          rows: [
+            {
+              title: 'Initialize this repository with a README',
+              key: 'auto_init',
+              type: 'switch'
             }
           ]
         },
@@ -59,7 +66,33 @@ class NewRepoController < Formotion::FormController
           ]
         }
       ]
-    })
+    )
+
+    form.on_submit { self.createRepo }
+    super.initWithForm(form)
+  end
+
+  def viewDidLoad
+    super
+    performHousekeepingTasks
+  end
+
+  def performHousekeepingTasks
+    self.navigationItem.title = 'New Repository'
+    self.view.setBackgroundColor(UIColor.whiteColor)
+    self.view.backgroundView = nil
+  end
+
+  def createRepo
+    data = @form.render
+
+    Repo.createNew(
+      name: data['name'],
+      description: data['description'],
+      homepage: data['homepage'],
+      private: !data['public'],
+      auto_init: data['auto_init']
+    )
   end
 
 end

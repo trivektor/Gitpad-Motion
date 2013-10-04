@@ -238,7 +238,7 @@ class MasterController < UIViewController
         starredReposController.user = CurrentUserManager.sharedInstance
         selectedController = UINavigationController.alloc.initWithRootViewController(starredReposController)
       when 2
-        newRepoController = NewRepoController.alloc.initWithForm(NewRepoController.form)
+        newRepoController = NewRepoController.alloc.init
         selectedController = UINavigationController.alloc.initWithRootViewController(newRepoController)
       end
     when 3

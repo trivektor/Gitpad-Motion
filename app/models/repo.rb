@@ -1,6 +1,7 @@
 class Repo
 
   include AFNetWorking
+  extend AFNetWorking
   include RelativeTime
 
   attr_accessor :data, :owner, :issues, :branches, :contributors, :readme, :languages, :forks, :watchers
@@ -200,6 +201,17 @@ class Repo
         puts result.error.localizedDescription
       end
     end
+  end
+
+  def createNew(params={})
+    # buildHttpClient(parameter_encoding: false)
+    # AFMotion::Client.shared.post("/user/repos", params.merge(access_token: AppHelper.getAccessToken)) do |result|
+    #   if result.success?
+    #
+    #   else
+    #     puts result.error.localizedDescription
+    #   end
+    # end
   end
 
   def commitActivityApiUrl
