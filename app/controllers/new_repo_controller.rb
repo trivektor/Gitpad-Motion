@@ -68,13 +68,23 @@ class NewRepoController < Formotion::FormController
       ]
     )
 
-    form.on_submit { self.createRepo }
+    form.on_submit do
+      self.view.endEditing(true)
+      self.createRepo
+    end
     super.initWithForm(form)
   end
 
   def viewDidLoad
     super
     performHousekeepingTasks
+    registerEvents
+  end
+
+  def viewDidAppear(animated)
+    super
+    loadHud
+    hideHud
   end
 
   def performHousekeepingTasks
@@ -83,16 +93,29 @@ class NewRepoController < Formotion::FormController
     self.view.backgroundView = nil
   end
 
+  def registerEvents
+    'RepoCreated'.add_observer(self, 'handleRepoPostCreation')
+  end
+
   def createRepo
     data = @form.render
 
+    UIAlertView.alert('Please enter a name for this repo') and return if !data['name']
+
+    showHud
+
     Repo.createNew(
-      name: data['name'],
-      description: data['description'],
-      homepage: data['homepage'],
-      private: !data['public'],
-      auto_init: data['auto_init']
+      name: data['name'].to_s,
+      description: data['description'].to_s,
+      homepage: data['homepage'].to_s,
+      private: !!data['public'],
+      auto_init: !!data['auto_init']
     )
+  end
+
+  def handleRepoPostCreation
+    UIAlertView.alert('Repo has been created')
+    hideHud
   end
 
 end

@@ -203,15 +203,15 @@ class Repo
     end
   end
 
-  def createNew(params={})
-    # buildHttpClient(parameter_encoding: false)
-    # AFMotion::Client.shared.post("/user/repos", params.merge(access_token: AppHelper.getAccessToken)) do |result|
-    #   if result.success?
-    #
-    #   else
-    #     puts result.error.localizedDescription
-    #   end
-    # end
+  def self.createNew(params={})
+    buildHttpClient
+    AFMotion::Client.shared.post("/user/repos?access_token=#{AppHelper.getAccessToken}", params) do |result|
+      if result.success?
+        'RepoCreated'.post_notification
+      else
+        puts result.inspect
+      end
+    end
   end
 
   def commitActivityApiUrl
