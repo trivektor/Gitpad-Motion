@@ -104,7 +104,11 @@ class NewRepoController < Formotion::FormController
     data = @form.render
 
     if data['name'].length == 0
-      UIAlertView.alert('Please enter a name for this repo') and return
+      alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Please enter a name for this repo')
+      alert.addButtonWithTitle('OK', type: 1, handler: nil)
+      alert.transitionStyle = 0
+      alert.show
+      return
     end
 
     showHud
