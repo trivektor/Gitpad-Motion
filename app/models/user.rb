@@ -1,6 +1,8 @@
 class User
 
   include RelativeTime
+  include AFNetWorking
+  extend AFNetWorking
 
   attr_accessor :data, :notifications, :events, :activities, :followers, :following, :personal_repos, :starred_repos, :gists, :organizations
 
@@ -94,7 +96,7 @@ class User
   end
 
   def fetchActivitiesForPage(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/events", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @activities += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
@@ -106,7 +108,7 @@ class User
   end
 
   def fetchPersonalReposForPage(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     params = {
       :page => page,
       :access_token => AppHelper.getAccessToken,
@@ -123,7 +125,7 @@ class User
   end
 
   def fetchStarredReposForPage(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/starred", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @starred_repos += result.object.collect { |r| Repo.new(r) }
@@ -135,7 +137,7 @@ class User
   end
 
   def fetchPersonalGistsForPage(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @gists += result.object.collect { |r| Gist.new(r) }
@@ -147,7 +149,7 @@ class User
   end
 
   def fetchOrganizations
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/orgs", access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @organizations = result.object.collect { |o| Organization.new(o) }
@@ -159,7 +161,7 @@ class User
   end
 
   def fetchProfileInfo
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}") do |result|
       @data = result.object
       'ProfileInfoFetched'.post_notification
@@ -167,7 +169,7 @@ class User
   end
 
   def fetchFollowers(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get(followersUrl, page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @followers += result.object.collect { |u| User.new(u) }
@@ -179,7 +181,7 @@ class User
   end
 
   def fetchFollowing(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get(followingUrl, page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @following += result.object.collect { |u| User.new(u) }
@@ -190,8 +192,16 @@ class User
     end
   end
 
+  def checkFollowing(user)
+    buildHttpClient
+    puts 'check following'
+    AFMotion::Client.shared.get("/user/following/#{user.login}", access_token: AppHelper.getAccessToken) do |result|
+      'FollowingChecked'.post_notification(result.operation)
+    end
+  end
+
   def fetchNotifications(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get('/notifications', page: page, access_token: AppHelper.getAccessToken, all: true) do |result|
       if result.success?
         notifications = result.object.collect { |o| Notification.new(o) }
