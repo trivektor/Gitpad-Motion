@@ -11,21 +11,24 @@ class NewRepoController < Formotion::FormController
               type: 'string',
               placeholder: 'e.g: Rails',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             },
             {
               title: 'Description',
               key: 'description',
               type: 'string',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             },
             {
               title: 'Home page',
               key: 'homepage',
               type: 'string',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             }
           ]
         },
@@ -100,7 +103,9 @@ class NewRepoController < Formotion::FormController
   def createRepo
     data = @form.render
 
-    UIAlertView.alert('Please enter a name for this repo') and return if !data['name']
+    if data['name'].length == 0
+      UIAlertView.alert('Please enter a name for this repo') and return
+    end
 
     showHud
 

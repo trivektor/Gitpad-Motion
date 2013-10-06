@@ -10,21 +10,24 @@ class FeedbackController < Formotion::FormController
               key: 'name',
               type: 'string',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             },
             {
               title: 'Email',
               key: 'email',
               type: 'email',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             },
             {
               title: 'Message',
               key: 'message',
               type: 'string',
               auto_correction: 'no',
-              auto_capitalization: 'none'
+              auto_capitalization: 'none',
+              selection_style: UITableViewCellSelectionStyleNone
             }
           ]
         },
