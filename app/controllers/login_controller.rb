@@ -78,7 +78,8 @@ class LoginController < UIViewController
     password = @passwordField.text || ''
 
     if username.length == 0 || password.length == 0
-      UIAlertView.alert 'Please enter both username and password'
+      alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Please enter both username and password')
+      alert.show
     else
       showHud
       buildHttpClient(authorization: {username: username, password: password})
@@ -99,7 +100,9 @@ class LoginController < UIViewController
           end
           'ExistingAuthorizationsDeleted'.post_notification
         elsif result.failure?
-          UIAlertView.alert('Username or password is incorrect')
+          alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Username or password is incorrect')
+          alert.addButtonWithTitle('OK', type: 1, handler: nil)
+          alert.show
           hideHud
         end
       end

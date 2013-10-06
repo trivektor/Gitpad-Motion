@@ -6,6 +6,7 @@ PODS:
   - MBProgressHUD (0.7)
   - MMMarkdown (0.2.3)
   - NSData+Base64 (1.0.0)
+  - SIAlertView (1.2)
   - SSKeychain (1.2.0)
   - TDSemiModal (0.0.1)
   - ViewDeck (2.2.11)
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - MBProgressHUD
   - MMMarkdown
   - NSData+Base64
+  - SIAlertView
   - SSKeychain
   - TDSemiModal
   - ViewDeck (= 2.2.11)
@@ -32,6 +34,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
   MMMarkdown: 1775ba63d27e999aedecf75f58153243e1778ea0
   NSData+Base64: 36c4e5b6479259c1a68866ccd2a8dd385c9744f7
+  SIAlertView: fd188f66278761f4ff069f517c3deb2be16ecdcc
   SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
   TDSemiModal: eb66ea9b5d47ddf8ba15f85886f6d98a54be5196
   ViewDeck: b5eddc8559b0e47259ab7addbf2de6768061f139

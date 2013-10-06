@@ -69,14 +69,18 @@ class FeedbackController < Formotion::FormController
     text = data['message']
 
     if name.length == 0 || from.length == 0 || text.length == 0
-      UIAlertView.alert 'Please enter all required fields'
+      alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Please enter all required fields')
+      alert.addButtonWithTitle('OK', type: 1, handler: nil)
+      alert.show
     else
       Feedback.sendToServer(name: name, from: from, text: text)
     end
   end
 
   def postFeedbackHandler
-    UIAlertView.all 'Feedback has been sent successfully'
+    alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Feedback has been sent successfully')
+    alert.addButtonWithTitle('OK', type: 1, handler: nil)
+    alert.show
   end
 
 end

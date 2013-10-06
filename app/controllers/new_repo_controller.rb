@@ -106,7 +106,6 @@ class NewRepoController < Formotion::FormController
     if data['name'].length == 0
       alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Please enter a name for this repo')
       alert.addButtonWithTitle('OK', type: 1, handler: nil)
-      alert.transitionStyle = 0
       alert.show
       return
     end
@@ -123,7 +122,9 @@ class NewRepoController < Formotion::FormController
   end
 
   def handleRepoPostCreation
-    UIAlertView.alert('Repo has been created')
+    alert = SIAlertView.alloc.initWithTitle('Oops', andMessage: 'Repo has been created')
+    alert.addButtonWithTitle('OK', type: 1, handler: nil)
+    alert.show
     hideHud
   end
 
