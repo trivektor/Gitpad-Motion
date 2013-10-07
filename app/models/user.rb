@@ -240,6 +240,17 @@ class User
     end
   end
 
+  def updateProfile(data={})
+    buildHttpClient
+    AFMotion::Client.shared.patch("/user?access_token=#{AppHelper.getAccessToken}", data) do |result|
+      if result.success?
+        'ProfileUpdated'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
   class << self
 
     def fetchInfoForUserWithToken(token)
