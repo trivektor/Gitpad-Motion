@@ -2,7 +2,7 @@ class ProfileCell < UITableViewCell
 
   include RelativeTime
 
-  attr_accessor :user, :fontAwesomeLabel, :fieldNameLabel, :fieldValueLabel
+  attr_accessor :user, :fontAwesomeLabel, :fieldNameLabel, :fieldValueLabel, :isFollowing
 
   PRESENTATION_DATA = {
     0 => {icon: 'map-marker', fieldName: 'Location'},
@@ -93,6 +93,7 @@ class ProfileController < UIViewController
     loadHud
     registerEvents
     fetchProfileInfo
+    checkFollowing
   end
 
   def performHousekeepingTasks
@@ -105,6 +106,8 @@ class ProfileController < UIViewController
 
   def registerEvents
     'ProfileInfoFetched'.add_observer(self, 'displayProfileInfo')
+    'FollowingChecked'.add_observer(self, 'setupFollowOptions:')
+    'UserFollowChanged'.add_observer(self, 'updateFollowOptions:')
   end
 
   def numberOfSectionsInTableView(tableView)
@@ -173,6 +176,74 @@ class ProfileController < UIViewController
     self.navigationItem.title = "#{@user.login}'s profile"
     @table.reloadData
     hideHud
+  end
+
+  def checkFollowing
+    unless @user.myself?
+      CurrentUserManager.sharedInstance.checkFollowing(@user)
+    end
+  end
+
+  def setupFollowOptions(notification)
+    operation = notification.object
+    statusCode = operation.response.statusCode
+
+    createOptionsAction(statusCode)
+  end
+
+  def createOptionsAction(statusCode)
+    if statusCode == 404
+      otherButtonTitles = 'Follow'
+    elsif statusCode == 204
+      otherButtonTitles = 'Unfollow'
+    end
+
+    @optionsActionSheet = IBActionSheet.alloc.initWithTitle(
+      'Options',
+      delegate: self,
+      cancelButtonTitle: 'Cancel',
+      destructiveButtonTitle: nil,
+      otherButtonTitles: otherButtonTitles, 'View on Github', nil
+    )
+    @optionsActionSheet.setFont(UIFont.fontWithName('Roboto-Light', size: 15))
+    @optionsActionSheet.setTitleFont(UIFont.fontWithName('Roboto-Bold', size: 17))
+    @optionsActionSheet.setTitleTextColor(UIColor.iOS7redColor)
+
+    optionsBtn = createFontAwesomeButton(
+      icon: 'reorder',
+      touchHandler: 'displayFollowOptions'
+    )
+    self.navigationItem.setRightBarButtonItem(optionsBtn)
+  end
+
+  def displayFollowOptions
+    @optionsActionSheet.showInView(self.navigationController.view)
+    @optionsActionSheet.rotateToCurrentOrientation
+  end
+
+  def updateFollowOptions(notification)
+    statusCode = notification.object
+    createOptionsAction(statusCode)
+
+    message = if statusCode == 204
+      @isFollowing = true
+      "You are now following #{@user.login}"
+    else
+      @isFollowing = false
+      "You've stopped following #{@user.login}"
+    end
+
+    alert = SIAlertView.alloc.initWithTitle('Alert', andMessage: message)
+    alert.addButtonWithTitle('OK', type: 1, handler: nil)
+    alert.show
+  end
+
+  def actionSheet(actionSheet, clickedButtonAtIndex: buttonIndex)
+    if buttonIndex == 0
+      currentUser = CurrentUserManager.sharedInstance
+      @isFollowing ? currentUser.unfollow(@user) : currentUser.follow(@user)
+    elsif buttonIndex == 1
+    end
   end
 
 end

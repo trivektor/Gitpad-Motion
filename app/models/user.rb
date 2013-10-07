@@ -83,8 +83,12 @@ class User
     @data[:following_url].gsub('{/other_user}', '')
   end
 
+  def myself?
+    self.login == CurrentUserManager.sharedInstance.login
+  end
+
   def fetchNewsfeedForPage(page=1)
-    self.class.buildHttpClient
+    buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/received_events", page: page, access_token: AppHelper.getAccessToken) do |result|
       if result.success?
         @events += result.object.collect { |e| Kernel::const_get(e[:type]).new(e) }
@@ -194,9 +198,22 @@ class User
 
   def checkFollowing(user)
     buildHttpClient
-    puts 'check following'
     AFMotion::Client.shared.get("/user/following/#{user.login}", access_token: AppHelper.getAccessToken) do |result|
       'FollowingChecked'.post_notification(result.operation)
+    end
+  end
+
+  def follow(user)
+    buildHttpClient
+    AFMotion::Client.shared.put("/user/following/#{user.login}", access_token: AppHelper.getAccessToken) do |result|
+      'UserFollowChanged'.post_notification(204)
+    end
+  end
+
+  def unfollow(user)
+    buildHttpClient
+    AFMotion::Client.shared.delete("/user/following/#{user.login}", access_token: AppHelper.getAccessToken) do |result|
+      'UserFollowChanged'.post_notification(404)
     end
   end
 
