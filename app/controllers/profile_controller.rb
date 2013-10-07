@@ -94,6 +94,7 @@ class ProfileController < UIViewController
     registerEvents
     fetchProfileInfo
     checkFollowing
+    displayEditButton
   end
 
   def performHousekeepingTasks
@@ -244,6 +245,22 @@ class ProfileController < UIViewController
       @isFollowing ? currentUser.unfollow(@user) : currentUser.follow(@user)
     elsif buttonIndex == 1
     end
+  end
+
+  def displayEditButton
+    currentUser = CurrentUserManager.sharedInstance
+    if currentUser.myself?
+      editBtn = createFontAwesomeButton(
+        icon: 'edit',
+        touchHandler: 'editProfile'
+      )
+      self.navigationItem.setRightBarButtonItem(editBtn)
+    end
+  end
+
+  def editProfile
+    editProfileController = EditProfileController.alloc.init
+    self.navigationController.pushViewController(editProfileController, animated: true)
   end
 
 end
