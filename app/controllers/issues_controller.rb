@@ -5,6 +5,7 @@ class IssuesController < UIViewController
   def viewDidLoad
     super
     createBackButton
+    createNewIssueButton
     performHousekeepingTasks
     registerEvents
     @repo.fetchIssues
@@ -51,6 +52,19 @@ class IssuesController < UIViewController
 
   def displayIssues(notification)
     @table.reloadData
+  end
+
+  def createNewIssueButton
+    newIssueBtn = createFontAwesomeButton(
+      icon: 'exclamation-sign',
+      touchHandler: 'createNewIssue'
+    )
+    self.navigationItem.rightBarButtonItem = newIssueBtn
+  end
+
+  def createNewIssue
+    @newIssueController = NewIssueController.alloc.init
+    self.navigationController.pushViewController(@newIssueController, animated: true)
   end
 
 end
