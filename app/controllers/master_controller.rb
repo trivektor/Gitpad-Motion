@@ -58,7 +58,7 @@ class MasterControllerCell < UITableViewCell
     @textLabel = UILabel.alloc.initWithFrame([[51, 11], [243, 21]])
     @textLabel.textColor = UIColor.whiteColor
     @textLabel.backgroundColor = UIColor.clearColor
-    @textLabel.text = 'text'
+    @textLabel.font = UIFont.fontWithName('Roboto-Light', size: 13)
 
     selectedBackgroundView = UIView.alloc.initWithFrame(self.frame)
     selectedBackgroundView.backgroundColor = UIColor.iOS7redColor
@@ -69,8 +69,7 @@ class MasterControllerCell < UITableViewCell
   end
 
   def renderForIndexPath(indexPath)
-    @iconLabel.font = FontAwesome.fontWithSize(15)
-    @textLabel.font = UIFont.fontWithName('Roboto-Medium', size:13)
+    @iconLabel.font = FontAwesome.fontWithSize(16)
 
     case indexPath.section
     when 0
@@ -176,8 +175,8 @@ class MasterController < UIViewController
     headerLabel = UILabel.alloc.initWithFrame(CGRectMake(8, 1, 300, 25))
     headerLabel.backgroundColor = UIColor.clearColor
     headerLabel.text = self.tableView(tableView, titleForHeaderInSection:section)
-    headerLabel.textColor = UIColor.colorWithRed(179/255.0, green:179/255.0, blue:179/255.0, alpha:1.0)
-    headerLabel.font = UIFont.fontWithName('Arial-BoldMT', size:12.0)
+    headerLabel.textColor = UIColor.whiteColor
+    headerLabel.font = UIFont.fontWithName('Roboto-Medium', size: 12)
     backgroundView = UIView.alloc.initWithFrame(CGRectMake(0, 0, 300, 25))
     backgroundView.backgroundColor = UIColor.colorWithRed(49/255.0, green:49/255.0, blue:49/255.0, alpha:0.9)
     backgroundView.addSubview(headerLabel)

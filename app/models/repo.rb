@@ -41,7 +41,7 @@ class Repo
   end
 
   def url
-    @data[:url]
+    @data[:url] || 'n/a'
   end
 
   def pushedAt

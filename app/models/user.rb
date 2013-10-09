@@ -44,15 +44,15 @@ class User
   end
 
   def website
-    @data[:blog]
+    @data[:blog] || 'n/a'
   end
 
   def email
-    @data[:email]
+    @data[:email] || 'n/a'
   end
 
   def company
-    @data[:company]
+    @data[:company] || 'n/a'
   end
 
   def numFollowing
