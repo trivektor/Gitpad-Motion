@@ -5,17 +5,17 @@ class NewIssueController < Formotion::FormController
       sections: [
         {
           rows: [
-            mergeRowOptions({
+            mergeRowOptions(
               title: 'Title',
               key: 'title',
               type: 'string',
-            }),
-            mergeRowOptions({
+            ),
+            mergeRowOptions(
               title: 'Description',
               key: 'body',
               type: 'text',
               row_height: 500
-            })
+            )
           ]
         },
         {

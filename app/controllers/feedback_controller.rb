@@ -5,30 +5,22 @@ class FeedbackController < Formotion::FormController
       sections: [
         {
           rows: [
-            {
+            mergeRowOptions(
               title: 'Name',
               key: 'name',
               type: 'string',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            },
-            {
+            ),
+            mergeRowOptions(
               title: 'Email',
               key: 'email',
               type: 'email',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            },
-            {
+            ),
+            mergeRowOptions(
               title: 'Message',
               key: 'message',
-              type: 'string',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            }
+              type: 'text',
+              row_height: 400
+            )
           ]
         },
         {
@@ -52,9 +44,8 @@ class FeedbackController < Formotion::FormController
   end
 
   def performHousekeepingTasks
+    super
     self.navigationItem.title = 'Feedback'
-    self.view.setBackgroundColor(UIColor.whiteColor)
-    self.view.backgroundView = nil
   end
 
   def registerEvents

@@ -5,31 +5,22 @@ class NewRepoController < Formotion::FormController
       sections: [
         {
           rows: [
-            {
+            mergeRowOptions(
               title: 'Name',
               key: 'name',
               type: 'string',
               placeholder: 'e.g: Rails',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            },
-            {
+            ),
+            mergeRowOptions(
               title: 'Description',
               key: 'description',
               type: 'string',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            },
-            {
+            ),
+            mergeRowOptions(
               title: 'Home page',
               key: 'homepage',
               type: 'string',
-              auto_correction: 'no',
-              auto_capitalization: 'none',
-              selection_style: UITableViewCellSelectionStyleNone
-            }
+            )
           ]
         },
         {
@@ -91,9 +82,8 @@ class NewRepoController < Formotion::FormController
   end
 
   def performHousekeepingTasks
+    super
     self.navigationItem.title = 'New Repository'
-    self.view.setBackgroundColor(UIColor.whiteColor)
-    self.view.backgroundView = nil
   end
 
   def registerEvents
