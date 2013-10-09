@@ -49,7 +49,11 @@ class Repo
   end
 
   def relativePushedAt
-    relativeTime(pushedAt).downcase
+    unless pushedAt.nil?
+      relativeTime(pushedAt).downcase
+    else
+      'n/a'
+    end
   end
 
   def createdAt
