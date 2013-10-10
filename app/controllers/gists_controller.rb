@@ -43,7 +43,7 @@ class GistsController < UIViewController
 
   attr_accessor :user, :page, :table
 
-  def initWithNibName(nibName, bundle:nibBundle)
+  def init
     super
     @page = 1
     self
@@ -60,10 +60,8 @@ class GistsController < UIViewController
 
   def performHousekeepingTasks
     self.navigationItem.title = 'Gists'
-
-    @table = createTable
-    @table.registerClass(GistCell, forCellReuseIdentifier:GistCell.reuseIdentifier)
-
+    @user.resetGists
+    @table = createTable(cell: GistCell)
     self.view.addSubview(@table)
   end
 

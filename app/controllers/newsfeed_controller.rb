@@ -35,7 +35,7 @@ class NewsfeedController < UIViewController
 
   attr_accessor :page, :user
 
-  def initWithNibName(nibName, bundle:nibBundle)
+  def init
     super
     @page = 1
     self
@@ -53,8 +53,7 @@ class NewsfeedController < UIViewController
   def performHousekeepingTasks
     self.navigationItem.title = title
 
-    @table = createTable
-    @table.registerClass(NewsfeedCell, forCellReuseIdentifier: NewsfeedCell.reuseIdentifier)
+    @table = createTable(cell: NewsfeedCell)
     self.view.addSubview(@table)
   end
 
@@ -136,6 +135,11 @@ class NewsfeedController < UIViewController
 end
 
 class ActivitiesController < NewsfeedController
+
+  def performHousekeepingTasks
+    super
+    @user.resetActivities
+  end
 
   def tableView(tableView, numberOfRowsInSection: section)
     @user.activities.count

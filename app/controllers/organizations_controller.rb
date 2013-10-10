@@ -12,6 +12,7 @@ class OrganizationsController < UIViewController
 
   def performHousekeepingTasks
     self.navigationItem.title = "#{user.login}'s Organizations"
+    @user.resetOrganizations
     @table = createTable
     self.view.addSubview(@table)
   end

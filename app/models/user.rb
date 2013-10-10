@@ -111,6 +111,10 @@ class User
     end
   end
 
+  def resetActivities
+    @activities.clear
+  end
+
   def resetPersonalRepos
     @personal_repos.clear
   end
@@ -148,6 +152,10 @@ class User
     end
   end
 
+  def resetGists
+    @gists.clear
+  end
+
   def fetchPersonalGistsForPage(page=1)
     buildHttpClient
     AFMotion::Client.shared.get("/users/#{login}/gists", page: page, access_token: AppHelper.getAccessToken) do |result|
@@ -158,6 +166,10 @@ class User
         puts result.error.localizedDescription
       end
     end
+  end
+
+  def resetOrganizations
+    @organizations.clear
   end
 
   def fetchOrganizations
@@ -192,6 +204,10 @@ class User
     end
   end
 
+  def resetFollowers
+    @followers.clear
+  end
+
   def fetchFollowing(page=1)
     buildHttpClient
     AFMotion::Client.shared.get(followingUrl, page: page, access_token: AppHelper.getAccessToken) do |result|
@@ -202,6 +218,10 @@ class User
         puts result.error.localizedDescription
       end
     end
+  end
+
+  def resetFollowing
+    @following.clear
   end
 
   def checkFollowing(user)
@@ -236,6 +256,10 @@ class User
         puts result.error.localizedDescription
       end
     end
+  end
+
+  def resetNotifications
+    @notifications.clear
   end
 
   def groupNotificationsByRepo(notifications)

@@ -63,6 +63,7 @@ class FollowingController < UsersController
   def viewDidLoad
     super
     self.navigationItem.title = 'Following'
+    @user.resetFollowing
     fetchFollowing
   end
 
@@ -94,6 +95,7 @@ class FollowersController < UsersController
   def viewDidLoad
     super
     self.navigationItem.title = 'Followers'
+    @user.resetFollowers
     fetchFollowers
   end
 
