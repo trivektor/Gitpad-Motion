@@ -111,6 +111,10 @@ class User
     end
   end
 
+  def resetPersonalRepos
+    @personal_repos.clear
+  end
+
   def fetchPersonalReposForPage(page=1)
     buildHttpClient
     params = {
@@ -126,6 +130,10 @@ class User
         puts result.error.localizedDescription
       end
     end
+  end
+
+  def resetStarredRepos
+    @starred_repos.clear
   end
 
   def fetchStarredReposForPage(page=1)

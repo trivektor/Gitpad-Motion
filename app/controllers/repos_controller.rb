@@ -48,16 +48,14 @@ class ReposController < UIViewController
 
   attr_accessor :table, :user, :page
 
-  def initWithNibName(nibName, bundle:nibBundle)
+  def init
     super
     @page = 1
     self
   end
 
   def performHousekeepingTasks
-    @table = createTable
-    @table.registerClass(RepoCell, forCellReuseIdentifier: RepoCell.reuseIdentifier)
-
+    @table = createTable(cell: RepoCell)
     self.view.addSubview(@table)
   end
 
@@ -113,6 +111,7 @@ class PersonalReposController < ReposController
 
   def performHousekeepingTasks
     super
+    @user.resetPersonalRepos
     self.navigationItem.title = 'Repositories'
     fetchReposForPage(@page)
     registerEvents
@@ -137,6 +136,7 @@ class StarredReposController < ReposController
 
   def performHousekeepingTasks
     super
+    @user.resetStarredRepos
     self.navigationItem.title = 'Starred Repositories'
     fetchReposForPage(@page)
     registerEvents
