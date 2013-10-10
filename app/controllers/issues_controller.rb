@@ -64,6 +64,7 @@ class IssuesController < UIViewController
 
   def createNewIssue
     @newIssueController = NewIssueController.alloc.init
+    @newIssueController.repo = @repo
     self.navigationController.pushViewController(@newIssueController, animated: true)
   end
 

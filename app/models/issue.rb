@@ -2,6 +2,7 @@ class Issue
 
   include RelativeTime
   include AFNetWorking
+  extend AFNetWorking
 
   attr_accessor :data, :comments, :user
 
@@ -64,6 +65,19 @@ class Issue
       if result.success?
         @comments = result.object.collect { |o| Comment.new(o) }
         'IssueCommentsFetch'.post_notification
+      else
+        puts result.error.localizedDescription
+      end
+    end
+  end
+
+  def self.createNew(options={})
+    buildHttpClient
+    repo = options[:repo].fullName
+    params = {title: options['title'].to_s, body: options['body'].to_s}
+    AFMotion::Client.shared.post("/repos/#{repo}/issues?access_token=#{AppHelper.getAccessToken}", params) do |result|
+      if result.success?
+        'NewIssueCreated'.post_notification
       else
         puts result.error.localizedDescription
       end
